@@ -459,23 +459,12 @@
           <file file_name="Application/ndn_standalone/forwarder/pit.h" />
         </folder>
         <folder Name="security">
-          <folder Name="ndn-lite-default-back">
-            <file file_name="Application/ndn_standalone/security/ndn-lite-default-back/ndn-lite-default-back-aes.c" />
-            <file file_name="Application/ndn_standalone/security/ndn-lite-default-back/ndn-lite-default-back-crypto-key.c" />
-            <file file_name="Application/ndn_standalone/security/ndn-lite-default-back/ndn-lite-default-back-random.c" />
-            <file file_name="Application/ndn_standalone/security/ndn-lite-default-back/ndn-lite-default-back-sign-verify.c" />
-          </folder>
           <file file_name="Application/ndn_standalone/security/ndn-lite-aes.h" />
           <file file_name="Application/ndn_standalone/security/ndn-lite-crypto-key.h" />
           <file file_name="Application/ndn_standalone/security/ndn-lite-key-storage.c" />
           <file file_name="Application/ndn_standalone/security/ndn-lite-key-storage.h" />
           <file file_name="Application/ndn_standalone/security/ndn-lite-random.h" />
           <file file_name="Application/ndn_standalone/security/ndn-lite-sign-verify.h" />
-          <folder Name="ndn-lite-nrf-crypto-back">
-            <file file_name="Application/ndn_standalone/security/ndn-lite-nrf-crypto-back/ndn-lite-nrf-crypto-aes.c" />
-            <file file_name="Application/ndn_standalone/security/ndn-lite-nrf-crypto-back/ndn-lite-nrf-crypto-random.c" />
-            <file file_name="Application/ndn_standalone/security/ndn-lite-nrf-crypto-back/ndn-lite-nrf-crypto-sign-verify.c" />
-          </folder>
           <file file_name="Application/ndn_standalone/security/ndn-lite-sec-config.h" />
           <folder Name="detail">
             <folder Name="detail-aes">
@@ -485,20 +474,18 @@
             <folder Name="detail-ecc">
               <file file_name="Application/ndn_standalone/security/detail/detail-ecc/ndn-lite-ecc-microecc-impl.c" />
               <file file_name="Application/ndn_standalone/security/detail/detail-ecc/ndn-lite-ecc-microecc-impl.h" />
-              <file file_name="Application/ndn_standalone/security/detail/detail-ecc/ndn-lite-ecc-nrf-crypto-impl.c" />
-              <file file_name="Application/ndn_standalone/security/detail/detail-ecc/ndn-lite-ecc-nrf-crypto-impl.h" />
+              <file file_name="Application/ndn_standalone/security/detail/detail-ecc/ndn-lite-ecc-tinycrypt-impl.c" />
+              <file file_name="Application/ndn_standalone/security/detail/detail-ecc/ndn-lite-ecc-tinycrypt-impl.h" />
             </folder>
             <folder Name="detail-hmac">
-              <file file_name="Application/ndn_standalone/security/detail/detail-hmac/ndn-lite-hmac-nrf-crypto-impl.c" />
-              <file file_name="Application/ndn_standalone/security/detail/detail-hmac/ndn-lite-hmac-nrf-crypto-impl.h" />
               <file file_name="Application/ndn_standalone/security/detail/detail-hmac/ndn-lite-hmac-tinycrypt-impl.c" />
               <file file_name="Application/ndn_standalone/security/detail/detail-hmac/ndn-lite-hmac-tinycrypt-impl.h" />
             </folder>
             <folder Name="detail-rng">
-              <file file_name="Application/ndn_standalone/security/detail/detail-rng/ndn-lite-rng-nrf-crypto-impl.c" />
-              <file file_name="Application/ndn_standalone/security/detail/detail-rng/ndn-lite-rng-nrf-crypto-impl.h" />
               <file file_name="Application/ndn_standalone/security/detail/detail-rng/ndn-lite-rng-tinycrypt-impl.c" />
               <file file_name="Application/ndn_standalone/security/detail/detail-rng/ndn-lite-rng-tinycrypt-impl.h" />
+              <file file_name="Application/ndn_standalone/security/detail/detail-rng/ndn-lite-rng-nrf-crypto-impl.c" />
+              <file file_name="Application/ndn_standalone/security/detail/detail-rng/ndn-lite-rng-nrf-crypto-impl.h" />
             </folder>
             <folder Name="sec-lib">
               <folder Name="micro-ecc">
@@ -547,12 +534,14 @@
               </folder>
             </folder>
             <folder Name="detail-sha256">
-              <file file_name="Application/ndn_standalone/security/detail/detail-sha256/ndn-lite-sha256-nrf-crypto-impl.c" />
               <file file_name="Application/ndn_standalone/security/detail/detail-sha256/ndn-lite-sha256-tinycrypt-impl.c" />
               <file file_name="Application/ndn_standalone/security/detail/detail-sha256/ndn-lite-sha256-tinycrypt-impl.h" />
-              <file file_name="Application/ndn_standalone/security/detail/detail-sha256/ndn-lite-sha256-nrf-crypto-impl.h" />
             </folder>
           </folder>
+          <file file_name="Application/ndn_standalone/security/ndn-lite-aes.c" />
+          <file file_name="Application/ndn_standalone/security/ndn-lite-crypto-key.c" />
+          <file file_name="Application/ndn_standalone/security/ndn-lite-random.c" />
+          <file file_name="Application/ndn_standalone/security/ndn-lite-sign-verify.c" />
         </folder>
       </folder>
     </folder>

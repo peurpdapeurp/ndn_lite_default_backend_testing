@@ -10,746 +10,134 @@
 	.eabi_attribute 30, 6
 	.eabi_attribute 34, 1
 	.eabi_attribute 18, 4
-	.file	"ndn-lite-default-back-sign-verify.c"
+	.file	"ndn-lite-ecc-tinycrypt.c"
 	.text
 .Ltext0:
-	.section	.text._init_sha256,"ax",%progbits
+	.section	.rodata.curve_secp256r1,"a",%progbits
+	.align	2
+	.type	curve_secp256r1, %object
+	.size	curve_secp256r1, 176
+curve_secp256r1:
+	.byte	8
+	.byte	32
+	.short	256
+	.word	-1
+	.word	-1
+	.word	-1
+	.word	0
+	.word	0
+	.word	0
+	.word	1
+	.word	-1
+	.word	-60611247
+	.word	-205927742
+	.word	-1491624316
+	.word	-1125713235
+	.word	-1
+	.word	-1
+	.word	0
+	.word	-1
+	.word	-661077354
+	.word	-190760635
+	.word	770388896
+	.word	1996717441
+	.word	1671708914
+	.word	-121837851
+	.word	-517193145
+	.word	1796723186
+	.word	935285237
+	.word	-877248408
+	.word	1798397646
+	.word	734933847
+	.word	2081398294
+	.word	-1897403574
+	.word	-31817829
+	.word	1340293858
+	.word	668098635
+	.word	1003371582
+	.word	-866930442
+	.word	1696401072
+	.word	1989707452
+	.word	-1276396203
+	.word	-1439001625
+	.word	1522939352
+	.word	double_jacobian_default
+	.word	x_side_default
+	.word	vli_mmod_fast_secp256r1
+	.section	.text.ndn_lite_ecc_key_shared_secret_tinycrypt,"ax",%progbits
 	.align	1
+	.global	ndn_lite_ecc_key_shared_secret_tinycrypt
 	.syntax unified
 	.thumb
 	.thumb_func
 	.fpu fpv4-sp-d16
-	.type	_init_sha256, %function
-_init_sha256:
-.LFB31:
-	.file 1 "C:\\Users\\Rena Li\\Desktop\\adding_nrf_crypto_backend_to_ndn_lite\\Application\\ndn_standalone\\security\\ndn-lite-default-back\\ndn-lite-default-back-sign-verify.c"
-	.loc 1 27 0
-	@ args = 0, pretend = 0, frame = 16
+	.type	ndn_lite_ecc_key_shared_secret_tinycrypt, %function
+ndn_lite_ecc_key_shared_secret_tinycrypt:
+.LFB35:
+	.file 1 "C:\\Users\\Rena Li\\Desktop\\adding_nrf_crypto_backend_to_ndn_lite\\Application\\ndn_standalone\\security\\detail\\detail-ecc\\ndn-lite-ecc-tinycrypt.c"
+	.loc 1 16 0
+	@ args = 4, pretend = 0, frame = 24
 	@ frame_needed = 0, uses_anonymous_args = 0
 	push	{lr}
 .LCFI0:
-	sub	sp, sp, #20
+	sub	sp, sp, #28
 .LCFI1:
-	str	r0, [sp, #4]
-	.loc 1 28 0
-	ldr	r3, [sp, #4]
-	str	r3, [sp, #12]
-	.loc 1 29 0
-	ldr	r3, [sp, #12]
-	adds	r3, r3, #24
-	mov	r0, r3
-	bl	tc_sha256_init
-	.loc 1 30 0
+	str	r0, [sp, #12]
+	str	r1, [sp, #8]
+	str	r3, [sp]
+	mov	r3, r2
+	strb	r3, [sp, #7]
+	.loc 1 17 0
+	ldr	r3, [sp, #32]
+	cmp	r3, #23
+	bhi	.L2
+	.loc 1 18 0
+	mvn	r3, #23
+	b	.L3
+.L2:
+	.loc 1 20 0
+	ldrb	r3, [sp, #7]	@ zero_extendqisi2
+	cmp	r3, #32
+	bne	.L8
+	.loc 1 22 0
+	bl	tc_uECC_secp256r1
+	str	r0, [sp, #20]
+	.loc 1 23 0
 	nop
-	add	sp, sp, #20
+	.loc 1 28 0
+	ldr	r3, [sp, #12]
+	adds	r0, r3, #4
+	ldr	r3, [sp, #8]
+	adds	r1, r3, #4
+	ldr	r3, [sp, #20]
+	ldr	r2, [sp]
+	bl	tc_uECC_shared_secret
+	str	r0, [sp, #16]
+	.loc 1 29 0
+	ldr	r3, [sp, #16]
+	cmp	r3, #1
+	beq	.L7
+	b	.L9
+.L8:
+	.loc 1 26 0
+	mvn	r3, #25
+	b	.L3
+.L9:
+	.loc 1 29 0 discriminator 1
+	mvn	r3, #24
+	b	.L3
+.L7:
+	.loc 1 30 0
+	movs	r3, #0
+.L3:
+	.loc 1 31 0
+	mov	r0, r3
+	add	sp, sp, #28
 .LCFI2:
 	@ sp needed
 	ldr	pc, [sp], #4
-.LFE31:
-	.size	_init_sha256, .-_init_sha256
-	.section	.text._update_sha256,"ax",%progbits
-	.align	1
-	.syntax unified
-	.thumb
-	.thumb_func
-	.fpu fpv4-sp-d16
-	.type	_update_sha256, %function
-_update_sha256:
-.LFB32:
-	.loc 1 36 0
-	@ args = 0, pretend = 0, frame = 24
-	@ frame_needed = 0, uses_anonymous_args = 0
-	push	{lr}
-.LCFI3:
-	sub	sp, sp, #28
-.LCFI4:
-	str	r0, [sp, #12]
-	str	r1, [sp, #8]
-	str	r2, [sp, #4]
-	.loc 1 37 0
-	ldr	r3, [sp, #12]
-	str	r3, [sp, #20]
-	.loc 1 38 0
-	ldr	r3, [sp, #20]
-	adds	r3, r3, #24
-	ldr	r2, [sp, #4]
-	ldr	r1, [sp, #8]
-	mov	r0, r3
-	bl	tc_sha256_update
-	.loc 1 39 0
-	nop
-	add	sp, sp, #28
-.LCFI5:
-	@ sp needed
-	ldr	pc, [sp], #4
-.LFE32:
-	.size	_update_sha256, .-_update_sha256
-	.section	.text._finish_sha256,"ax",%progbits
-	.align	1
-	.syntax unified
-	.thumb
-	.thumb_func
-	.fpu fpv4-sp-d16
-	.type	_finish_sha256, %function
-_finish_sha256:
-.LFB33:
-	.loc 1 43 0
-	@ args = 0, pretend = 0, frame = 16
-	@ frame_needed = 0, uses_anonymous_args = 0
-	push	{lr}
-.LCFI6:
-	sub	sp, sp, #20
-.LCFI7:
-	str	r0, [sp, #4]
-	str	r1, [sp]
-	.loc 1 44 0
-	ldr	r3, [sp, #4]
-	str	r3, [sp, #12]
-	.loc 1 45 0
-	ldr	r3, [sp, #12]
-	adds	r3, r3, #24
-	mov	r1, r3
-	ldr	r0, [sp]
-	bl	tc_sha256_final
-	.loc 1 46 0
-	nop
-	add	sp, sp, #20
-.LCFI8:
-	@ sp needed
-	ldr	pc, [sp], #4
-.LFE33:
-	.size	_finish_sha256, .-_finish_sha256
-	.section	.text.sha256,"ax",%progbits
-	.align	1
-	.syntax unified
-	.thumb
-	.thumb_func
-	.fpu fpv4-sp-d16
-	.type	sha256, %function
-sha256:
-.LFB34:
-	.loc 1 51 0
-	@ args = 0, pretend = 0, frame = 16
-	@ frame_needed = 0, uses_anonymous_args = 0
-	push	{lr}
-.LCFI9:
-	sub	sp, sp, #20
-.LCFI10:
-	str	r0, [sp, #12]
-	str	r1, [sp, #8]
-	str	r2, [sp, #4]
-	.loc 1 52 0
-	ldr	r2, [sp, #4]
-	ldr	r1, [sp, #8]
-	ldr	r0, [sp, #12]
-	bl	ndn_lite_sha256_tinycrypt
-	mov	r3, r0
-	.loc 1 53 0
-	mov	r0, r3
-	add	sp, sp, #20
-.LCFI11:
-	@ sp needed
-	ldr	pc, [sp], #4
-.LFE34:
-	.size	sha256, .-sha256
-	.section	.text.hmac_sha256,"ax",%progbits
-	.align	1
-	.syntax unified
-	.thumb
-	.thumb_func
-	.fpu fpv4-sp-d16
-	.type	hmac_sha256, %function
-hmac_sha256:
-.LFB35:
-	.loc 1 59 0
-	@ args = 4, pretend = 0, frame = 16
-	@ frame_needed = 0, uses_anonymous_args = 0
-	push	{lr}
-.LCFI12:
-	sub	sp, sp, #28
-.LCFI13:
-	str	r0, [sp, #20]
-	str	r1, [sp, #16]
-	str	r2, [sp, #12]
-	str	r3, [sp, #8]
-	.loc 1 60 0
-	ldr	r3, [sp, #32]
-	str	r3, [sp]
-	ldr	r3, [sp, #8]
-	ldr	r2, [sp, #12]
-	ldr	r1, [sp, #16]
-	ldr	r0, [sp, #20]
-	bl	ndn_lite_hmac_sign_tinycrypt
-	mov	r3, r0
-	.loc 1 63 0
-	mov	r0, r3
-	add	sp, sp, #28
-.LCFI14:
-	@ sp needed
-	ldr	pc, [sp], #4
 .LFE35:
-	.size	hmac_sha256, .-hmac_sha256
-	.section	.text.ndn_signer_sha256_sign,"ax",%progbits
-	.align	1
-	.global	ndn_signer_sha256_sign
-	.syntax unified
-	.thumb
-	.thumb_func
-	.fpu fpv4-sp-d16
-	.type	ndn_signer_sha256_sign, %function
-ndn_signer_sha256_sign:
-.LFB36:
-	.loc 1 69 0
-	@ args = 4, pretend = 0, frame = 16
-	@ frame_needed = 0, uses_anonymous_args = 0
-	push	{lr}
-.LCFI15:
-	sub	sp, sp, #20
-.LCFI16:
-	str	r0, [sp, #12]
-	str	r1, [sp, #8]
-	str	r2, [sp, #4]
-	str	r3, [sp]
-	.loc 1 70 0
-	ldr	r3, [sp]
-	cmp	r3, #31
-	bhi	.L9
-	.loc 1 71 0
-	mvn	r3, #9
-	b	.L10
-.L9:
-	.loc 1 72 0
-	ldr	r2, [sp, #4]
-	ldr	r1, [sp, #8]
-	ldr	r0, [sp, #12]
-	bl	sha256
-	.loc 1 73 0
-	ldr	r3, [sp, #24]
-	movs	r2, #32
-	str	r2, [r3]
-	.loc 1 74 0
-	movs	r3, #0
-.L10:
-	.loc 1 75 0
-	mov	r0, r3
-	add	sp, sp, #20
-.LCFI17:
-	@ sp needed
-	ldr	pc, [sp], #4
-.LFE36:
-	.size	ndn_signer_sha256_sign, .-ndn_signer_sha256_sign
-	.section	.text.ndn_signer_ecdsa_sign,"ax",%progbits
-	.align	1
-	.global	ndn_signer_ecdsa_sign
-	.syntax unified
-	.thumb
-	.thumb_func
-	.fpu fpv4-sp-d16
-	.type	ndn_signer_ecdsa_sign, %function
-ndn_signer_ecdsa_sign:
-.LFB37:
-	.loc 1 82 0
-	@ args = 16, pretend = 0, frame = 328
-	@ frame_needed = 0, uses_anonymous_args = 0
-	push	{r4, lr}
-.LCFI18:
-	sub	sp, sp, #336
-.LCFI19:
-	add	r4, sp, #20
-	str	r0, [r4]
-	add	r0, sp, #16
-	str	r1, [r0]
-	add	r1, sp, #12
-	str	r2, [r1]
-	add	r2, sp, #8
-	str	r3, [r2]
-	.loc 1 83 0
-	add	r3, sp, #8
-	ldr	r3, [r3]
-	cmp	r3, #63
-	bhi	.L12
-	.loc 1 84 0
-	mvn	r3, #9
-	b	.L24
-.L12:
-	.loc 1 85 0
-	ldr	r3, [sp, #348]
-	cmp	r3, #32
-	bls	.L14
-	.loc 1 86 0
-	mvn	r3, #21
-	b	.L24
-.L14:
-	.loc 1 88 0
-	add	r3, sp, #292
-	movs	r2, #32
-	movs	r1, #0
-	mov	r0, r3
-	bl	memset
-	.loc 1 89 0
-	add	r2, sp, #292
-	add	r1, sp, #16
-	add	r3, sp, #20
-	ldr	r1, [r1]
-	ldr	r0, [r3]
-	bl	sha256
-	.loc 1 91 0
-	ldrb	r3, [sp, #352]	@ zero_extendqisi2
-	subs	r3, r3, #21
-	cmp	r3, #12
-	bhi	.L15
-	adr	r2, .L17
-	ldr	pc, [r2, r3, lsl #2]
-	.p2align 2
-.L17:
-	.word	.L16+1
-	.word	.L15+1
-	.word	.L15+1
-	.word	.L18+1
-	.word	.L15+1
-	.word	.L15+1
-	.word	.L15+1
-	.word	.L19+1
-	.word	.L15+1
-	.word	.L15+1
-	.word	.L15+1
-	.word	.L20+1
-	.word	.L21+1
-	.p2align 1
-.L16:
-	.loc 1 93 0
-	bl	uECC_secp160r1
-	str	r0, [sp, #332]
-	.loc 1 94 0
-	b	.L22
-.L18:
-	.loc 1 96 0
-	bl	uECC_secp192r1
-	str	r0, [sp, #332]
-	.loc 1 97 0
-	b	.L22
-.L19:
-	.loc 1 99 0
-	bl	uECC_secp224r1
-	str	r0, [sp, #332]
-	.loc 1 100 0
-	b	.L22
-.L20:
-	.loc 1 102 0
-	bl	uECC_secp256r1
-	str	r0, [sp, #332]
-	.loc 1 103 0
-	b	.L22
-.L21:
-	.loc 1 105 0
-	bl	uECC_secp256k1
-	str	r0, [sp, #332]
-	.loc 1 106 0
-	b	.L22
-.L15:
-	.loc 1 108 0
-	mvn	r3, #25
-	b	.L24
-.L22:
-	.loc 1 110 0
-	movs	r3, #0
-	str	r3, [sp, #328]
-	.loc 1 116 0
-	add	r3, sp, #24
-	str	r3, [sp, #324]
-	.loc 1 117 0
-	ldr	r3, [sp, #324]
-	ldr	r2, .L25
-	str	r2, [r3]
-	.loc 1 118 0
-	ldr	r3, [sp, #324]
-	ldr	r2, .L25+4
-	str	r2, [r3, #4]
-	.loc 1 119 0
-	ldr	r3, [sp, #324]
-	ldr	r2, .L25+8
-	str	r2, [r3, #8]
-	.loc 1 120 0
-	ldr	r3, [sp, #324]
-	movs	r2, #64
-	str	r2, [r3, #12]
-	.loc 1 121 0
-	ldr	r3, [sp, #324]
-	movs	r2, #32
-	str	r2, [r3, #16]
-	.loc 1 122 0
-	ldr	r3, [sp, #324]
-	add	r2, sp, #164
-	str	r2, [r3, #20]
-	.loc 1 124 0
-	ldr	r2, [sp, #324]
-	.loc 1 123 0
-	add	r1, sp, #292
-	ldr	r3, [sp, #332]
-	str	r3, [sp, #4]
-	add	r3, sp, #12
-	ldr	r3, [r3]
-	str	r3, [sp]
-	mov	r3, r2
-	movs	r2, #32
-	ldr	r0, [sp, #344]
-	bl	uECC_sign_deterministic
-	str	r0, [sp, #328]
-	.loc 1 129 0
-	ldr	r3, [sp, #328]
-	cmp	r3, #0
-	bne	.L23
-	.loc 1 130 0
-	mvn	r3, #24
-	b	.L24
-.L23:
-	.loc 1 131 0
-	ldr	r3, [sp, #356]
-	movs	r2, #64
-	str	r2, [r3]
-	.loc 1 132 0
-	movs	r3, #0
-.L24:
-	.loc 1 133 0 discriminator 1
-	mov	r0, r3
-	add	sp, sp, #336
-.LCFI20:
-	@ sp needed
-	pop	{r4, pc}
-.L26:
-	.align	2
-.L25:
-	.word	_init_sha256
-	.word	_update_sha256
-	.word	_finish_sha256
-.LFE37:
-	.size	ndn_signer_ecdsa_sign, .-ndn_signer_ecdsa_sign
-	.section	.text.ndn_signer_hmac_sign,"ax",%progbits
-	.align	1
-	.global	ndn_signer_hmac_sign
-	.syntax unified
-	.thumb
-	.thumb_func
-	.fpu fpv4-sp-d16
-	.type	ndn_signer_hmac_sign, %function
-ndn_signer_hmac_sign:
-.LFB38:
-	.loc 1 140 0
-	@ args = 12, pretend = 0, frame = 24
-	@ frame_needed = 0, uses_anonymous_args = 0
-	push	{lr}
-.LCFI21:
-	sub	sp, sp, #36
-.LCFI22:
-	str	r0, [sp, #20]
-	str	r1, [sp, #16]
-	str	r2, [sp, #12]
-	str	r3, [sp, #8]
-	.loc 1 141 0
-	ldr	r3, [sp, #8]
-	cmp	r3, #31
-	bhi	.L28
-	.loc 1 142 0
-	mvn	r3, #9
-	b	.L29
-.L28:
-	.loc 1 143 0
-	ldr	r3, [sp, #12]
-	str	r3, [sp]
-	ldr	r3, [sp, #16]
-	ldr	r2, [sp, #20]
-	ldr	r1, [sp, #44]
-	ldr	r0, [sp, #40]
-	bl	hmac_sha256
-	str	r0, [sp, #28]
-	.loc 1 144 0
-	ldr	r3, [sp, #28]
-	cmp	r3, #0
-	beq	.L30
-	.loc 1 145 0
-	ldr	r3, [sp, #28]
-	b	.L29
-.L30:
-	.loc 1 147 0
-	ldr	r3, [sp, #48]
-	movs	r2, #32
-	str	r2, [r3]
-	.loc 1 148 0
-	movs	r3, #0
-.L29:
-	.loc 1 149 0
-	mov	r0, r3
-	add	sp, sp, #36
-.LCFI23:
-	@ sp needed
-	ldr	pc, [sp], #4
-.LFE38:
-	.size	ndn_signer_hmac_sign, .-ndn_signer_hmac_sign
-	.section	.text.ndn_verifier_sha256_verify,"ax",%progbits
-	.align	1
-	.global	ndn_verifier_sha256_verify
-	.syntax unified
-	.thumb
-	.thumb_func
-	.fpu fpv4-sp-d16
-	.type	ndn_verifier_sha256_verify, %function
-ndn_verifier_sha256_verify:
-.LFB39:
-	.loc 1 154 0
-	@ args = 0, pretend = 0, frame = 48
-	@ frame_needed = 0, uses_anonymous_args = 0
-	push	{lr}
-.LCFI24:
-	sub	sp, sp, #52
-.LCFI25:
-	str	r0, [sp, #12]
-	str	r1, [sp, #8]
-	str	r2, [sp, #4]
-	str	r3, [sp]
-	.loc 1 155 0
-	ldr	r3, [sp]
-	cmp	r3, #32
-	beq	.L32
-	.loc 1 156 0
-	mvn	r3, #22
-	b	.L35
-.L32:
-	.loc 1 157 0
-	add	r3, sp, #16
-	movs	r2, #32
-	movs	r1, #0
-	mov	r0, r3
-	bl	memset
-	.loc 1 158 0
-	add	r3, sp, #16
-	mov	r2, r3
-	ldr	r1, [sp, #8]
-	ldr	r0, [sp, #12]
-	bl	sha256
-	.loc 1 159 0
-	add	r3, sp, #16
-	movs	r2, #32
-	ldr	r1, [sp, #4]
-	mov	r0, r3
-	bl	memcmp
-	mov	r3, r0
-	cmp	r3, #0
-	beq	.L34
-	.loc 1 160 0
-	mov	r3, #-1
-	b	.L35
-.L34:
-	.loc 1 162 0
-	movs	r3, #0
-.L35:
-	.loc 1 163 0 discriminator 1
-	mov	r0, r3
-	add	sp, sp, #52
-.LCFI26:
-	@ sp needed
-	ldr	pc, [sp], #4
-.LFE39:
-	.size	ndn_verifier_sha256_verify, .-ndn_verifier_sha256_verify
-	.section	.text.ndn_verifier_ecdsa_verify,"ax",%progbits
-	.align	1
-	.global	ndn_verifier_ecdsa_verify
-	.syntax unified
-	.thumb
-	.thumb_func
-	.fpu fpv4-sp-d16
-	.type	ndn_verifier_ecdsa_verify, %function
-ndn_verifier_ecdsa_verify:
-.LFB40:
-	.loc 1 170 0
-	@ args = 12, pretend = 0, frame = 56
-	@ frame_needed = 0, uses_anonymous_args = 0
-	push	{lr}
-.LCFI27:
-	sub	sp, sp, #68
-.LCFI28:
-	str	r0, [sp, #20]
-	str	r1, [sp, #16]
-	str	r2, [sp, #12]
-	str	r3, [sp, #8]
-	.loc 1 171 0
-	ldr	r3, [sp, #8]
-	cmp	r3, #64
-	bls	.L37
-	.loc 1 172 0
-	mvn	r3, #22
-	b	.L49
-.L37:
-	.loc 1 173 0
-	ldr	r3, [sp, #76]
-	cmp	r3, #64
-	bls	.L39
-	.loc 1 174 0
-	mvn	r3, #21
-	b	.L49
-.L39:
-	.loc 1 176 0
-	add	r3, sp, #28
-	movs	r2, #32
-	movs	r1, #0
-	mov	r0, r3
-	bl	memset
-	.loc 1 177 0
-	add	r3, sp, #28
-	mov	r2, r3
-	ldr	r1, [sp, #16]
-	ldr	r0, [sp, #20]
-	bl	sha256
-	.loc 1 179 0
-	ldrb	r3, [sp, #80]	@ zero_extendqisi2
-	subs	r3, r3, #21
-	cmp	r3, #12
-	bhi	.L40
-	adr	r2, .L42
-	ldr	pc, [r2, r3, lsl #2]
-	.p2align 2
-.L42:
-	.word	.L41+1
-	.word	.L40+1
-	.word	.L40+1
-	.word	.L43+1
-	.word	.L40+1
-	.word	.L40+1
-	.word	.L40+1
-	.word	.L44+1
-	.word	.L40+1
-	.word	.L40+1
-	.word	.L40+1
-	.word	.L45+1
-	.word	.L46+1
-	.p2align 1
-.L41:
-	.loc 1 181 0
-	bl	uECC_secp160r1
-	str	r0, [sp, #60]
-	.loc 1 182 0
-	b	.L47
-.L43:
-	.loc 1 184 0
-	bl	uECC_secp192r1
-	str	r0, [sp, #60]
-	.loc 1 185 0
-	b	.L47
-.L44:
-	.loc 1 187 0
-	bl	uECC_secp224r1
-	str	r0, [sp, #60]
-	.loc 1 188 0
-	b	.L47
-.L45:
-	.loc 1 190 0
-	bl	uECC_secp256r1
-	str	r0, [sp, #60]
-	.loc 1 191 0
-	b	.L47
-.L46:
-	.loc 1 193 0
-	bl	uECC_secp256k1
-	str	r0, [sp, #60]
-	.loc 1 194 0
-	b	.L47
-.L40:
-	.loc 1 196 0
-	mvn	r3, #25
-	b	.L49
-.L47:
-	.loc 1 198 0
-	add	r1, sp, #28
-	ldr	r3, [sp, #60]
-	str	r3, [sp]
-	ldr	r3, [sp, #12]
-	movs	r2, #32
-	ldr	r0, [sp, #72]
-	bl	uECC_verify
-	mov	r3, r0
-	cmp	r3, #0
-	bne	.L48
-	.loc 1 200 0
-	mov	r3, #-1
-	b	.L49
-.L48:
-	.loc 1 202 0
-	movs	r3, #0
-.L49:
-	.loc 1 203 0 discriminator 1
-	mov	r0, r3
-	add	sp, sp, #68
-.LCFI29:
-	@ sp needed
-	ldr	pc, [sp], #4
-.LFE40:
-	.size	ndn_verifier_ecdsa_verify, .-ndn_verifier_ecdsa_verify
-	.section	.text.ndn_verifier_hmac_verify,"ax",%progbits
-	.align	1
-	.global	ndn_verifier_hmac_verify
-	.syntax unified
-	.thumb
-	.thumb_func
-	.fpu fpv4-sp-d16
-	.type	ndn_verifier_hmac_verify, %function
-ndn_verifier_hmac_verify:
-.LFB41:
-	.loc 1 209 0
-	@ args = 8, pretend = 0, frame = 48
-	@ frame_needed = 0, uses_anonymous_args = 0
-	push	{lr}
-.LCFI30:
-	sub	sp, sp, #60
-.LCFI31:
-	str	r0, [sp, #20]
-	str	r1, [sp, #16]
-	str	r2, [sp, #12]
-	str	r3, [sp, #8]
-	.loc 1 210 0
-	ldr	r3, [sp, #8]
-	cmp	r3, #32
-	beq	.L51
-	.loc 1 211 0
-	mvn	r3, #22
-	b	.L54
-.L51:
-	.loc 1 213 0
-	add	r3, sp, #24
-	movs	r2, #32
-	movs	r1, #0
-	mov	r0, r3
-	bl	memset
-	.loc 1 214 0
-	add	r3, sp, #24
-	str	r3, [sp]
-	ldr	r3, [sp, #16]
-	ldr	r2, [sp, #20]
-	ldr	r1, [sp, #68]
-	ldr	r0, [sp, #64]
-	bl	hmac_sha256
-	.loc 1 215 0
-	add	r3, sp, #24
-	movs	r2, #32
-	ldr	r1, [sp, #12]
-	mov	r0, r3
-	bl	memcmp
-	mov	r3, r0
-	cmp	r3, #0
-	beq	.L53
-	.loc 1 216 0
-	mov	r3, #-1
-	b	.L54
-.L53:
-	.loc 1 218 0
-	movs	r3, #0
-.L54:
-	.loc 1 219 0 discriminator 1
-	mov	r0, r3
-	add	sp, sp, #60
-.LCFI32:
-	@ sp needed
-	ldr	pc, [sp], #4
-.LFE41:
-	.size	ndn_verifier_hmac_verify, .-ndn_verifier_hmac_verify
+	.size	ndn_lite_ecc_key_shared_secret_tinycrypt, .-ndn_lite_ecc_key_shared_secret_tinycrypt
 	.section	.debug_frame,"",%progbits
 .Lframe0:
 	.4byte	.LECIE0-.LSCIE0
@@ -769,10 +157,10 @@ ndn_verifier_hmac_verify:
 	.4byte	.LEFDE0-.LASFDE0
 .LASFDE0:
 	.4byte	.Lframe0
-	.4byte	.LFB31
-	.4byte	.LFE31-.LFB31
+	.4byte	.LFB35
+	.4byte	.LFE35-.LFB35
 	.byte	0x4
-	.4byte	.LCFI0-.LFB31
+	.4byte	.LCFI0-.LFB35
 	.byte	0xe
 	.uleb128 0x4
 	.byte	0x8e
@@ -780,254 +168,31 @@ ndn_verifier_hmac_verify:
 	.byte	0x4
 	.4byte	.LCFI1-.LCFI0
 	.byte	0xe
-	.uleb128 0x18
+	.uleb128 0x20
 	.byte	0x4
 	.4byte	.LCFI2-.LCFI1
 	.byte	0xe
 	.uleb128 0x4
 	.align	2
 .LEFDE0:
-.LSFDE2:
-	.4byte	.LEFDE2-.LASFDE2
-.LASFDE2:
-	.4byte	.Lframe0
-	.4byte	.LFB32
-	.4byte	.LFE32-.LFB32
-	.byte	0x4
-	.4byte	.LCFI3-.LFB32
-	.byte	0xe
-	.uleb128 0x4
-	.byte	0x8e
-	.uleb128 0x1
-	.byte	0x4
-	.4byte	.LCFI4-.LCFI3
-	.byte	0xe
-	.uleb128 0x20
-	.byte	0x4
-	.4byte	.LCFI5-.LCFI4
-	.byte	0xe
-	.uleb128 0x4
-	.align	2
-.LEFDE2:
-.LSFDE4:
-	.4byte	.LEFDE4-.LASFDE4
-.LASFDE4:
-	.4byte	.Lframe0
-	.4byte	.LFB33
-	.4byte	.LFE33-.LFB33
-	.byte	0x4
-	.4byte	.LCFI6-.LFB33
-	.byte	0xe
-	.uleb128 0x4
-	.byte	0x8e
-	.uleb128 0x1
-	.byte	0x4
-	.4byte	.LCFI7-.LCFI6
-	.byte	0xe
-	.uleb128 0x18
-	.byte	0x4
-	.4byte	.LCFI8-.LCFI7
-	.byte	0xe
-	.uleb128 0x4
-	.align	2
-.LEFDE4:
-.LSFDE6:
-	.4byte	.LEFDE6-.LASFDE6
-.LASFDE6:
-	.4byte	.Lframe0
-	.4byte	.LFB34
-	.4byte	.LFE34-.LFB34
-	.byte	0x4
-	.4byte	.LCFI9-.LFB34
-	.byte	0xe
-	.uleb128 0x4
-	.byte	0x8e
-	.uleb128 0x1
-	.byte	0x4
-	.4byte	.LCFI10-.LCFI9
-	.byte	0xe
-	.uleb128 0x18
-	.byte	0x4
-	.4byte	.LCFI11-.LCFI10
-	.byte	0xe
-	.uleb128 0x4
-	.align	2
-.LEFDE6:
-.LSFDE8:
-	.4byte	.LEFDE8-.LASFDE8
-.LASFDE8:
-	.4byte	.Lframe0
-	.4byte	.LFB35
-	.4byte	.LFE35-.LFB35
-	.byte	0x4
-	.4byte	.LCFI12-.LFB35
-	.byte	0xe
-	.uleb128 0x4
-	.byte	0x8e
-	.uleb128 0x1
-	.byte	0x4
-	.4byte	.LCFI13-.LCFI12
-	.byte	0xe
-	.uleb128 0x20
-	.byte	0x4
-	.4byte	.LCFI14-.LCFI13
-	.byte	0xe
-	.uleb128 0x4
-	.align	2
-.LEFDE8:
-.LSFDE10:
-	.4byte	.LEFDE10-.LASFDE10
-.LASFDE10:
-	.4byte	.Lframe0
-	.4byte	.LFB36
-	.4byte	.LFE36-.LFB36
-	.byte	0x4
-	.4byte	.LCFI15-.LFB36
-	.byte	0xe
-	.uleb128 0x4
-	.byte	0x8e
-	.uleb128 0x1
-	.byte	0x4
-	.4byte	.LCFI16-.LCFI15
-	.byte	0xe
-	.uleb128 0x18
-	.byte	0x4
-	.4byte	.LCFI17-.LCFI16
-	.byte	0xe
-	.uleb128 0x4
-	.align	2
-.LEFDE10:
-.LSFDE12:
-	.4byte	.LEFDE12-.LASFDE12
-.LASFDE12:
-	.4byte	.Lframe0
-	.4byte	.LFB37
-	.4byte	.LFE37-.LFB37
-	.byte	0x4
-	.4byte	.LCFI18-.LFB37
-	.byte	0xe
-	.uleb128 0x8
-	.byte	0x84
-	.uleb128 0x2
-	.byte	0x8e
-	.uleb128 0x1
-	.byte	0x4
-	.4byte	.LCFI19-.LCFI18
-	.byte	0xe
-	.uleb128 0x158
-	.byte	0x4
-	.4byte	.LCFI20-.LCFI19
-	.byte	0xe
-	.uleb128 0x8
-	.align	2
-.LEFDE12:
-.LSFDE14:
-	.4byte	.LEFDE14-.LASFDE14
-.LASFDE14:
-	.4byte	.Lframe0
-	.4byte	.LFB38
-	.4byte	.LFE38-.LFB38
-	.byte	0x4
-	.4byte	.LCFI21-.LFB38
-	.byte	0xe
-	.uleb128 0x4
-	.byte	0x8e
-	.uleb128 0x1
-	.byte	0x4
-	.4byte	.LCFI22-.LCFI21
-	.byte	0xe
-	.uleb128 0x28
-	.byte	0x4
-	.4byte	.LCFI23-.LCFI22
-	.byte	0xe
-	.uleb128 0x4
-	.align	2
-.LEFDE14:
-.LSFDE16:
-	.4byte	.LEFDE16-.LASFDE16
-.LASFDE16:
-	.4byte	.Lframe0
-	.4byte	.LFB39
-	.4byte	.LFE39-.LFB39
-	.byte	0x4
-	.4byte	.LCFI24-.LFB39
-	.byte	0xe
-	.uleb128 0x4
-	.byte	0x8e
-	.uleb128 0x1
-	.byte	0x4
-	.4byte	.LCFI25-.LCFI24
-	.byte	0xe
-	.uleb128 0x38
-	.byte	0x4
-	.4byte	.LCFI26-.LCFI25
-	.byte	0xe
-	.uleb128 0x4
-	.align	2
-.LEFDE16:
-.LSFDE18:
-	.4byte	.LEFDE18-.LASFDE18
-.LASFDE18:
-	.4byte	.Lframe0
-	.4byte	.LFB40
-	.4byte	.LFE40-.LFB40
-	.byte	0x4
-	.4byte	.LCFI27-.LFB40
-	.byte	0xe
-	.uleb128 0x4
-	.byte	0x8e
-	.uleb128 0x1
-	.byte	0x4
-	.4byte	.LCFI28-.LCFI27
-	.byte	0xe
-	.uleb128 0x48
-	.byte	0x4
-	.4byte	.LCFI29-.LCFI28
-	.byte	0xe
-	.uleb128 0x4
-	.align	2
-.LEFDE18:
-.LSFDE20:
-	.4byte	.LEFDE20-.LASFDE20
-.LASFDE20:
-	.4byte	.Lframe0
-	.4byte	.LFB41
-	.4byte	.LFE41-.LFB41
-	.byte	0x4
-	.4byte	.LCFI30-.LFB41
-	.byte	0xe
-	.uleb128 0x4
-	.byte	0x8e
-	.uleb128 0x1
-	.byte	0x4
-	.4byte	.LCFI31-.LCFI30
-	.byte	0xe
-	.uleb128 0x40
-	.byte	0x4
-	.4byte	.LCFI32-.LCFI31
-	.byte	0xe
-	.uleb128 0x4
-	.align	2
-.LEFDE20:
 	.text
 .Letext0:
 	.file 2 "C:/Program Files/SEGGER/SEGGER Embedded Studio for ARM 4.12/include/stdint.h"
 	.file 3 "C:/Program Files/SEGGER/SEGGER Embedded Studio for ARM 4.12/include/__crossworks.h"
-	.file 4 "C:/Program Files/SEGGER/SEGGER Embedded Studio for ARM 4.12/include/string.h"
-	.file 5 "c:\\users\\rena li\\desktop\\adding_nrf_crypto_backend_to_ndn_lite\\application\\ndn_standalone\\security\\detail\\sec-lib\\tinycrypt\\tc_sha256.h"
-	.file 6 "c:\\users\\rena li\\desktop\\adding_nrf_crypto_backend_to_ndn_lite\\application\\ndn_standalone\\security\\detail\\sec-lib\\micro-ecc\\uecc.h"
-	.file 7 "c:\\users\\rena li\\desktop\\adding_nrf_crypto_backend_to_ndn_lite\\application\\ndn_standalone\\ndn-enums.h"
+	.file 4 "c:\\users\\rena li\\desktop\\adding_nrf_crypto_backend_to_ndn_lite\\application\\ndn_standalone\\security\\ndn-lite-crypto-key.h"
+	.file 5 "c:\\users\\rena li\\desktop\\adding_nrf_crypto_backend_to_ndn_lite\\application\\ndn_standalone\\security\\detail\\sec-lib\\tinycrypt\\tc_ecc.h"
+	.file 6 "c:\\users\\rena li\\desktop\\adding_nrf_crypto_backend_to_ndn_lite\\application\\ndn_standalone\\ndn-enums.h"
 	.section	.debug_info,"",%progbits
 .Ldebug_info0:
-	.4byte	0xc2e
+	.4byte	0x857
 	.2byte	0x4
 	.4byte	.Ldebug_abbrev0
 	.byte	0x4
 	.uleb128 0x1
-	.4byte	.LASF953
+	.4byte	.LASF918
 	.byte	0xc
-	.4byte	.LASF954
-	.4byte	.LASF955
+	.4byte	.LASF919
+	.4byte	.LASF920
 	.4byte	.Ldebug_ranges0+0
 	.4byte	0
 	.4byte	.Ldebug_line0
@@ -1035,97 +200,97 @@ ndn_verifier_hmac_verify:
 	.uleb128 0x2
 	.byte	0x1
 	.byte	0x8
-	.4byte	.LASF813
+	.4byte	.LASF806
 	.uleb128 0x3
 	.4byte	0x29
 	.uleb128 0x4
 	.byte	0x7
 	.byte	0x1
 	.4byte	0x29
-	.byte	0x7
+	.byte	0x6
 	.byte	0x2c
 	.4byte	0x61
 	.uleb128 0x5
-	.4byte	.LASF808
+	.4byte	.LASF801
 	.byte	0x15
 	.uleb128 0x5
-	.4byte	.LASF809
+	.4byte	.LASF802
 	.byte	0x18
 	.uleb128 0x5
-	.4byte	.LASF810
+	.4byte	.LASF803
 	.byte	0x1c
 	.uleb128 0x5
-	.4byte	.LASF811
+	.4byte	.LASF804
 	.byte	0x20
 	.uleb128 0x5
-	.4byte	.LASF812
+	.4byte	.LASF805
 	.byte	0x21
 	.byte	0
+	.uleb128 0x6
+	.4byte	.LASF808
+	.byte	0x2
+	.byte	0x2f
+	.4byte	0x6c
 	.uleb128 0x2
 	.byte	0x1
 	.byte	0x6
-	.4byte	.LASF814
+	.4byte	.LASF807
 	.uleb128 0x6
-	.4byte	.LASF817
+	.4byte	.LASF809
 	.byte	0x2
 	.byte	0x30
 	.4byte	0x29
-	.uleb128 0x3
-	.4byte	0x68
+	.uleb128 0x6
+	.4byte	.LASF810
+	.byte	0x2
+	.byte	0x35
+	.4byte	0x89
 	.uleb128 0x2
 	.byte	0x2
 	.byte	0x5
-	.4byte	.LASF815
+	.4byte	.LASF811
 	.uleb128 0x2
 	.byte	0x2
 	.byte	0x7
-	.4byte	.LASF816
+	.4byte	.LASF812
 	.uleb128 0x7
 	.byte	0x4
 	.byte	0x5
 	.ascii	"int\000"
 	.uleb128 0x6
-	.4byte	.LASF818
+	.4byte	.LASF813
 	.byte	0x2
 	.byte	0x38
-	.4byte	0x98
+	.4byte	0xa9
 	.uleb128 0x2
 	.byte	0x4
 	.byte	0x7
-	.4byte	.LASF819
+	.4byte	.LASF814
 	.uleb128 0x2
 	.byte	0x8
 	.byte	0x5
-	.4byte	.LASF820
-	.uleb128 0x6
-	.4byte	.LASF821
-	.byte	0x2
-	.byte	0x45
-	.4byte	0xb1
+	.4byte	.LASF815
 	.uleb128 0x2
 	.byte	0x8
 	.byte	0x7
-	.4byte	.LASF822
-	.uleb128 0x8
-	.byte	0x4
-	.4byte	0x68
+	.4byte	.LASF816
 	.uleb128 0x8
 	.byte	0x4
 	.4byte	0x73
 	.uleb128 0x9
-	.4byte	.LASF873
+	.4byte	.LASF867
 	.byte	0x8
 	.byte	0x3
 	.byte	0x7e
 	.4byte	0xe9
 	.uleb128 0xa
-	.4byte	.LASF823
+	.4byte	.LASF817
 	.byte	0x3
 	.byte	0x7f
-	.4byte	0x86
+	.4byte	0x97
 	.byte	0
 	.uleb128 0xa
-	.4byte	.LASF824
+	.4byte	.LASF818
 	.byte	0x3
 	.byte	0x80
 	.4byte	0xe9
@@ -1134,14 +299,14 @@ ndn_verifier_hmac_verify:
 	.uleb128 0x2
 	.byte	0x4
 	.byte	0x5
-	.4byte	.LASF825
+	.4byte	.LASF819
 	.uleb128 0xb
-	.4byte	0x86
+	.4byte	0x97
 	.4byte	0x109
 	.uleb128 0xc
 	.4byte	0x109
 	.uleb128 0xc
-	.4byte	0x98
+	.4byte	0xa9
 	.uleb128 0xc
 	.4byte	0x11b
 	.byte	0
@@ -1151,27 +316,27 @@ ndn_verifier_hmac_verify:
 	.uleb128 0x2
 	.byte	0x1
 	.byte	0x8
-	.4byte	.LASF826
+	.4byte	.LASF820
 	.uleb128 0x3
 	.4byte	0x10f
 	.uleb128 0x8
 	.byte	0x4
 	.4byte	0xc4
 	.uleb128 0xb
-	.4byte	0x86
+	.4byte	0x97
 	.4byte	0x13f
 	.uleb128 0xc
 	.4byte	0x13f
 	.uleb128 0xc
 	.4byte	0x145
 	.uleb128 0xc
-	.4byte	0x98
+	.4byte	0xa9
 	.uleb128 0xc
 	.4byte	0x11b
 	.byte	0
 	.uleb128 0x8
 	.byte	0x4
-	.4byte	0x98
+	.4byte	0xa9
 	.uleb128 0x8
 	.byte	0x4
 	.4byte	0x116
@@ -1181,200 +346,200 @@ ndn_verifier_hmac_verify:
 	.byte	0x86
 	.4byte	0x2d4
 	.uleb128 0xa
-	.4byte	.LASF827
+	.4byte	.LASF821
 	.byte	0x3
 	.byte	0x88
 	.4byte	0x145
 	.byte	0
 	.uleb128 0xa
-	.4byte	.LASF828
+	.4byte	.LASF822
 	.byte	0x3
 	.byte	0x89
 	.4byte	0x145
 	.byte	0x4
 	.uleb128 0xa
-	.4byte	.LASF829
+	.4byte	.LASF823
 	.byte	0x3
 	.byte	0x8a
 	.4byte	0x145
 	.byte	0x8
 	.uleb128 0xa
-	.4byte	.LASF830
+	.4byte	.LASF824
 	.byte	0x3
 	.byte	0x8c
 	.4byte	0x145
 	.byte	0xc
 	.uleb128 0xa
-	.4byte	.LASF831
+	.4byte	.LASF825
 	.byte	0x3
 	.byte	0x8d
 	.4byte	0x145
 	.byte	0x10
 	.uleb128 0xa
-	.4byte	.LASF832
+	.4byte	.LASF826
 	.byte	0x3
 	.byte	0x8e
 	.4byte	0x145
 	.byte	0x14
 	.uleb128 0xa
-	.4byte	.LASF833
+	.4byte	.LASF827
 	.byte	0x3
 	.byte	0x8f
 	.4byte	0x145
 	.byte	0x18
 	.uleb128 0xa
-	.4byte	.LASF834
+	.4byte	.LASF828
 	.byte	0x3
 	.byte	0x90
 	.4byte	0x145
 	.byte	0x1c
 	.uleb128 0xa
-	.4byte	.LASF835
+	.4byte	.LASF829
 	.byte	0x3
 	.byte	0x91
 	.4byte	0x145
 	.byte	0x20
 	.uleb128 0xa
-	.4byte	.LASF836
+	.4byte	.LASF830
 	.byte	0x3
 	.byte	0x92
 	.4byte	0x145
 	.byte	0x24
 	.uleb128 0xa
-	.4byte	.LASF837
+	.4byte	.LASF831
 	.byte	0x3
 	.byte	0x94
 	.4byte	0x10f
 	.byte	0x28
 	.uleb128 0xa
-	.4byte	.LASF838
+	.4byte	.LASF832
 	.byte	0x3
 	.byte	0x95
 	.4byte	0x10f
 	.byte	0x29
 	.uleb128 0xa
-	.4byte	.LASF839
+	.4byte	.LASF833
 	.byte	0x3
 	.byte	0x96
 	.4byte	0x10f
 	.byte	0x2a
 	.uleb128 0xa
-	.4byte	.LASF840
+	.4byte	.LASF834
 	.byte	0x3
 	.byte	0x97
 	.4byte	0x10f
 	.byte	0x2b
 	.uleb128 0xa
-	.4byte	.LASF841
+	.4byte	.LASF835
 	.byte	0x3
 	.byte	0x98
 	.4byte	0x10f
 	.byte	0x2c
 	.uleb128 0xa
-	.4byte	.LASF842
+	.4byte	.LASF836
 	.byte	0x3
 	.byte	0x99
 	.4byte	0x10f
 	.byte	0x2d
 	.uleb128 0xa
-	.4byte	.LASF843
+	.4byte	.LASF837
 	.byte	0x3
 	.byte	0x9a
 	.4byte	0x10f
 	.byte	0x2e
 	.uleb128 0xa
-	.4byte	.LASF844
+	.4byte	.LASF838
 	.byte	0x3
 	.byte	0x9b
 	.4byte	0x10f
 	.byte	0x2f
 	.uleb128 0xa
-	.4byte	.LASF845
+	.4byte	.LASF839
 	.byte	0x3
 	.byte	0x9c
 	.4byte	0x10f
 	.byte	0x30
 	.uleb128 0xa
-	.4byte	.LASF846
+	.4byte	.LASF840
 	.byte	0x3
 	.byte	0x9d
 	.4byte	0x10f
 	.byte	0x31
 	.uleb128 0xa
-	.4byte	.LASF847
+	.4byte	.LASF841
 	.byte	0x3
 	.byte	0x9e
 	.4byte	0x10f
 	.byte	0x32
 	.uleb128 0xa
-	.4byte	.LASF848
+	.4byte	.LASF842
 	.byte	0x3
 	.byte	0x9f
 	.4byte	0x10f
 	.byte	0x33
 	.uleb128 0xa
-	.4byte	.LASF849
+	.4byte	.LASF843
 	.byte	0x3
 	.byte	0xa0
 	.4byte	0x10f
 	.byte	0x34
 	.uleb128 0xa
-	.4byte	.LASF850
+	.4byte	.LASF844
 	.byte	0x3
 	.byte	0xa1
 	.4byte	0x10f
 	.byte	0x35
 	.uleb128 0xa
-	.4byte	.LASF851
+	.4byte	.LASF845
 	.byte	0x3
 	.byte	0xa6
 	.4byte	0x145
 	.byte	0x38
 	.uleb128 0xa
-	.4byte	.LASF852
+	.4byte	.LASF846
 	.byte	0x3
 	.byte	0xa7
 	.4byte	0x145
 	.byte	0x3c
 	.uleb128 0xa
-	.4byte	.LASF853
+	.4byte	.LASF847
 	.byte	0x3
 	.byte	0xa8
 	.4byte	0x145
 	.byte	0x40
 	.uleb128 0xa
-	.4byte	.LASF854
+	.4byte	.LASF848
 	.byte	0x3
 	.byte	0xa9
 	.4byte	0x145
 	.byte	0x44
 	.uleb128 0xa
-	.4byte	.LASF855
+	.4byte	.LASF849
 	.byte	0x3
 	.byte	0xaa
 	.4byte	0x145
 	.byte	0x48
 	.uleb128 0xa
-	.4byte	.LASF856
+	.4byte	.LASF850
 	.byte	0x3
 	.byte	0xab
 	.4byte	0x145
 	.byte	0x4c
 	.uleb128 0xa
-	.4byte	.LASF857
+	.4byte	.LASF851
 	.byte	0x3
 	.byte	0xac
 	.4byte	0x145
 	.byte	0x50
 	.uleb128 0xa
-	.4byte	.LASF858
+	.4byte	.LASF852
 	.byte	0x3
 	.byte	0xad
 	.4byte	0x145
 	.byte	0x54
 	.byte	0
 	.uleb128 0x6
-	.4byte	.LASF859
+	.4byte	.LASF853
 	.byte	0x3
 	.byte	0xae
 	.4byte	0x14b
@@ -1386,81 +551,81 @@ ndn_verifier_hmac_verify:
 	.byte	0xc4
 	.4byte	0x34d
 	.uleb128 0xa
-	.4byte	.LASF860
+	.4byte	.LASF854
 	.byte	0x3
 	.byte	0xc6
 	.4byte	0x361
 	.byte	0
 	.uleb128 0xa
-	.4byte	.LASF861
+	.4byte	.LASF855
 	.byte	0x3
 	.byte	0xc7
 	.4byte	0x376
 	.byte	0x4
 	.uleb128 0xa
-	.4byte	.LASF862
+	.4byte	.LASF856
 	.byte	0x3
 	.byte	0xc8
 	.4byte	0x376
 	.byte	0x8
 	.uleb128 0xa
-	.4byte	.LASF863
+	.4byte	.LASF857
 	.byte	0x3
 	.byte	0xcb
 	.4byte	0x390
 	.byte	0xc
 	.uleb128 0xa
-	.4byte	.LASF864
+	.4byte	.LASF858
 	.byte	0x3
 	.byte	0xcc
 	.4byte	0x3a5
 	.byte	0x10
 	.uleb128 0xa
-	.4byte	.LASF865
+	.4byte	.LASF859
 	.byte	0x3
 	.byte	0xcd
 	.4byte	0x3a5
 	.byte	0x14
 	.uleb128 0xa
-	.4byte	.LASF866
+	.4byte	.LASF860
 	.byte	0x3
 	.byte	0xd0
 	.4byte	0x3ab
 	.byte	0x18
 	.uleb128 0xa
-	.4byte	.LASF867
+	.4byte	.LASF861
 	.byte	0x3
 	.byte	0xd1
 	.4byte	0x3b1
 	.byte	0x1c
 	.byte	0
 	.uleb128 0xb
-	.4byte	0x86
+	.4byte	0x97
 	.4byte	0x361
 	.uleb128 0xc
-	.4byte	0x86
+	.4byte	0x97
 	.uleb128 0xc
-	.4byte	0x86
+	.4byte	0x97
 	.byte	0
 	.uleb128 0x8
 	.byte	0x4
 	.4byte	0x34d
 	.uleb128 0xb
-	.4byte	0x86
+	.4byte	0x97
 	.4byte	0x376
 	.uleb128 0xc
-	.4byte	0x86
+	.4byte	0x97
 	.byte	0
 	.uleb128 0x8
 	.byte	0x4
 	.4byte	0x367
 	.uleb128 0xb
-	.4byte	0x86
+	.4byte	0x97
 	.4byte	0x390
 	.uleb128 0xc
 	.4byte	0xe9
 	.uleb128 0xc
-	.4byte	0x86
+	.4byte	0x97
 	.byte	0
 	.uleb128 0x8
 	.byte	0x4
@@ -1481,7 +646,7 @@ ndn_verifier_hmac_verify:
 	.byte	0x4
 	.4byte	0x121
 	.uleb128 0x6
-	.4byte	.LASF868
+	.4byte	.LASF862
 	.byte	0x3
 	.byte	0xd2
 	.4byte	0x2e4
@@ -1493,19 +658,19 @@ ndn_verifier_hmac_verify:
 	.byte	0xd4
 	.4byte	0x3f4
 	.uleb128 0xa
-	.4byte	.LASF869
+	.4byte	.LASF863
 	.byte	0x3
 	.byte	0xd5
 	.4byte	0x145
 	.byte	0
 	.uleb128 0xa
-	.4byte	.LASF870
+	.4byte	.LASF864
 	.byte	0x3
 	.byte	0xd6
 	.4byte	0x3f4
 	.byte	0x4
 	.uleb128 0xa
-	.4byte	.LASF871
+	.4byte	.LASF865
 	.byte	0x3
 	.byte	0xd7
 	.4byte	0x3fa
@@ -1518,20 +683,20 @@ ndn_verifier_hmac_verify:
 	.byte	0x4
 	.4byte	0x3c2
 	.uleb128 0x6
-	.4byte	.LASF872
+	.4byte	.LASF866
 	.byte	0x3
 	.byte	0xd8
 	.4byte	0x3c7
 	.uleb128 0x3
 	.4byte	0x400
 	.uleb128 0x9
-	.4byte	.LASF874
+	.4byte	.LASF868
 	.byte	0x14
 	.byte	0x3
 	.byte	0xdc
 	.4byte	0x429
 	.uleb128 0xa
-	.4byte	.LASF875
+	.4byte	.LASF869
 	.byte	0x3
 	.byte	0xdd
 	.4byte	0x429
@@ -1541,29 +706,29 @@ ndn_verifier_hmac_verify:
 	.4byte	0x439
 	.4byte	0x439
 	.uleb128 0xf
-	.4byte	0x98
+	.4byte	0xa9
 	.byte	0x4
 	.byte	0
 	.uleb128 0x8
 	.byte	0x4
 	.4byte	0x40b
 	.uleb128 0x10
-	.4byte	.LASF876
+	.4byte	.LASF870
 	.byte	0x3
 	.2byte	0x106
 	.4byte	0x410
 	.uleb128 0x10
-	.4byte	.LASF877
+	.4byte	.LASF871
 	.byte	0x3
 	.2byte	0x10d
 	.4byte	0x40b
 	.uleb128 0x10
-	.4byte	.LASF878
+	.4byte	.LASF872
 	.byte	0x3
 	.2byte	0x110
 	.4byte	0x3c2
 	.uleb128 0x10
-	.4byte	.LASF879
+	.4byte	.LASF873
 	.byte	0x3
 	.2byte	0x111
 	.4byte	0x3c2
@@ -1571,13 +736,13 @@ ndn_verifier_hmac_verify:
 	.4byte	0x30
 	.4byte	0x47f
 	.uleb128 0xf
-	.4byte	0x98
+	.4byte	0xa9
 	.byte	0x7f
 	.byte	0
 	.uleb128 0x3
 	.4byte	0x46f
 	.uleb128 0x10
-	.4byte	.LASF880
+	.4byte	.LASF874
 	.byte	0x3
 	.2byte	0x113
 	.4byte	0x47f
@@ -1589,57 +754,57 @@ ndn_verifier_hmac_verify:
 	.uleb128 0x3
 	.4byte	0x490
 	.uleb128 0x10
-	.4byte	.LASF881
+	.4byte	.LASF875
 	.byte	0x3
 	.2byte	0x115
 	.4byte	0x49b
 	.uleb128 0x10
-	.4byte	.LASF882
+	.4byte	.LASF876
 	.byte	0x3
 	.2byte	0x116
 	.4byte	0x49b
 	.uleb128 0x10
-	.4byte	.LASF883
+	.4byte	.LASF877
 	.byte	0x3
 	.2byte	0x117
 	.4byte	0x49b
 	.uleb128 0x10
-	.4byte	.LASF884
+	.4byte	.LASF878
 	.byte	0x3
 	.2byte	0x118
 	.4byte	0x49b
 	.uleb128 0x10
-	.4byte	.LASF885
+	.4byte	.LASF879
 	.byte	0x3
 	.2byte	0x11a
 	.4byte	0x49b
 	.uleb128 0x10
-	.4byte	.LASF886
+	.4byte	.LASF880
 	.byte	0x3
 	.2byte	0x11b
 	.4byte	0x49b
 	.uleb128 0x10
-	.4byte	.LASF887
+	.4byte	.LASF881
 	.byte	0x3
 	.2byte	0x11c
 	.4byte	0x49b
 	.uleb128 0x10
-	.4byte	.LASF888
+	.4byte	.LASF882
 	.byte	0x3
 	.2byte	0x11d
 	.4byte	0x49b
 	.uleb128 0x10
-	.4byte	.LASF889
+	.4byte	.LASF883
 	.byte	0x3
 	.2byte	0x11e
 	.4byte	0x49b
 	.uleb128 0x10
-	.4byte	.LASF890
+	.4byte	.LASF884
 	.byte	0x3
 	.2byte	0x11f
 	.4byte	0x49b
 	.uleb128 0xb
-	.4byte	0x86
+	.4byte	0x97
 	.4byte	0x527
 	.uleb128 0xc
 	.4byte	0x527
@@ -1648,11 +813,11 @@ ndn_verifier_hmac_verify:
 	.byte	0x4
 	.4byte	0x532
 	.uleb128 0x12
-	.4byte	.LASF905
+	.4byte	.LASF921
 	.uleb128 0x3
 	.4byte	0x52d
 	.uleb128 0x10
-	.4byte	.LASF891
+	.4byte	.LASF885
 	.byte	0x3
 	.2byte	0x135
 	.4byte	0x543
@@ -1660,7 +825,7 @@ ndn_verifier_hmac_verify:
 	.byte	0x4
 	.4byte	0x518
 	.uleb128 0xb
-	.4byte	0x86
+	.4byte	0x97
 	.4byte	0x558
 	.uleb128 0xc
 	.4byte	0x558
@@ -1669,7 +834,7 @@ ndn_verifier_hmac_verify:
 	.byte	0x4
 	.4byte	0x52d
 	.uleb128 0x10
-	.4byte	.LASF892
+	.4byte	.LASF886
 	.byte	0x3
 	.2byte	0x136
 	.4byte	0x56a
@@ -1677,7 +842,7 @@ ndn_verifier_hmac_verify:
 	.byte	0x4
 	.4byte	0x549
 	.uleb128 0x13
-	.4byte	.LASF893
+	.4byte	.LASF887
 	.byte	0x3
 	.2byte	0x14d
 	.4byte	0x57c
@@ -1688,22 +853,22 @@ ndn_verifier_hmac_verify:
 	.4byte	0x145
 	.4byte	0x591
 	.uleb128 0xc
-	.4byte	0x86
+	.4byte	0x97
 	.byte	0
 	.uleb128 0x14
-	.4byte	.LASF894
+	.4byte	.LASF888
 	.byte	0x8
 	.byte	0x3
 	.2byte	0x14f
 	.4byte	0x5b9
 	.uleb128 0x15
-	.4byte	.LASF895
+	.4byte	.LASF889
 	.byte	0x3
 	.2byte	0x151
 	.4byte	0x570
 	.byte	0
 	.uleb128 0x15
-	.4byte	.LASF896
+	.4byte	.LASF890
 	.byte	0x3
 	.2byte	0x152
 	.4byte	0x5b9
@@ -1713,860 +878,335 @@ ndn_verifier_hmac_verify:
 	.byte	0x4
 	.4byte	0x591
 	.uleb128 0x13
-	.4byte	.LASF897
+	.4byte	.LASF891
 	.byte	0x3
 	.2byte	0x153
 	.4byte	0x591
 	.uleb128 0x10
-	.4byte	.LASF898
+	.4byte	.LASF892
 	.byte	0x3
 	.2byte	0x157
 	.4byte	0x5d7
 	.uleb128 0x8
 	.byte	0x4
 	.4byte	0x5bf
-	.uleb128 0x6
-	.4byte	.LASF899
-	.byte	0x4
-	.byte	0x37
-	.4byte	0x98
 	.uleb128 0x9
-	.4byte	.LASF900
-	.byte	0x70
-	.byte	0x5
-	.byte	0x47
-	.4byte	0x624
-	.uleb128 0x16
-	.ascii	"iv\000"
-	.byte	0x5
-	.byte	0x48
-	.4byte	0x624
+	.4byte	.LASF893
+	.byte	0x4c
+	.byte	0x4
+	.byte	0x20
+	.4byte	0x61a
+	.uleb128 0xa
+	.4byte	.LASF894
+	.byte	0x4
+	.byte	0x21
+	.4byte	0x9e
 	.byte	0
 	.uleb128 0xa
-	.4byte	.LASF901
-	.byte	0x5
-	.byte	0x49
-	.4byte	0xa6
-	.byte	0x20
+	.4byte	.LASF895
+	.byte	0x4
+	.byte	0x22
+	.4byte	0x61a
+	.byte	0x4
 	.uleb128 0xa
-	.4byte	.LASF902
-	.byte	0x5
-	.byte	0x4a
-	.4byte	0x634
-	.byte	0x28
+	.4byte	.LASF896
+	.byte	0x4
+	.byte	0x23
+	.4byte	0x9e
+	.byte	0x44
 	.uleb128 0xa
-	.4byte	.LASF903
-	.byte	0x5
-	.byte	0x4b
-	.4byte	0x5dd
-	.byte	0x68
+	.4byte	.LASF897
+	.byte	0x4
+	.byte	0x24
+	.4byte	0x73
+	.byte	0x48
 	.byte	0
 	.uleb128 0xe
-	.4byte	0x98
-	.4byte	0x634
+	.4byte	0x73
+	.4byte	0x62a
 	.uleb128 0xf
-	.4byte	0x98
+	.4byte	0xa9
+	.byte	0x3f
+	.byte	0
+	.uleb128 0x6
+	.4byte	.LASF898
+	.byte	0x4
+	.byte	0x25
+	.4byte	0x5dd
+	.uleb128 0x9
+	.4byte	.LASF899
+	.byte	0x2c
+	.byte	0x4
+	.byte	0x27
+	.4byte	0x672
+	.uleb128 0xa
+	.4byte	.LASF894
+	.byte	0x4
+	.byte	0x28
+	.4byte	0x9e
+	.byte	0
+	.uleb128 0xa
+	.4byte	.LASF895
+	.byte	0x4
+	.byte	0x29
+	.4byte	0x672
+	.byte	0x4
+	.uleb128 0xa
+	.4byte	.LASF896
+	.byte	0x4
+	.byte	0x2a
+	.4byte	0x9e
+	.byte	0x24
+	.uleb128 0xa
+	.4byte	.LASF897
+	.byte	0x4
+	.byte	0x2b
+	.4byte	0x73
+	.byte	0x28
+	.byte	0
+	.uleb128 0xe
+	.4byte	0x73
+	.4byte	0x682
+	.uleb128 0xf
+	.4byte	0xa9
+	.byte	0x1f
+	.byte	0
+	.uleb128 0x6
+	.4byte	.LASF900
+	.byte	0x4
+	.byte	0x2c
+	.4byte	0x635
+	.uleb128 0x6
+	.4byte	.LASF901
+	.byte	0x5
+	.byte	0x59
+	.4byte	0x61
+	.uleb128 0x6
+	.4byte	.LASF902
+	.byte	0x5
+	.byte	0x5a
+	.4byte	0x7e
+	.uleb128 0x6
+	.4byte	.LASF903
+	.byte	0x5
+	.byte	0x5e
+	.4byte	0xa9
+	.uleb128 0x3
+	.4byte	0x6a3
+	.uleb128 0x6
+	.4byte	.LASF904
+	.byte	0x5
+	.byte	0x6f
+	.4byte	0x6be
+	.uleb128 0x8
+	.byte	0x4
+	.4byte	0x741
+	.uleb128 0x9
+	.4byte	.LASF905
+	.byte	0xb0
+	.byte	0x5
+	.byte	0x70
+	.4byte	0x741
+	.uleb128 0xa
+	.4byte	.LASF906
+	.byte	0x5
+	.byte	0x71
+	.4byte	0x68d
+	.byte	0
+	.uleb128 0xa
+	.4byte	.LASF907
+	.byte	0x5
+	.byte	0x72
+	.4byte	0x68d
+	.byte	0x1
+	.uleb128 0xa
+	.4byte	.LASF908
+	.byte	0x5
+	.byte	0x73
+	.4byte	0x698
+	.byte	0x2
+	.uleb128 0x16
+	.ascii	"p\000"
+	.byte	0x5
+	.byte	0x74
+	.4byte	0x746
+	.byte	0x4
+	.uleb128 0x16
+	.ascii	"n\000"
+	.byte	0x5
+	.byte	0x75
+	.4byte	0x746
+	.byte	0x24
+	.uleb128 0x16
+	.ascii	"G\000"
+	.byte	0x5
+	.byte	0x76
+	.4byte	0x756
+	.byte	0x44
+	.uleb128 0x16
+	.ascii	"b\000"
+	.byte	0x5
+	.byte	0x77
+	.4byte	0x746
+	.byte	0x84
+	.uleb128 0xa
+	.4byte	.LASF909
+	.byte	0x5
+	.byte	0x78
+	.4byte	0x786
+	.byte	0xa4
+	.uleb128 0xa
+	.4byte	.LASF910
+	.byte	0x5
+	.byte	0x7a
+	.4byte	0x7a7
+	.byte	0xa8
+	.uleb128 0xa
+	.4byte	.LASF911
+	.byte	0x5
+	.byte	0x7b
+	.4byte	0x7bd
+	.byte	0xac
+	.byte	0
+	.uleb128 0x3
+	.4byte	0x6c4
+	.uleb128 0xe
+	.4byte	0x6a3
+	.4byte	0x756
+	.uleb128 0xf
+	.4byte	0xa9
 	.byte	0x7
 	.byte	0
 	.uleb128 0xe
-	.4byte	0x68
-	.4byte	0x644
+	.4byte	0x6a3
+	.4byte	0x766
 	.uleb128 0xf
-	.4byte	0x98
-	.byte	0x3f
+	.4byte	0xa9
+	.byte	0xf
 	.byte	0
-	.uleb128 0xe
-	.4byte	0x68
-	.4byte	0x654
-	.uleb128 0xf
-	.4byte	0x98
-	.byte	0x7f
-	.byte	0
-	.uleb128 0x6
-	.4byte	.LASF904
-	.byte	0x6
-	.byte	0x4f
-	.4byte	0x65f
-	.uleb128 0x8
-	.byte	0x4
-	.4byte	0x66a
-	.uleb128 0x12
-	.4byte	.LASF906
-	.uleb128 0x3
-	.4byte	0x665
-	.uleb128 0x14
-	.4byte	.LASF907
-	.byte	0x18
-	.byte	0x6
-	.2byte	0x12e
-	.4byte	0x6cb
-	.uleb128 0x15
-	.4byte	.LASF908
-	.byte	0x6
-	.2byte	0x12f
-	.4byte	0x6e1
-	.byte	0
-	.uleb128 0x15
-	.4byte	.LASF909
-	.byte	0x6
-	.2byte	0x130
-	.4byte	0x6fc
-	.byte	0x4
-	.uleb128 0x15
-	.4byte	.LASF910
-	.byte	0x6
-	.2byte	0x133
-	.4byte	0x712
-	.byte	0x8
-	.uleb128 0x15
-	.4byte	.LASF911
-	.byte	0x6
-	.2byte	0x134
-	.4byte	0x98
-	.byte	0xc
-	.uleb128 0x15
-	.4byte	.LASF912
-	.byte	0x6
-	.2byte	0x135
-	.4byte	0x98
-	.byte	0x10
 	.uleb128 0x17
-	.ascii	"tmp\000"
-	.byte	0x6
-	.2byte	0x136
-	.4byte	0xb8
-	.byte	0x14
+	.4byte	0x780
+	.uleb128 0xc
+	.4byte	0x780
+	.uleb128 0xc
+	.4byte	0x780
+	.uleb128 0xc
+	.4byte	0x780
+	.uleb128 0xc
+	.4byte	0x6b3
 	.byte	0
-	.uleb128 0x3
-	.4byte	0x66f
+	.uleb128 0x8
+	.byte	0x4
+	.4byte	0x6a3
+	.uleb128 0x8
+	.byte	0x4
+	.4byte	0x766
+	.uleb128 0x17
+	.4byte	0x7a1
+	.uleb128 0xc
+	.4byte	0x780
+	.uleb128 0xc
+	.4byte	0x7a1
+	.uleb128 0xc
+	.4byte	0x6b3
+	.byte	0
+	.uleb128 0x8
+	.byte	0x4
+	.4byte	0x6ae
+	.uleb128 0x8
+	.byte	0x4
+	.4byte	0x78c
+	.uleb128 0x17
+	.4byte	0x7bd
+	.uleb128 0xc
+	.4byte	0x780
+	.uleb128 0xc
+	.4byte	0x780
+	.byte	0
+	.uleb128 0x8
+	.byte	0x4
+	.4byte	0x7ad
 	.uleb128 0x18
-	.4byte	0x6db
-	.uleb128 0xc
-	.4byte	0x6db
-	.byte	0
-	.uleb128 0x8
-	.byte	0x4
-	.4byte	0x6cb
-	.uleb128 0x8
-	.byte	0x4
-	.4byte	0x6d0
-	.uleb128 0x18
-	.4byte	0x6fc
-	.uleb128 0xc
-	.4byte	0x6db
-	.uleb128 0xc
-	.4byte	0xbe
-	.uleb128 0xc
-	.4byte	0x98
-	.byte	0
-	.uleb128 0x8
-	.byte	0x4
-	.4byte	0x6e7
-	.uleb128 0x18
-	.4byte	0x712
-	.uleb128 0xc
-	.4byte	0x6db
-	.uleb128 0xc
-	.4byte	0xb8
-	.byte	0
-	.uleb128 0x8
-	.byte	0x4
-	.4byte	0x702
-	.uleb128 0x13
-	.4byte	.LASF907
-	.byte	0x6
-	.2byte	0x137
-	.4byte	0x66f
-	.uleb128 0x3
-	.4byte	0x718
-	.uleb128 0x9
-	.4byte	.LASF913
-	.byte	0x88
-	.byte	0x1
-	.byte	0x14
-	.4byte	0x74e
-	.uleb128 0xa
-	.4byte	.LASF914
-	.byte	0x1
-	.byte	0x15
-	.4byte	0x718
-	.byte	0
-	.uleb128 0x16
-	.ascii	"ctx\000"
-	.byte	0x1
-	.byte	0x16
-	.4byte	0x5e8
-	.byte	0x18
-	.byte	0
-	.uleb128 0x6
-	.4byte	.LASF913
-	.byte	0x1
-	.byte	0x17
-	.4byte	0x729
-	.uleb128 0x19
-	.4byte	.LASF921
-	.byte	0x1
-	.byte	0xce
-	.4byte	0x86
-	.4byte	.LFB41
-	.4byte	.LFE41-.LFB41
-	.uleb128 0x1
-	.byte	0x9c
-	.4byte	0x7d5
-	.uleb128 0x1a
-	.4byte	.LASF915
-	.byte	0x1
-	.byte	0xce
-	.4byte	0xbe
-	.uleb128 0x2
-	.byte	0x91
-	.sleb128 -44
-	.uleb128 0x1a
 	.4byte	.LASF916
-	.byte	0x1
-	.byte	0xce
-	.4byte	0x8d
-	.uleb128 0x2
-	.byte	0x91
-	.sleb128 -48
-	.uleb128 0x1a
-	.4byte	.LASF917
-	.byte	0x1
-	.byte	0xcf
-	.4byte	0xbe
-	.uleb128 0x2
-	.byte	0x91
-	.sleb128 -52
-	.uleb128 0x1a
-	.4byte	.LASF918
-	.byte	0x1
-	.byte	0xcf
-	.4byte	0x8d
-	.uleb128 0x2
-	.byte	0x91
-	.sleb128 -56
-	.uleb128 0x1a
-	.4byte	.LASF919
-	.byte	0x1
-	.byte	0xd0
-	.4byte	0xbe
-	.uleb128 0x2
-	.byte	0x91
-	.sleb128 0
-	.uleb128 0x1a
-	.4byte	.LASF920
-	.byte	0x1
-	.byte	0xd0
-	.4byte	0x8d
-	.uleb128 0x2
-	.byte	0x91
-	.sleb128 4
-	.uleb128 0x1b
-	.4byte	.LASF926
-	.byte	0x1
-	.byte	0xd5
-	.4byte	0x7d5
-	.uleb128 0x2
-	.byte	0x91
-	.sleb128 -40
-	.byte	0
-	.uleb128 0xe
-	.4byte	0x68
-	.4byte	0x7e5
-	.uleb128 0xf
-	.4byte	0x98
-	.byte	0x1f
-	.byte	0
+	.byte	0x5
+	.byte	0xa1
+	.4byte	0x741
+	.uleb128 0x5
+	.byte	0x3
+	.4byte	curve_secp256r1
 	.uleb128 0x19
 	.4byte	.LASF922
 	.byte	0x1
-	.byte	0xa6
-	.4byte	0x86
-	.4byte	.LFB40
-	.4byte	.LFE40-.LFB40
-	.uleb128 0x1
-	.byte	0x9c
-	.4byte	0x87d
-	.uleb128 0x1a
-	.4byte	.LASF915
-	.byte	0x1
-	.byte	0xa6
-	.4byte	0xbe
-	.uleb128 0x2
-	.byte	0x91
-	.sleb128 -52
-	.uleb128 0x1a
-	.4byte	.LASF916
-	.byte	0x1
-	.byte	0xa6
-	.4byte	0x8d
-	.uleb128 0x2
-	.byte	0x91
-	.sleb128 -56
-	.uleb128 0x1a
-	.4byte	.LASF917
-	.byte	0x1
-	.byte	0xa7
-	.4byte	0xbe
-	.uleb128 0x2
-	.byte	0x91
-	.sleb128 -60
-	.uleb128 0x1a
-	.4byte	.LASF918
-	.byte	0x1
-	.byte	0xa7
-	.4byte	0x8d
-	.uleb128 0x2
-	.byte	0x91
-	.sleb128 -64
-	.uleb128 0x1a
-	.4byte	.LASF923
-	.byte	0x1
-	.byte	0xa8
-	.4byte	0xbe
-	.uleb128 0x2
-	.byte	0x91
-	.sleb128 0
-	.uleb128 0x1a
-	.4byte	.LASF924
-	.byte	0x1
-	.byte	0xa9
-	.4byte	0x8d
-	.uleb128 0x2
-	.byte	0x91
-	.sleb128 4
-	.uleb128 0x1a
-	.4byte	.LASF925
-	.byte	0x1
-	.byte	0xa9
-	.4byte	0x68
-	.uleb128 0x2
-	.byte	0x91
-	.sleb128 8
-	.uleb128 0x1b
-	.4byte	.LASF927
-	.byte	0x1
-	.byte	0xb0
-	.4byte	0x7d5
-	.uleb128 0x2
-	.byte	0x91
-	.sleb128 -44
-	.uleb128 0x1b
-	.4byte	.LASF928
-	.byte	0x1
-	.byte	0xb2
-	.4byte	0x654
-	.uleb128 0x2
-	.byte	0x91
-	.sleb128 -12
-	.byte	0
-	.uleb128 0x19
-	.4byte	.LASF929
-	.byte	0x1
-	.byte	0x98
-	.4byte	0x86
-	.4byte	.LFB39
-	.4byte	.LFE39-.LFB39
-	.uleb128 0x1
-	.byte	0x9c
-	.4byte	0x8dd
-	.uleb128 0x1a
-	.4byte	.LASF915
-	.byte	0x1
-	.byte	0x98
-	.4byte	0xbe
-	.uleb128 0x2
-	.byte	0x91
-	.sleb128 -44
-	.uleb128 0x1a
-	.4byte	.LASF916
-	.byte	0x1
-	.byte	0x98
-	.4byte	0x8d
-	.uleb128 0x2
-	.byte	0x91
-	.sleb128 -48
-	.uleb128 0x1a
-	.4byte	.LASF917
-	.byte	0x1
-	.byte	0x99
-	.4byte	0xbe
-	.uleb128 0x2
-	.byte	0x91
-	.sleb128 -52
-	.uleb128 0x1a
-	.4byte	.LASF918
-	.byte	0x1
-	.byte	0x99
-	.4byte	0x8d
-	.uleb128 0x2
-	.byte	0x91
-	.sleb128 -56
-	.uleb128 0x1b
-	.4byte	.LASF927
-	.byte	0x1
-	.byte	0x9d
-	.4byte	0x7d5
-	.uleb128 0x2
-	.byte	0x91
-	.sleb128 -40
-	.byte	0
-	.uleb128 0x19
-	.4byte	.LASF930
-	.byte	0x1
-	.byte	0x88
-	.4byte	0x86
-	.4byte	.LFB38
-	.4byte	.LFE38-.LFB38
-	.uleb128 0x1
-	.byte	0x9c
-	.4byte	0x967
-	.uleb128 0x1a
-	.4byte	.LASF915
-	.byte	0x1
-	.byte	0x88
-	.4byte	0xbe
-	.uleb128 0x2
-	.byte	0x91
-	.sleb128 -20
-	.uleb128 0x1a
-	.4byte	.LASF916
-	.byte	0x1
-	.byte	0x88
-	.4byte	0x8d
-	.uleb128 0x2
-	.byte	0x91
-	.sleb128 -24
-	.uleb128 0x1a
-	.4byte	.LASF931
-	.byte	0x1
-	.byte	0x89
-	.4byte	0xb8
-	.uleb128 0x2
-	.byte	0x91
-	.sleb128 -28
-	.uleb128 0x1a
-	.4byte	.LASF932
-	.byte	0x1
-	.byte	0x89
-	.4byte	0x8d
-	.uleb128 0x2
-	.byte	0x91
-	.sleb128 -32
-	.uleb128 0x1a
-	.4byte	.LASF919
-	.byte	0x1
-	.byte	0x8a
-	.4byte	0xbe
-	.uleb128 0x2
-	.byte	0x91
-	.sleb128 0
-	.uleb128 0x1a
-	.4byte	.LASF920
-	.byte	0x1
-	.byte	0x8a
-	.4byte	0x8d
-	.uleb128 0x2
-	.byte	0x91
-	.sleb128 4
-	.uleb128 0x1a
-	.4byte	.LASF933
-	.byte	0x1
-	.byte	0x8b
-	.4byte	0x967
-	.uleb128 0x2
-	.byte	0x91
-	.sleb128 8
-	.uleb128 0x1b
-	.4byte	.LASF934
-	.byte	0x1
-	.byte	0x8f
-	.4byte	0x86
-	.uleb128 0x2
-	.byte	0x91
-	.sleb128 -12
-	.byte	0
-	.uleb128 0x8
-	.byte	0x4
-	.4byte	0x8d
-	.uleb128 0x19
-	.4byte	.LASF935
-	.byte	0x1
-	.byte	0x4e
-	.4byte	0x86
-	.4byte	.LFB37
-	.4byte	.LFE37-.LFB37
-	.uleb128 0x1
-	.byte	0x9c
-	.4byte	0xa51
-	.uleb128 0x1a
-	.4byte	.LASF915
-	.byte	0x1
-	.byte	0x4e
-	.4byte	0xbe
-	.uleb128 0x3
-	.byte	0x91
-	.sleb128 -324
-	.uleb128 0x1a
-	.4byte	.LASF916
-	.byte	0x1
-	.byte	0x4e
-	.4byte	0x8d
-	.uleb128 0x3
-	.byte	0x91
-	.sleb128 -328
-	.uleb128 0x1a
-	.4byte	.LASF931
-	.byte	0x1
-	.byte	0x4f
-	.4byte	0xb8
-	.uleb128 0x3
-	.byte	0x91
-	.sleb128 -332
-	.uleb128 0x1a
-	.4byte	.LASF932
-	.byte	0x1
-	.byte	0x4f
-	.4byte	0x8d
-	.uleb128 0x3
-	.byte	0x91
-	.sleb128 -336
-	.uleb128 0x1a
-	.4byte	.LASF936
-	.byte	0x1
-	.byte	0x50
-	.4byte	0xbe
-	.uleb128 0x2
-	.byte	0x91
-	.sleb128 0
-	.uleb128 0x1a
-	.4byte	.LASF937
-	.byte	0x1
-	.byte	0x50
-	.4byte	0x8d
-	.uleb128 0x2
-	.byte	0x91
-	.sleb128 4
-	.uleb128 0x1a
-	.4byte	.LASF925
-	.byte	0x1
-	.byte	0x51
-	.4byte	0x68
-	.uleb128 0x2
-	.byte	0x91
-	.sleb128 8
-	.uleb128 0x1a
-	.4byte	.LASF933
-	.byte	0x1
-	.byte	0x51
-	.4byte	0x967
-	.uleb128 0x2
-	.byte	0x91
-	.sleb128 12
-	.uleb128 0x1b
-	.4byte	.LASF927
-	.byte	0x1
-	.byte	0x58
-	.4byte	0x7d5
-	.uleb128 0x2
-	.byte	0x91
-	.sleb128 -52
-	.uleb128 0x1b
-	.4byte	.LASF928
-	.byte	0x1
-	.byte	0x5a
-	.4byte	0x654
-	.uleb128 0x2
-	.byte	0x91
-	.sleb128 -12
-	.uleb128 0x1b
-	.4byte	.LASF938
-	.byte	0x1
-	.byte	0x6e
-	.4byte	0x86
-	.uleb128 0x2
-	.byte	0x91
-	.sleb128 -16
-	.uleb128 0x1c
-	.ascii	"tmp\000"
-	.byte	0x1
-	.byte	0x72
-	.4byte	0x644
-	.uleb128 0x3
-	.byte	0x91
-	.sleb128 -180
-	.uleb128 0x1b
-	.4byte	.LASF939
-	.byte	0x1
-	.byte	0x73
-	.4byte	0x74e
-	.uleb128 0x3
-	.byte	0x91
-	.sleb128 -320
-	.uleb128 0x1c
-	.ascii	"ctx\000"
-	.byte	0x1
-	.byte	0x74
-	.4byte	0xa51
-	.uleb128 0x2
-	.byte	0x91
-	.sleb128 -20
-	.byte	0
-	.uleb128 0x8
-	.byte	0x4
-	.4byte	0x74e
-	.uleb128 0x19
-	.4byte	.LASF940
-	.byte	0x1
-	.byte	0x42
-	.4byte	0x86
-	.4byte	.LFB36
-	.4byte	.LFE36-.LFB36
-	.uleb128 0x1
-	.byte	0x9c
-	.4byte	0xab7
-	.uleb128 0x1a
-	.4byte	.LASF915
-	.byte	0x1
-	.byte	0x42
-	.4byte	0xbe
-	.uleb128 0x2
-	.byte	0x91
-	.sleb128 -12
-	.uleb128 0x1a
-	.4byte	.LASF916
-	.byte	0x1
-	.byte	0x42
-	.4byte	0x8d
-	.uleb128 0x2
-	.byte	0x91
-	.sleb128 -16
-	.uleb128 0x1a
-	.4byte	.LASF931
-	.byte	0x1
-	.byte	0x43
-	.4byte	0xb8
-	.uleb128 0x2
-	.byte	0x91
-	.sleb128 -20
-	.uleb128 0x1a
-	.4byte	.LASF932
-	.byte	0x1
-	.byte	0x43
-	.4byte	0x8d
-	.uleb128 0x2
-	.byte	0x91
-	.sleb128 -24
-	.uleb128 0x1a
-	.4byte	.LASF933
-	.byte	0x1
-	.byte	0x44
-	.4byte	0x967
-	.uleb128 0x2
-	.byte	0x91
-	.sleb128 0
-	.byte	0
-	.uleb128 0x1d
-	.4byte	.LASF943
-	.byte	0x1
-	.byte	0x38
-	.4byte	0x86
+	.byte	0xd
+	.4byte	0x97
 	.4byte	.LFB35
 	.4byte	.LFE35-.LFB35
 	.uleb128 0x1
 	.byte	0x9c
-	.4byte	0xb24
-	.uleb128 0x1e
-	.ascii	"key\000"
-	.byte	0x1
-	.byte	0x38
-	.4byte	0xbe
-	.uleb128 0x2
-	.byte	0x91
-	.sleb128 -12
+	.4byte	0x84e
 	.uleb128 0x1a
-	.4byte	.LASF920
+	.4byte	.LASF912
 	.byte	0x1
-	.byte	0x38
-	.4byte	0x98
-	.uleb128 0x2
-	.byte	0x91
-	.sleb128 -16
-	.uleb128 0x1a
-	.4byte	.LASF870
-	.byte	0x1
-	.byte	0x39
-	.4byte	0xb24
+	.byte	0xd
+	.4byte	0x84e
 	.uleb128 0x2
 	.byte	0x91
 	.sleb128 -20
 	.uleb128 0x1a
-	.4byte	.LASF941
+	.4byte	.LASF913
 	.byte	0x1
-	.byte	0x39
-	.4byte	0x98
+	.byte	0xd
+	.4byte	0x854
 	.uleb128 0x2
 	.byte	0x91
 	.sleb128 -24
 	.uleb128 0x1a
-	.4byte	.LASF942
+	.4byte	.LASF897
 	.byte	0x1
-	.byte	0x3a
-	.4byte	0xb8
+	.byte	0xe
+	.4byte	0x73
+	.uleb128 0x2
+	.byte	0x91
+	.sleb128 -25
+	.uleb128 0x1a
+	.4byte	.LASF914
+	.byte	0x1
+	.byte	0xe
+	.4byte	0xbe
+	.uleb128 0x2
+	.byte	0x91
+	.sleb128 -32
+	.uleb128 0x1a
+	.4byte	.LASF915
+	.byte	0x1
+	.byte	0xf
+	.4byte	0x9e
 	.uleb128 0x2
 	.byte	0x91
 	.sleb128 0
-	.uleb128 0x1f
-	.4byte	.LASF956
+	.uleb128 0x18
+	.4byte	.LASF917
 	.byte	0x1
-	.byte	0x3c
-	.4byte	0x86
-	.uleb128 0x20
-	.byte	0
-	.byte	0
-	.uleb128 0x8
-	.byte	0x4
-	.4byte	0xb2a
-	.uleb128 0x21
-	.uleb128 0x1d
-	.4byte	.LASF944
-	.byte	0x1
-	.byte	0x32
-	.4byte	0x86
-	.4byte	.LFB34
-	.4byte	.LFE34-.LFB34
-	.uleb128 0x1
-	.byte	0x9c
-	.4byte	0xb6f
-	.uleb128 0x1a
-	.4byte	.LASF870
-	.byte	0x1
-	.byte	0x32
-	.4byte	0xbe
+	.byte	0x13
+	.4byte	0x6b3
 	.uleb128 0x2
 	.byte	0x91
 	.sleb128 -12
-	.uleb128 0x1a
-	.4byte	.LASF945
+	.uleb128 0x1b
+	.ascii	"r\000"
 	.byte	0x1
-	.byte	0x32
-	.4byte	0x5dd
+	.byte	0x1c
+	.4byte	0x97
 	.uleb128 0x2
 	.byte	0x91
 	.sleb128 -16
-	.uleb128 0x1a
-	.4byte	.LASF946
-	.byte	0x1
-	.byte	0x32
-	.4byte	0xb8
-	.uleb128 0x2
-	.byte	0x91
-	.sleb128 -20
-	.byte	0
-	.uleb128 0x22
-	.4byte	.LASF949
-	.byte	0x1
-	.byte	0x2a
-	.4byte	.LFB33
-	.4byte	.LFE33-.LFB33
-	.uleb128 0x1
-	.byte	0x9c
-	.4byte	0xbaf
-	.uleb128 0x1a
-	.4byte	.LASF947
-	.byte	0x1
-	.byte	0x2a
-	.4byte	0xbaf
-	.uleb128 0x2
-	.byte	0x91
-	.sleb128 -20
-	.uleb128 0x1a
-	.4byte	.LASF946
-	.byte	0x1
-	.byte	0x2a
-	.4byte	0xb8
-	.uleb128 0x2
-	.byte	0x91
-	.sleb128 -24
-	.uleb128 0x1b
-	.4byte	.LASF948
-	.byte	0x1
-	.byte	0x2c
-	.4byte	0xa51
-	.uleb128 0x2
-	.byte	0x91
-	.sleb128 -12
 	.byte	0
 	.uleb128 0x8
 	.byte	0x4
-	.4byte	0x724
-	.uleb128 0x22
-	.4byte	.LASF950
-	.byte	0x1
-	.byte	0x21
-	.4byte	.LFB32
-	.4byte	.LFE32-.LFB32
-	.uleb128 0x1
-	.byte	0x9c
-	.4byte	0xc03
-	.uleb128 0x1a
-	.4byte	.LASF947
-	.byte	0x1
-	.byte	0x21
-	.4byte	0xbaf
-	.uleb128 0x2
-	.byte	0x91
-	.sleb128 -20
-	.uleb128 0x1a
-	.4byte	.LASF951
-	.byte	0x1
-	.byte	0x22
-	.4byte	0xbe
-	.uleb128 0x2
-	.byte	0x91
-	.sleb128 -24
-	.uleb128 0x1a
-	.4byte	.LASF952
-	.byte	0x1
-	.byte	0x23
-	.4byte	0x98
-	.uleb128 0x2
-	.byte	0x91
-	.sleb128 -28
-	.uleb128 0x1b
-	.4byte	.LASF948
-	.byte	0x1
-	.byte	0x25
-	.4byte	0xa51
-	.uleb128 0x2
-	.byte	0x91
-	.sleb128 -12
-	.byte	0
-	.uleb128 0x23
-	.4byte	.LASF957
-	.byte	0x1
-	.byte	0x1a
-	.4byte	.LFB31
-	.4byte	.LFE31-.LFB31
-	.uleb128 0x1
-	.byte	0x9c
-	.uleb128 0x1a
-	.4byte	.LASF947
-	.byte	0x1
-	.byte	0x1a
-	.4byte	0xbaf
-	.uleb128 0x2
-	.byte	0x91
-	.sleb128 -20
-	.uleb128 0x1b
-	.4byte	.LASF948
-	.byte	0x1
-	.byte	0x1c
-	.4byte	0xa51
-	.uleb128 0x2
-	.byte	0x91
-	.sleb128 -12
-	.byte	0
+	.4byte	0x62a
+	.uleb128 0x8
+	.byte	0x4
+	.4byte	0x682
 	.byte	0
 	.section	.debug_abbrev,"",%progbits
 .Ldebug_abbrev0:
@@ -2839,27 +1479,27 @@ ndn_verifier_hmac_verify:
 	.byte	0
 	.byte	0
 	.uleb128 0x17
-	.uleb128 0xd
-	.byte	0
-	.uleb128 0x3
-	.uleb128 0x8
-	.uleb128 0x3a
-	.uleb128 0xb
-	.uleb128 0x3b
-	.uleb128 0x5
-	.uleb128 0x49
-	.uleb128 0x13
-	.uleb128 0x38
-	.uleb128 0xb
-	.byte	0
-	.byte	0
-	.uleb128 0x18
 	.uleb128 0x15
 	.byte	0x1
 	.uleb128 0x27
 	.uleb128 0x19
 	.uleb128 0x1
 	.uleb128 0x13
+	.byte	0
+	.byte	0
+	.uleb128 0x18
+	.uleb128 0x34
+	.byte	0
+	.uleb128 0x3
+	.uleb128 0xe
+	.uleb128 0x3a
+	.uleb128 0xb
+	.uleb128 0x3b
+	.uleb128 0xb
+	.uleb128 0x49
+	.uleb128 0x13
+	.uleb128 0x2
+	.uleb128 0x18
 	.byte	0
 	.byte	0
 	.uleb128 0x19
@@ -2908,21 +1548,6 @@ ndn_verifier_hmac_verify:
 	.uleb128 0x34
 	.byte	0
 	.uleb128 0x3
-	.uleb128 0xe
-	.uleb128 0x3a
-	.uleb128 0xb
-	.uleb128 0x3b
-	.uleb128 0xb
-	.uleb128 0x49
-	.uleb128 0x13
-	.uleb128 0x2
-	.uleb128 0x18
-	.byte	0
-	.byte	0
-	.uleb128 0x1c
-	.uleb128 0x34
-	.byte	0
-	.uleb128 0x3
 	.uleb128 0x8
 	.uleb128 0x3a
 	.uleb128 0xb
@@ -2932,125 +1557,14 @@ ndn_verifier_hmac_verify:
 	.uleb128 0x13
 	.uleb128 0x2
 	.uleb128 0x18
-	.byte	0
-	.byte	0
-	.uleb128 0x1d
-	.uleb128 0x2e
-	.byte	0x1
-	.uleb128 0x3
-	.uleb128 0xe
-	.uleb128 0x3a
-	.uleb128 0xb
-	.uleb128 0x3b
-	.uleb128 0xb
-	.uleb128 0x27
-	.uleb128 0x19
-	.uleb128 0x49
-	.uleb128 0x13
-	.uleb128 0x11
-	.uleb128 0x1
-	.uleb128 0x12
-	.uleb128 0x6
-	.uleb128 0x40
-	.uleb128 0x18
-	.uleb128 0x2116
-	.uleb128 0x19
-	.uleb128 0x1
-	.uleb128 0x13
-	.byte	0
-	.byte	0
-	.uleb128 0x1e
-	.uleb128 0x5
-	.byte	0
-	.uleb128 0x3
-	.uleb128 0x8
-	.uleb128 0x3a
-	.uleb128 0xb
-	.uleb128 0x3b
-	.uleb128 0xb
-	.uleb128 0x49
-	.uleb128 0x13
-	.uleb128 0x2
-	.uleb128 0x18
-	.byte	0
-	.byte	0
-	.uleb128 0x1f
-	.uleb128 0x2e
-	.byte	0x1
-	.uleb128 0x3f
-	.uleb128 0x19
-	.uleb128 0x3
-	.uleb128 0xe
-	.uleb128 0x3a
-	.uleb128 0xb
-	.uleb128 0x3b
-	.uleb128 0xb
-	.uleb128 0x49
-	.uleb128 0x13
-	.uleb128 0x3c
-	.uleb128 0x19
-	.byte	0
-	.byte	0
-	.uleb128 0x20
-	.uleb128 0x18
-	.byte	0
-	.byte	0
-	.byte	0
-	.uleb128 0x21
-	.uleb128 0x26
-	.byte	0
-	.byte	0
-	.byte	0
-	.uleb128 0x22
-	.uleb128 0x2e
-	.byte	0x1
-	.uleb128 0x3
-	.uleb128 0xe
-	.uleb128 0x3a
-	.uleb128 0xb
-	.uleb128 0x3b
-	.uleb128 0xb
-	.uleb128 0x27
-	.uleb128 0x19
-	.uleb128 0x11
-	.uleb128 0x1
-	.uleb128 0x12
-	.uleb128 0x6
-	.uleb128 0x40
-	.uleb128 0x18
-	.uleb128 0x2116
-	.uleb128 0x19
-	.uleb128 0x1
-	.uleb128 0x13
-	.byte	0
-	.byte	0
-	.uleb128 0x23
-	.uleb128 0x2e
-	.byte	0x1
-	.uleb128 0x3
-	.uleb128 0xe
-	.uleb128 0x3a
-	.uleb128 0xb
-	.uleb128 0x3b
-	.uleb128 0xb
-	.uleb128 0x27
-	.uleb128 0x19
-	.uleb128 0x11
-	.uleb128 0x1
-	.uleb128 0x12
-	.uleb128 0x6
-	.uleb128 0x40
-	.uleb128 0x18
-	.uleb128 0x2116
-	.uleb128 0x19
 	.byte	0
 	.byte	0
 	.byte	0
 	.section	.debug_pubnames,"",%progbits
-	.4byte	0x1bf
+	.4byte	0xe5
 	.2byte	0x2
 	.4byte	.Ldebug_info0
-	.4byte	0xc32
+	.4byte	0x85b
 	.4byte	0x42
 	.ascii	"NDN_ECDSA_CURVE_SECP160R1\000"
 	.4byte	0x48
@@ -3061,58 +1575,40 @@ ndn_verifier_hmac_verify:
 	.ascii	"NDN_ECDSA_CURVE_SECP256R1\000"
 	.4byte	0x5a
 	.ascii	"NDN_ECDSA_CURVE_SECP256K1\000"
-	.4byte	0x759
-	.ascii	"ndn_verifier_hmac_verify\000"
-	.4byte	0x7e5
-	.ascii	"ndn_verifier_ecdsa_verify\000"
-	.4byte	0x87d
-	.ascii	"ndn_verifier_sha256_verify\000"
-	.4byte	0x8dd
-	.ascii	"ndn_signer_hmac_sign\000"
-	.4byte	0x96d
-	.ascii	"ndn_signer_ecdsa_sign\000"
-	.4byte	0xa57
-	.ascii	"ndn_signer_sha256_sign\000"
-	.4byte	0xab7
-	.ascii	"hmac_sha256\000"
-	.4byte	0xb16
-	.ascii	"ndn_lite_hmac_sign_tinycrypt\000"
-	.4byte	0xb2b
-	.ascii	"sha256\000"
-	.4byte	0xb6f
-	.ascii	"_finish_sha256\000"
-	.4byte	0xbb5
-	.ascii	"_update_sha256\000"
-	.4byte	0xc03
-	.ascii	"_init_sha256\000"
+	.4byte	0x7c3
+	.ascii	"curve_secp256r1\000"
+	.4byte	0x7d4
+	.ascii	"ndn_lite_ecc_key_shared_secret_tinycrypt\000"
 	.4byte	0
 	.section	.debug_pubtypes,"",%progbits
-	.4byte	0x224
+	.4byte	0x233
 	.2byte	0x2
 	.4byte	.Ldebug_info0
-	.4byte	0xc32
+	.4byte	0x85b
 	.4byte	0x29
 	.ascii	"unsigned char\000"
-	.4byte	0x61
+	.4byte	0x6c
 	.ascii	"signed char\000"
-	.4byte	0x68
+	.4byte	0x61
+	.ascii	"int8_t\000"
+	.4byte	0x73
 	.ascii	"uint8_t\000"
-	.4byte	0x78
+	.4byte	0x89
 	.ascii	"short int\000"
-	.4byte	0x7f
+	.4byte	0x7e
+	.ascii	"int16_t\000"
+	.4byte	0x90
 	.ascii	"short unsigned int\000"
-	.4byte	0x86
+	.4byte	0x97
 	.ascii	"int\000"
-	.4byte	0x98
+	.4byte	0xa9
 	.ascii	"unsigned int\000"
-	.4byte	0x8d
+	.4byte	0x9e
 	.ascii	"uint32_t\000"
-	.4byte	0x9f
+	.4byte	0xb0
 	.ascii	"long long int\000"
-	.4byte	0xb1
+	.4byte	0xb7
 	.ascii	"long long unsigned int\000"
-	.4byte	0xa6
-	.ascii	"uint64_t\000"
 	.4byte	0xe9
 	.ascii	"long int\000"
 	.4byte	0xc4
@@ -3134,76 +1630,40 @@ ndn_verifier_hmac_verify:
 	.4byte	0x5bf
 	.ascii	"__RAL_error_decoder_t\000"
 	.4byte	0x5dd
-	.ascii	"size_t\000"
-	.4byte	0x5e8
-	.ascii	"tc_sha256_state_struct\000"
-	.4byte	0x654
-	.ascii	"uECC_Curve\000"
-	.4byte	0x66f
-	.ascii	"uECC_HashContext\000"
-	.4byte	0x718
-	.ascii	"uECC_HashContext\000"
-	.4byte	0x729
-	.ascii	"uECC_SHA256_HashContext\000"
-	.4byte	0x74e
-	.ascii	"uECC_SHA256_HashContext\000"
+	.ascii	"ndn_ecc_pub\000"
+	.4byte	0x62a
+	.ascii	"ndn_ecc_pub_t\000"
+	.4byte	0x635
+	.ascii	"ndn_ecc_prv\000"
+	.4byte	0x682
+	.ascii	"ndn_ecc_prv_t\000"
+	.4byte	0x68d
+	.ascii	"wordcount_t\000"
+	.4byte	0x698
+	.ascii	"bitcount_t\000"
+	.4byte	0x6a3
+	.ascii	"tc_uECC_word_t\000"
+	.4byte	0x6b3
+	.ascii	"tc_uECC_Curve\000"
+	.4byte	0x6c4
+	.ascii	"tc_uECC_Curve_t\000"
 	.4byte	0
 	.section	.debug_aranges,"",%progbits
-	.4byte	0x6c
+	.4byte	0x1c
 	.2byte	0x2
 	.4byte	.Ldebug_info0
 	.byte	0x4
 	.byte	0
 	.2byte	0
 	.2byte	0
-	.4byte	.LFB31
-	.4byte	.LFE31-.LFB31
-	.4byte	.LFB32
-	.4byte	.LFE32-.LFB32
-	.4byte	.LFB33
-	.4byte	.LFE33-.LFB33
-	.4byte	.LFB34
-	.4byte	.LFE34-.LFB34
 	.4byte	.LFB35
 	.4byte	.LFE35-.LFB35
-	.4byte	.LFB36
-	.4byte	.LFE36-.LFB36
-	.4byte	.LFB37
-	.4byte	.LFE37-.LFB37
-	.4byte	.LFB38
-	.4byte	.LFE38-.LFB38
-	.4byte	.LFB39
-	.4byte	.LFE39-.LFB39
-	.4byte	.LFB40
-	.4byte	.LFE40-.LFB40
-	.4byte	.LFB41
-	.4byte	.LFE41-.LFB41
 	.4byte	0
 	.4byte	0
 	.section	.debug_ranges,"",%progbits
 .Ldebug_ranges0:
-	.4byte	.LFB31
-	.4byte	.LFE31
-	.4byte	.LFB32
-	.4byte	.LFE32
-	.4byte	.LFB33
-	.4byte	.LFE33
-	.4byte	.LFB34
-	.4byte	.LFE34
 	.4byte	.LFB35
 	.4byte	.LFE35
-	.4byte	.LFB36
-	.4byte	.LFE36
-	.4byte	.LFB37
-	.4byte	.LFE37
-	.4byte	.LFB38
-	.4byte	.LFE38
-	.4byte	.LFB39
-	.4byte	.LFE39
-	.4byte	.LFB40
-	.4byte	.LFE40
-	.4byte	.LFB41
-	.4byte	.LFE41
 	.4byte	0
 	.4byte	0
 	.section	.debug_macro,"",%progbits
@@ -3216,162 +1676,161 @@ ndn_verifier_hmac_verify:
 	.byte	0x3
 	.uleb128 0
 	.uleb128 0x1
-	.file 8 "c:\\users\\rena li\\desktop\\adding_nrf_crypto_backend_to_ndn_lite\\application\\ndn_standalone\\security\\ndn-lite-sec-config.h"
+	.file 7 "C:\\Users\\Rena Li\\Desktop\\adding_nrf_crypto_backend_to_ndn_lite\\Application\\ndn_standalone\\security\\detail\\detail-ecc\\ndn-lite-ecc-tinycrypt.h"
 	.byte	0x3
-	.uleb128 0x9
+	.uleb128 0x2
+	.uleb128 0x7
+	.byte	0x5
+	.uleb128 0x3
+	.4byte	.LASF459
+	.byte	0x3
+	.uleb128 0x5
+	.uleb128 0x4
+	.byte	0x5
+	.uleb128 0xa
+	.4byte	.LASF460
+	.file 8 "c:\\users\\rena li\\desktop\\adding_nrf_crypto_backend_to_ndn_lite\\application\\ndn_standalone\\encode\\name.h"
+	.byte	0x3
+	.uleb128 0xc
 	.uleb128 0x8
-	.byte	0x7
-	.4byte	.Ldebug_macro2
+	.byte	0x5
+	.uleb128 0xa
+	.4byte	.LASF461
+	.file 9 "c:\\users\\rena li\\desktop\\adding_nrf_crypto_backend_to_ndn_lite\\application\\ndn_standalone\\encode\\name-component.h"
+	.byte	0x3
+	.uleb128 0xc
+	.uleb128 0x9
+	.byte	0x5
+	.uleb128 0xa
+	.4byte	.LASF462
+	.file 10 "c:\\users\\rena li\\desktop\\adding_nrf_crypto_backend_to_ndn_lite\\application\\ndn_standalone\\encode\\tlv.h"
+	.byte	0x3
+	.uleb128 0xc
+	.uleb128 0xa
+	.byte	0x5
+	.uleb128 0xa
+	.4byte	.LASF463
 	.byte	0x4
-	.file 9 "c:\\users\\rena li\\desktop\\adding_nrf_crypto_backend_to_ndn_lite\\application\\ndn_standalone\\security\\ndn-lite-sign-verify.h"
+	.file 11 "c:\\users\\rena li\\desktop\\adding_nrf_crypto_backend_to_ndn_lite\\application\\ndn_standalone\\encode\\decoder.h"
 	.byte	0x3
 	.uleb128 0xd
-	.uleb128 0x9
-	.byte	0x5
-	.uleb128 0xa
-	.4byte	.LASF464
-	.file 10 "c:\\users\\rena li\\desktop\\adding_nrf_crypto_backend_to_ndn_lite\\application\\ndn_standalone\\encode\\name.h"
-	.byte	0x3
-	.uleb128 0xc
-	.uleb128 0xa
-	.byte	0x5
-	.uleb128 0xa
-	.4byte	.LASF465
-	.file 11 "c:\\users\\rena li\\desktop\\adding_nrf_crypto_backend_to_ndn_lite\\application\\ndn_standalone\\encode\\name-component.h"
-	.byte	0x3
-	.uleb128 0xc
 	.uleb128 0xb
 	.byte	0x5
 	.uleb128 0xa
-	.4byte	.LASF466
-	.file 12 "c:\\users\\rena li\\desktop\\adding_nrf_crypto_backend_to_ndn_lite\\application\\ndn_standalone\\encode\\tlv.h"
+	.4byte	.LASF464
+	.file 12 "c:\\users\\rena li\\desktop\\adding_nrf_crypto_backend_to_ndn_lite\\application\\ndn_standalone\\encode\\encoder.h"
 	.byte	0x3
 	.uleb128 0xc
 	.uleb128 0xc
 	.byte	0x5
 	.uleb128 0xa
-	.4byte	.LASF467
+	.4byte	.LASF465
+	.file 13 "c:\\users\\rena li\\desktop\\adding_nrf_crypto_backend_to_ndn_lite\\application\\ndn_standalone\\ndn-constants.h"
+	.byte	0x3
+	.uleb128 0xc
+	.uleb128 0xd
+	.byte	0x7
+	.4byte	.Ldebug_macro2
 	.byte	0x4
-	.file 13 "c:\\users\\rena li\\desktop\\adding_nrf_crypto_backend_to_ndn_lite\\application\\ndn_standalone\\encode\\decoder.h"
+	.file 14 "c:\\users\\rena li\\desktop\\adding_nrf_crypto_backend_to_ndn_lite\\application\\ndn_standalone\\ndn-error-code.h"
 	.byte	0x3
 	.uleb128 0xd
-	.uleb128 0xd
-	.byte	0x5
-	.uleb128 0xa
-	.4byte	.LASF468
-	.file 14 "c:\\users\\rena li\\desktop\\adding_nrf_crypto_backend_to_ndn_lite\\application\\ndn_standalone\\encode\\encoder.h"
-	.byte	0x3
-	.uleb128 0xc
 	.uleb128 0xe
-	.byte	0x5
-	.uleb128 0xa
-	.4byte	.LASF469
-	.file 15 "c:\\users\\rena li\\desktop\\adding_nrf_crypto_backend_to_ndn_lite\\application\\ndn_standalone\\ndn-constants.h"
-	.byte	0x3
-	.uleb128 0xc
-	.uleb128 0xf
 	.byte	0x7
 	.4byte	.Ldebug_macro3
 	.byte	0x4
-	.file 16 "c:\\users\\rena li\\desktop\\adding_nrf_crypto_backend_to_ndn_lite\\application\\ndn_standalone\\ndn-error-code.h"
-	.byte	0x3
-	.uleb128 0xd
-	.uleb128 0x10
-	.byte	0x7
-	.4byte	.Ldebug_macro4
-	.byte	0x4
 	.byte	0x3
 	.uleb128 0xe
-	.uleb128 0x7
+	.uleb128 0x6
 	.byte	0x5
 	.uleb128 0xa
-	.4byte	.LASF540
+	.4byte	.LASF538
 	.byte	0x4
-	.file 17 "C:/Program Files/SEGGER/SEGGER Embedded Studio for ARM 4.12/include/inttypes.h"
+	.file 15 "C:/Program Files/SEGGER/SEGGER Embedded Studio for ARM 4.12/include/inttypes.h"
 	.byte	0x3
 	.uleb128 0xf
-	.uleb128 0x11
+	.uleb128 0xf
 	.byte	0x5
 	.uleb128 0x2d
-	.4byte	.LASF541
+	.4byte	.LASF539
 	.byte	0x3
 	.uleb128 0x2f
 	.uleb128 0x2
 	.byte	0x7
-	.4byte	.Ldebug_macro5
+	.4byte	.Ldebug_macro4
 	.byte	0x4
 	.byte	0x7
-	.4byte	.Ldebug_macro6
+	.4byte	.Ldebug_macro5
 	.byte	0x4
 	.byte	0x4
 	.byte	0x4
+	.file 16 "C:/Program Files/SEGGER/SEGGER Embedded Studio for ARM 4.12/include/string.h"
 	.byte	0x3
 	.uleb128 0xe
-	.uleb128 0x4
+	.uleb128 0x10
 	.byte	0x5
 	.uleb128 0x2d
-	.4byte	.LASF755
+	.4byte	.LASF753
 	.byte	0x3
 	.uleb128 0x2f
 	.uleb128 0x3
 	.byte	0x7
+	.4byte	.Ldebug_macro6
+	.byte	0x4
+	.byte	0x7
 	.4byte	.Ldebug_macro7
 	.byte	0x4
+	.byte	0x4
+	.file 17 "C:/Program Files/SEGGER/SEGGER Embedded Studio for ARM 4.12/include/stdbool.h"
+	.byte	0x3
+	.uleb128 0xd
+	.uleb128 0x11
 	.byte	0x7
 	.4byte	.Ldebug_macro8
 	.byte	0x4
 	.byte	0x4
-	.file 18 "C:/Program Files/SEGGER/SEGGER Embedded Studio for ARM 4.12/include/stdbool.h"
+	.byte	0x4
+	.byte	0x4
 	.byte	0x3
+	.uleb128 0x4
+	.uleb128 0xe
+	.byte	0x4
+	.byte	0x3
+	.uleb128 0x5
 	.uleb128 0xd
+	.byte	0x4
+	.byte	0x3
+	.uleb128 0x6
+	.uleb128 0x6
+	.byte	0x4
+	.file 18 "c:\\users\\rena li\\desktop\\adding_nrf_crypto_backend_to_ndn_lite\\application\\ndn_standalone\\security\\detail\\sec-lib\\tinycrypt\\tc_ecc_dh.h"
+	.byte	0x3
+	.uleb128 0x8
 	.uleb128 0x12
+	.byte	0x5
+	.uleb128 0x46
+	.4byte	.LASF782
+	.byte	0x3
+	.uleb128 0x48
+	.uleb128 0x5
 	.byte	0x7
 	.4byte	.Ldebug_macro9
 	.byte	0x4
 	.byte	0x4
-	.byte	0x4
-	.file 19 "c:\\users\\rena li\\desktop\\adding_nrf_crypto_backend_to_ndn_lite\\application\\ndn_standalone\\security\\detail\\detail-hmac\\ndn-lite-hmac-tinycrypt-impl.h"
+	.file 19 "c:\\users\\rena li\\desktop\\adding_nrf_crypto_backend_to_ndn_lite\\application\\ndn_standalone\\security\\detail\\sec-lib\\tinycrypt\\tc_constants.h"
 	.byte	0x3
-	.uleb128 0xe
+	.uleb128 0x9
 	.uleb128 0x13
-	.byte	0x5
-	.uleb128 0x3
-	.4byte	.LASF784
-	.file 20 "C:/Program Files/SEGGER/SEGGER Embedded Studio for ARM 4.12/include/stddef.h"
-	.byte	0x3
-	.uleb128 0x5
-	.uleb128 0x14
 	.byte	0x7
 	.4byte	.Ldebug_macro10
 	.byte	0x4
-	.byte	0x4
-	.file 21 "c:\\users\\rena li\\desktop\\adding_nrf_crypto_backend_to_ndn_lite\\application\\ndn_standalone\\security\\detail\\detail-sha256\\ndn-lite-sha256-tinycrypt-impl.h"
+	.file 20 "c:\\users\\rena li\\desktop\\adding_nrf_crypto_backend_to_ndn_lite\\application\\ndn_standalone\\security\\detail\\detail-rng\\ndn-lite-rng-tinycrypt-impl.h"
 	.byte	0x3
-	.uleb128 0xf
-	.uleb128 0x15
+	.uleb128 0xb
+	.uleb128 0x14
 	.byte	0x5
 	.uleb128 0x3
-	.4byte	.LASF788
-	.byte	0x4
-	.file 22 "c:\\users\\rena li\\desktop\\adding_nrf_crypto_backend_to_ndn_lite\\application\\ndn_standalone\\security\\detail\\sec-lib\\tinycrypt\\tc_hmac.h"
-	.byte	0x3
-	.uleb128 0x10
-	.uleb128 0x16
-	.byte	0x5
-	.uleb128 0x40
-	.4byte	.LASF789
-	.byte	0x3
-	.uleb128 0x42
-	.uleb128 0x5
-	.byte	0x7
-	.4byte	.Ldebug_macro11
-	.byte	0x4
-	.byte	0x4
-	.byte	0x3
-	.uleb128 0x11
-	.uleb128 0x6
-	.byte	0x7
-	.4byte	.Ldebug_macro12
+	.4byte	.LASF800
 	.byte	0x4
 	.byte	0x4
 	.byte	0
@@ -4799,1113 +3258,1080 @@ ndn_verifier_hmac_verify:
 	.uleb128 0
 	.4byte	.LASF458
 	.byte	0
-	.section	.debug_macro,"G",%progbits,wm4.ndnlitesecconfig.h.3.60f85a464ab0bd45a0ce39ec5ac60c2a,comdat
+	.section	.debug_macro,"G",%progbits,wm4.ndnconstants.h.10.ca6fe96b657ce9e1c445124d31cb993a,comdat
 .Ldebug_macro2:
 	.2byte	0x4
 	.byte	0
 	.byte	0x5
-	.uleb128 0x3
-	.4byte	.LASF459
+	.uleb128 0xa
+	.4byte	.LASF466
 	.byte	0x5
 	.uleb128 0xd
-	.4byte	.LASF460
+	.4byte	.LASF467
+	.byte	0x5
+	.uleb128 0xe
+	.4byte	.LASF468
+	.byte	0x5
+	.uleb128 0xf
+	.4byte	.LASF469
+	.byte	0x5
+	.uleb128 0x10
+	.4byte	.LASF470
+	.byte	0x5
+	.uleb128 0x11
+	.4byte	.LASF471
 	.byte	0x5
 	.uleb128 0x12
-	.4byte	.LASF461
+	.4byte	.LASF472
+	.byte	0x5
+	.uleb128 0x15
+	.4byte	.LASF473
+	.byte	0x5
+	.uleb128 0x16
+	.4byte	.LASF474
 	.byte	0x5
 	.uleb128 0x17
-	.4byte	.LASF462
+	.4byte	.LASF475
 	.byte	0x5
-	.uleb128 0x1c
-	.4byte	.LASF463
+	.uleb128 0x1a
+	.4byte	.LASF476
+	.byte	0x5
+	.uleb128 0x1d
+	.4byte	.LASF477
+	.byte	0x5
+	.uleb128 0x20
+	.4byte	.LASF478
+	.byte	0x5
+	.uleb128 0x21
+	.4byte	.LASF479
+	.byte	0x5
+	.uleb128 0x22
+	.4byte	.LASF480
+	.byte	0x5
+	.uleb128 0x23
+	.4byte	.LASF481
+	.byte	0x5
+	.uleb128 0x24
+	.4byte	.LASF482
+	.byte	0x5
+	.uleb128 0x25
+	.4byte	.LASF483
+	.byte	0x5
+	.uleb128 0x28
+	.4byte	.LASF484
+	.byte	0x5
+	.uleb128 0x29
+	.4byte	.LASF485
+	.byte	0x5
+	.uleb128 0x2a
+	.4byte	.LASF486
+	.byte	0x5
+	.uleb128 0x2b
+	.4byte	.LASF487
+	.byte	0x5
+	.uleb128 0x2c
+	.4byte	.LASF488
+	.byte	0x5
+	.uleb128 0x2d
+	.4byte	.LASF489
+	.byte	0x5
+	.uleb128 0x30
+	.4byte	.LASF490
+	.byte	0x5
+	.uleb128 0x31
+	.4byte	.LASF491
+	.byte	0x5
+	.uleb128 0x32
+	.4byte	.LASF492
+	.byte	0x5
+	.uleb128 0x35
+	.4byte	.LASF493
+	.byte	0x5
+	.uleb128 0x36
+	.4byte	.LASF494
+	.byte	0x5
+	.uleb128 0x37
+	.4byte	.LASF495
+	.byte	0x5
+	.uleb128 0x38
+	.4byte	.LASF496
+	.byte	0x5
+	.uleb128 0x39
+	.4byte	.LASF497
+	.byte	0x5
+	.uleb128 0x3a
+	.4byte	.LASF498
+	.byte	0x5
+	.uleb128 0x3b
+	.4byte	.LASF499
+	.byte	0x5
+	.uleb128 0x3c
+	.4byte	.LASF500
+	.byte	0x5
+	.uleb128 0x3d
+	.4byte	.LASF501
+	.byte	0x5
+	.uleb128 0x3e
+	.4byte	.LASF502
+	.byte	0x5
+	.uleb128 0x41
+	.4byte	.LASF503
+	.byte	0x5
+	.uleb128 0x42
+	.4byte	.LASF504
+	.byte	0x5
+	.uleb128 0x43
+	.4byte	.LASF505
+	.byte	0x5
+	.uleb128 0x44
+	.4byte	.LASF506
+	.byte	0x5
+	.uleb128 0x45
+	.4byte	.LASF507
+	.byte	0x5
+	.uleb128 0x46
+	.4byte	.LASF508
+	.byte	0x5
+	.uleb128 0x47
+	.4byte	.LASF509
 	.byte	0
-	.section	.debug_macro,"G",%progbits,wm4.ndnconstants.h.10.17e84c35653a514af481e89bd9b3b852,comdat
+	.section	.debug_macro,"G",%progbits,wm4.ndnerrorcode.h.10.08f2e0bfb6d88d24d80f8c3cf79bfdc3,comdat
 .Ldebug_macro3:
 	.2byte	0x4
 	.byte	0
 	.byte	0x5
 	.uleb128 0xa
-	.4byte	.LASF470
-	.byte	0x5
-	.uleb128 0xd
-	.4byte	.LASF471
-	.byte	0x5
-	.uleb128 0xe
-	.4byte	.LASF472
-	.byte	0x5
-	.uleb128 0xf
-	.4byte	.LASF473
-	.byte	0x5
-	.uleb128 0x10
-	.4byte	.LASF474
-	.byte	0x5
-	.uleb128 0x11
-	.4byte	.LASF475
-	.byte	0x5
-	.uleb128 0x12
-	.4byte	.LASF476
-	.byte	0x5
-	.uleb128 0x15
-	.4byte	.LASF477
-	.byte	0x5
-	.uleb128 0x16
-	.4byte	.LASF478
-	.byte	0x5
-	.uleb128 0x17
-	.4byte	.LASF479
-	.byte	0x5
-	.uleb128 0x1a
-	.4byte	.LASF480
-	.byte	0x5
-	.uleb128 0x1d
-	.4byte	.LASF481
-	.byte	0x5
-	.uleb128 0x20
-	.4byte	.LASF482
-	.byte	0x5
-	.uleb128 0x21
-	.4byte	.LASF483
-	.byte	0x5
-	.uleb128 0x22
-	.4byte	.LASF484
-	.byte	0x5
-	.uleb128 0x23
-	.4byte	.LASF485
-	.byte	0x5
-	.uleb128 0x24
-	.4byte	.LASF486
-	.byte	0x5
-	.uleb128 0x25
-	.4byte	.LASF487
-	.byte	0x5
-	.uleb128 0x28
-	.4byte	.LASF488
-	.byte	0x5
-	.uleb128 0x29
-	.4byte	.LASF489
-	.byte	0x5
-	.uleb128 0x2a
-	.4byte	.LASF490
-	.byte	0x5
-	.uleb128 0x2b
-	.4byte	.LASF491
-	.byte	0x5
-	.uleb128 0x2c
-	.4byte	.LASF492
-	.byte	0x5
-	.uleb128 0x2d
-	.4byte	.LASF493
-	.byte	0x5
-	.uleb128 0x30
-	.4byte	.LASF494
-	.byte	0x5
-	.uleb128 0x31
-	.4byte	.LASF495
-	.byte	0x5
-	.uleb128 0x32
-	.4byte	.LASF496
-	.byte	0x5
-	.uleb128 0x35
-	.4byte	.LASF497
-	.byte	0x5
-	.uleb128 0x36
-	.4byte	.LASF498
-	.byte	0x5
-	.uleb128 0x37
-	.4byte	.LASF499
-	.byte	0x5
-	.uleb128 0x38
-	.4byte	.LASF500
-	.byte	0x5
-	.uleb128 0x39
-	.4byte	.LASF501
-	.byte	0x5
-	.uleb128 0x3a
-	.4byte	.LASF502
-	.byte	0x5
-	.uleb128 0x3b
-	.4byte	.LASF503
-	.byte	0x5
-	.uleb128 0x3c
-	.4byte	.LASF504
-	.byte	0x5
-	.uleb128 0x3d
-	.4byte	.LASF505
-	.byte	0x5
-	.uleb128 0x3e
-	.4byte	.LASF506
-	.byte	0x5
-	.uleb128 0x41
-	.4byte	.LASF507
-	.byte	0x5
-	.uleb128 0x42
-	.4byte	.LASF508
-	.byte	0x5
-	.uleb128 0x43
-	.4byte	.LASF509
-	.byte	0x5
-	.uleb128 0x44
 	.4byte	.LASF510
 	.byte	0x5
-	.uleb128 0x45
+	.uleb128 0xc
 	.4byte	.LASF511
+	.byte	0x5
+	.uleb128 0xf
+	.4byte	.LASF512
+	.byte	0x5
+	.uleb128 0x10
+	.4byte	.LASF513
+	.byte	0x5
+	.uleb128 0x11
+	.4byte	.LASF514
+	.byte	0x5
+	.uleb128 0x12
+	.4byte	.LASF515
+	.byte	0x5
+	.uleb128 0x15
+	.4byte	.LASF516
+	.byte	0x5
+	.uleb128 0x16
+	.4byte	.LASF517
+	.byte	0x5
+	.uleb128 0x17
+	.4byte	.LASF518
+	.byte	0x5
+	.uleb128 0x18
+	.4byte	.LASF519
+	.byte	0x5
+	.uleb128 0x19
+	.4byte	.LASF520
+	.byte	0x5
+	.uleb128 0x1a
+	.4byte	.LASF521
+	.byte	0x5
+	.uleb128 0x1b
+	.4byte	.LASF522
+	.byte	0x5
+	.uleb128 0x1c
+	.4byte	.LASF523
+	.byte	0x5
+	.uleb128 0x1d
+	.4byte	.LASF524
+	.byte	0x5
+	.uleb128 0x20
+	.4byte	.LASF525
+	.byte	0x5
+	.uleb128 0x21
+	.4byte	.LASF526
+	.byte	0x5
+	.uleb128 0x22
+	.4byte	.LASF527
+	.byte	0x5
+	.uleb128 0x23
+	.4byte	.LASF528
+	.byte	0x5
+	.uleb128 0x26
+	.4byte	.LASF529
+	.byte	0x5
+	.uleb128 0x27
+	.4byte	.LASF530
+	.byte	0x5
+	.uleb128 0x28
+	.4byte	.LASF531
+	.byte	0x5
+	.uleb128 0x29
+	.4byte	.LASF532
+	.byte	0x5
+	.uleb128 0x2a
+	.4byte	.LASF533
+	.byte	0x5
+	.uleb128 0x2b
+	.4byte	.LASF534
+	.byte	0x5
+	.uleb128 0x2e
+	.4byte	.LASF535
+	.byte	0x5
+	.uleb128 0x31
+	.4byte	.LASF536
+	.byte	0x5
+	.uleb128 0x34
+	.4byte	.LASF537
 	.byte	0
-	.section	.debug_macro,"G",%progbits,wm4.ndnerrorcode.h.10.08f2e0bfb6d88d24d80f8c3cf79bfdc3,comdat
+	.section	.debug_macro,"G",%progbits,wm4.stdint.h.45.370e29a4497ae7c3b4c92e383ca5b648,comdat
 .Ldebug_macro4:
 	.2byte	0x4
 	.byte	0
 	.byte	0x5
-	.uleb128 0xa
-	.4byte	.LASF512
+	.uleb128 0x2d
+	.4byte	.LASF540
 	.byte	0x5
-	.uleb128 0xc
-	.4byte	.LASF513
+	.uleb128 0x79
+	.4byte	.LASF541
 	.byte	0x5
-	.uleb128 0xf
-	.4byte	.LASF514
+	.uleb128 0x7b
+	.4byte	.LASF542
 	.byte	0x5
-	.uleb128 0x10
-	.4byte	.LASF515
+	.uleb128 0x7c
+	.4byte	.LASF543
 	.byte	0x5
-	.uleb128 0x11
-	.4byte	.LASF516
+	.uleb128 0x7e
+	.4byte	.LASF544
 	.byte	0x5
-	.uleb128 0x12
-	.4byte	.LASF517
+	.uleb128 0x80
+	.4byte	.LASF545
 	.byte	0x5
-	.uleb128 0x15
-	.4byte	.LASF518
+	.uleb128 0x81
+	.4byte	.LASF546
 	.byte	0x5
-	.uleb128 0x16
-	.4byte	.LASF519
+	.uleb128 0x83
+	.4byte	.LASF547
 	.byte	0x5
-	.uleb128 0x17
-	.4byte	.LASF520
+	.uleb128 0x84
+	.4byte	.LASF548
 	.byte	0x5
-	.uleb128 0x18
-	.4byte	.LASF521
+	.uleb128 0x85
+	.4byte	.LASF549
 	.byte	0x5
-	.uleb128 0x19
-	.4byte	.LASF522
+	.uleb128 0x87
+	.4byte	.LASF550
 	.byte	0x5
-	.uleb128 0x1a
-	.4byte	.LASF523
+	.uleb128 0x88
+	.4byte	.LASF551
 	.byte	0x5
-	.uleb128 0x1b
-	.4byte	.LASF524
+	.uleb128 0x89
+	.4byte	.LASF552
 	.byte	0x5
-	.uleb128 0x1c
-	.4byte	.LASF525
+	.uleb128 0x8b
+	.4byte	.LASF553
 	.byte	0x5
-	.uleb128 0x1d
-	.4byte	.LASF526
+	.uleb128 0x8c
+	.4byte	.LASF554
 	.byte	0x5
-	.uleb128 0x20
-	.4byte	.LASF527
+	.uleb128 0x8d
+	.4byte	.LASF555
 	.byte	0x5
-	.uleb128 0x21
-	.4byte	.LASF528
+	.uleb128 0x90
+	.4byte	.LASF556
 	.byte	0x5
-	.uleb128 0x22
-	.4byte	.LASF529
+	.uleb128 0x91
+	.4byte	.LASF557
 	.byte	0x5
-	.uleb128 0x23
-	.4byte	.LASF530
+	.uleb128 0x92
+	.4byte	.LASF558
 	.byte	0x5
-	.uleb128 0x26
-	.4byte	.LASF531
+	.uleb128 0x93
+	.4byte	.LASF559
 	.byte	0x5
-	.uleb128 0x27
-	.4byte	.LASF532
+	.uleb128 0x94
+	.4byte	.LASF560
 	.byte	0x5
-	.uleb128 0x28
-	.4byte	.LASF533
+	.uleb128 0x95
+	.4byte	.LASF561
 	.byte	0x5
-	.uleb128 0x29
-	.4byte	.LASF534
+	.uleb128 0x96
+	.4byte	.LASF562
 	.byte	0x5
-	.uleb128 0x2a
-	.4byte	.LASF535
+	.uleb128 0x97
+	.4byte	.LASF563
 	.byte	0x5
-	.uleb128 0x2b
-	.4byte	.LASF536
+	.uleb128 0x98
+	.4byte	.LASF564
 	.byte	0x5
-	.uleb128 0x2e
-	.4byte	.LASF537
+	.uleb128 0x99
+	.4byte	.LASF565
 	.byte	0x5
-	.uleb128 0x31
-	.4byte	.LASF538
+	.uleb128 0x9a
+	.4byte	.LASF566
 	.byte	0x5
-	.uleb128 0x34
-	.4byte	.LASF539
+	.uleb128 0x9b
+	.4byte	.LASF567
+	.byte	0x5
+	.uleb128 0x9d
+	.4byte	.LASF568
+	.byte	0x5
+	.uleb128 0x9e
+	.4byte	.LASF569
+	.byte	0x5
+	.uleb128 0x9f
+	.4byte	.LASF570
+	.byte	0x5
+	.uleb128 0xa0
+	.4byte	.LASF571
+	.byte	0x5
+	.uleb128 0xa1
+	.4byte	.LASF572
+	.byte	0x5
+	.uleb128 0xa2
+	.4byte	.LASF573
+	.byte	0x5
+	.uleb128 0xa3
+	.4byte	.LASF574
+	.byte	0x5
+	.uleb128 0xa4
+	.4byte	.LASF575
+	.byte	0x5
+	.uleb128 0xa5
+	.4byte	.LASF576
+	.byte	0x5
+	.uleb128 0xa6
+	.4byte	.LASF577
+	.byte	0x5
+	.uleb128 0xa7
+	.4byte	.LASF578
+	.byte	0x5
+	.uleb128 0xa8
+	.4byte	.LASF579
+	.byte	0x5
+	.uleb128 0xad
+	.4byte	.LASF580
+	.byte	0x5
+	.uleb128 0xae
+	.4byte	.LASF581
+	.byte	0x5
+	.uleb128 0xaf
+	.4byte	.LASF582
+	.byte	0x5
+	.uleb128 0xb1
+	.4byte	.LASF583
+	.byte	0x5
+	.uleb128 0xb2
+	.4byte	.LASF584
+	.byte	0x5
+	.uleb128 0xb3
+	.4byte	.LASF585
+	.byte	0x5
+	.uleb128 0xc3
+	.4byte	.LASF586
+	.byte	0x5
+	.uleb128 0xc4
+	.4byte	.LASF587
+	.byte	0x5
+	.uleb128 0xc5
+	.4byte	.LASF588
+	.byte	0x5
+	.uleb128 0xc6
+	.4byte	.LASF589
+	.byte	0x5
+	.uleb128 0xc7
+	.4byte	.LASF590
+	.byte	0x5
+	.uleb128 0xc8
+	.4byte	.LASF591
+	.byte	0x5
+	.uleb128 0xc9
+	.4byte	.LASF592
+	.byte	0x5
+	.uleb128 0xca
+	.4byte	.LASF593
+	.byte	0x5
+	.uleb128 0xcc
+	.4byte	.LASF594
+	.byte	0x5
+	.uleb128 0xcd
+	.4byte	.LASF595
+	.byte	0x5
+	.uleb128 0xd7
+	.4byte	.LASF596
+	.byte	0x5
+	.uleb128 0xd8
+	.4byte	.LASF597
+	.byte	0x5
+	.uleb128 0xdc
+	.4byte	.LASF598
+	.byte	0x5
+	.uleb128 0xdd
+	.4byte	.LASF599
 	.byte	0
-	.section	.debug_macro,"G",%progbits,wm4.stdint.h.45.370e29a4497ae7c3b4c92e383ca5b648,comdat
+	.section	.debug_macro,"G",%progbits,wm4.inttypes.h.51.8f95d4f617ed7727de4df087c228bd6c,comdat
 .Ldebug_macro5:
 	.2byte	0x4
 	.byte	0
 	.byte	0x5
-	.uleb128 0x2d
-	.4byte	.LASF542
-	.byte	0x5
-	.uleb128 0x79
-	.4byte	.LASF543
-	.byte	0x5
-	.uleb128 0x7b
-	.4byte	.LASF544
-	.byte	0x5
-	.uleb128 0x7c
-	.4byte	.LASF545
-	.byte	0x5
-	.uleb128 0x7e
-	.4byte	.LASF546
-	.byte	0x5
-	.uleb128 0x80
-	.4byte	.LASF547
-	.byte	0x5
-	.uleb128 0x81
-	.4byte	.LASF548
-	.byte	0x5
-	.uleb128 0x83
-	.4byte	.LASF549
-	.byte	0x5
-	.uleb128 0x84
-	.4byte	.LASF550
-	.byte	0x5
-	.uleb128 0x85
-	.4byte	.LASF551
-	.byte	0x5
-	.uleb128 0x87
-	.4byte	.LASF552
-	.byte	0x5
-	.uleb128 0x88
-	.4byte	.LASF553
-	.byte	0x5
-	.uleb128 0x89
-	.4byte	.LASF554
-	.byte	0x5
-	.uleb128 0x8b
-	.4byte	.LASF555
-	.byte	0x5
-	.uleb128 0x8c
-	.4byte	.LASF556
-	.byte	0x5
-	.uleb128 0x8d
-	.4byte	.LASF557
-	.byte	0x5
-	.uleb128 0x90
-	.4byte	.LASF558
-	.byte	0x5
-	.uleb128 0x91
-	.4byte	.LASF559
-	.byte	0x5
-	.uleb128 0x92
-	.4byte	.LASF560
-	.byte	0x5
-	.uleb128 0x93
-	.4byte	.LASF561
-	.byte	0x5
-	.uleb128 0x94
-	.4byte	.LASF562
-	.byte	0x5
-	.uleb128 0x95
-	.4byte	.LASF563
-	.byte	0x5
-	.uleb128 0x96
-	.4byte	.LASF564
-	.byte	0x5
-	.uleb128 0x97
-	.4byte	.LASF565
-	.byte	0x5
-	.uleb128 0x98
-	.4byte	.LASF566
-	.byte	0x5
-	.uleb128 0x99
-	.4byte	.LASF567
-	.byte	0x5
-	.uleb128 0x9a
-	.4byte	.LASF568
-	.byte	0x5
-	.uleb128 0x9b
-	.4byte	.LASF569
-	.byte	0x5
-	.uleb128 0x9d
-	.4byte	.LASF570
-	.byte	0x5
-	.uleb128 0x9e
-	.4byte	.LASF571
-	.byte	0x5
-	.uleb128 0x9f
-	.4byte	.LASF572
-	.byte	0x5
-	.uleb128 0xa0
-	.4byte	.LASF573
-	.byte	0x5
-	.uleb128 0xa1
-	.4byte	.LASF574
-	.byte	0x5
-	.uleb128 0xa2
-	.4byte	.LASF575
-	.byte	0x5
-	.uleb128 0xa3
-	.4byte	.LASF576
-	.byte	0x5
-	.uleb128 0xa4
-	.4byte	.LASF577
-	.byte	0x5
-	.uleb128 0xa5
-	.4byte	.LASF578
-	.byte	0x5
-	.uleb128 0xa6
-	.4byte	.LASF579
-	.byte	0x5
-	.uleb128 0xa7
-	.4byte	.LASF580
-	.byte	0x5
-	.uleb128 0xa8
-	.4byte	.LASF581
-	.byte	0x5
-	.uleb128 0xad
-	.4byte	.LASF582
-	.byte	0x5
-	.uleb128 0xae
-	.4byte	.LASF583
-	.byte	0x5
-	.uleb128 0xaf
-	.4byte	.LASF584
-	.byte	0x5
-	.uleb128 0xb1
-	.4byte	.LASF585
-	.byte	0x5
-	.uleb128 0xb2
-	.4byte	.LASF586
-	.byte	0x5
-	.uleb128 0xb3
-	.4byte	.LASF587
-	.byte	0x5
-	.uleb128 0xc3
-	.4byte	.LASF588
-	.byte	0x5
-	.uleb128 0xc4
-	.4byte	.LASF589
-	.byte	0x5
-	.uleb128 0xc5
-	.4byte	.LASF590
-	.byte	0x5
-	.uleb128 0xc6
-	.4byte	.LASF591
-	.byte	0x5
-	.uleb128 0xc7
-	.4byte	.LASF592
-	.byte	0x5
-	.uleb128 0xc8
-	.4byte	.LASF593
-	.byte	0x5
-	.uleb128 0xc9
-	.4byte	.LASF594
-	.byte	0x5
-	.uleb128 0xca
-	.4byte	.LASF595
-	.byte	0x5
-	.uleb128 0xcc
-	.4byte	.LASF596
-	.byte	0x5
-	.uleb128 0xcd
-	.4byte	.LASF597
-	.byte	0x5
-	.uleb128 0xd7
-	.4byte	.LASF598
-	.byte	0x5
-	.uleb128 0xd8
-	.4byte	.LASF599
-	.byte	0x5
-	.uleb128 0xdc
+	.uleb128 0x33
 	.4byte	.LASF600
 	.byte	0x5
-	.uleb128 0xdd
+	.uleb128 0x34
 	.4byte	.LASF601
+	.byte	0x5
+	.uleb128 0x35
+	.4byte	.LASF602
+	.byte	0x5
+	.uleb128 0x36
+	.4byte	.LASF603
+	.byte	0x5
+	.uleb128 0x44
+	.4byte	.LASF604
+	.byte	0x5
+	.uleb128 0x45
+	.4byte	.LASF605
+	.byte	0x5
+	.uleb128 0x46
+	.4byte	.LASF606
+	.byte	0x5
+	.uleb128 0x47
+	.4byte	.LASF607
+	.byte	0x5
+	.uleb128 0x49
+	.4byte	.LASF608
+	.byte	0x5
+	.uleb128 0x4a
+	.4byte	.LASF609
+	.byte	0x5
+	.uleb128 0x4b
+	.4byte	.LASF610
+	.byte	0x5
+	.uleb128 0x4c
+	.4byte	.LASF611
+	.byte	0x5
+	.uleb128 0x4e
+	.4byte	.LASF612
+	.byte	0x5
+	.uleb128 0x4f
+	.4byte	.LASF613
+	.byte	0x5
+	.uleb128 0x50
+	.4byte	.LASF614
+	.byte	0x5
+	.uleb128 0x51
+	.4byte	.LASF615
+	.byte	0x5
+	.uleb128 0x53
+	.4byte	.LASF616
+	.byte	0x5
+	.uleb128 0x56
+	.4byte	.LASF617
+	.byte	0x5
+	.uleb128 0x57
+	.4byte	.LASF618
+	.byte	0x5
+	.uleb128 0x58
+	.4byte	.LASF619
+	.byte	0x5
+	.uleb128 0x59
+	.4byte	.LASF620
+	.byte	0x5
+	.uleb128 0x5b
+	.4byte	.LASF621
+	.byte	0x5
+	.uleb128 0x5c
+	.4byte	.LASF622
+	.byte	0x5
+	.uleb128 0x5d
+	.4byte	.LASF623
+	.byte	0x5
+	.uleb128 0x5e
+	.4byte	.LASF624
+	.byte	0x5
+	.uleb128 0x60
+	.4byte	.LASF625
+	.byte	0x5
+	.uleb128 0x61
+	.4byte	.LASF626
+	.byte	0x5
+	.uleb128 0x62
+	.4byte	.LASF627
+	.byte	0x5
+	.uleb128 0x63
+	.4byte	.LASF628
+	.byte	0x5
+	.uleb128 0x65
+	.4byte	.LASF629
+	.byte	0x5
+	.uleb128 0x68
+	.4byte	.LASF630
+	.byte	0x5
+	.uleb128 0x69
+	.4byte	.LASF631
+	.byte	0x5
+	.uleb128 0x6a
+	.4byte	.LASF632
+	.byte	0x5
+	.uleb128 0x6b
+	.4byte	.LASF633
+	.byte	0x5
+	.uleb128 0x6d
+	.4byte	.LASF634
+	.byte	0x5
+	.uleb128 0x6e
+	.4byte	.LASF635
+	.byte	0x5
+	.uleb128 0x6f
+	.4byte	.LASF636
+	.byte	0x5
+	.uleb128 0x70
+	.4byte	.LASF637
+	.byte	0x5
+	.uleb128 0x72
+	.4byte	.LASF638
+	.byte	0x5
+	.uleb128 0x73
+	.4byte	.LASF639
+	.byte	0x5
+	.uleb128 0x74
+	.4byte	.LASF640
+	.byte	0x5
+	.uleb128 0x75
+	.4byte	.LASF641
+	.byte	0x5
+	.uleb128 0x77
+	.4byte	.LASF642
+	.byte	0x5
+	.uleb128 0x7a
+	.4byte	.LASF643
+	.byte	0x5
+	.uleb128 0x7b
+	.4byte	.LASF644
+	.byte	0x5
+	.uleb128 0x7c
+	.4byte	.LASF645
+	.byte	0x5
+	.uleb128 0x7d
+	.4byte	.LASF646
+	.byte	0x5
+	.uleb128 0x7f
+	.4byte	.LASF647
+	.byte	0x5
+	.uleb128 0x80
+	.4byte	.LASF648
+	.byte	0x5
+	.uleb128 0x81
+	.4byte	.LASF649
+	.byte	0x5
+	.uleb128 0x82
+	.4byte	.LASF650
+	.byte	0x5
+	.uleb128 0x84
+	.4byte	.LASF651
+	.byte	0x5
+	.uleb128 0x85
+	.4byte	.LASF652
+	.byte	0x5
+	.uleb128 0x86
+	.4byte	.LASF653
+	.byte	0x5
+	.uleb128 0x87
+	.4byte	.LASF654
+	.byte	0x5
+	.uleb128 0x89
+	.4byte	.LASF655
+	.byte	0x5
+	.uleb128 0x8c
+	.4byte	.LASF656
+	.byte	0x5
+	.uleb128 0x8d
+	.4byte	.LASF657
+	.byte	0x5
+	.uleb128 0x8e
+	.4byte	.LASF658
+	.byte	0x5
+	.uleb128 0x8f
+	.4byte	.LASF659
+	.byte	0x5
+	.uleb128 0x91
+	.4byte	.LASF660
+	.byte	0x5
+	.uleb128 0x92
+	.4byte	.LASF661
+	.byte	0x5
+	.uleb128 0x93
+	.4byte	.LASF662
+	.byte	0x5
+	.uleb128 0x94
+	.4byte	.LASF663
+	.byte	0x5
+	.uleb128 0x96
+	.4byte	.LASF664
+	.byte	0x5
+	.uleb128 0x97
+	.4byte	.LASF665
+	.byte	0x5
+	.uleb128 0x98
+	.4byte	.LASF666
+	.byte	0x5
+	.uleb128 0x99
+	.4byte	.LASF667
+	.byte	0x5
+	.uleb128 0x9b
+	.4byte	.LASF668
+	.byte	0x5
+	.uleb128 0x9e
+	.4byte	.LASF669
+	.byte	0x5
+	.uleb128 0x9f
+	.4byte	.LASF670
+	.byte	0x5
+	.uleb128 0xa0
+	.4byte	.LASF671
+	.byte	0x5
+	.uleb128 0xa1
+	.4byte	.LASF672
+	.byte	0x5
+	.uleb128 0xa3
+	.4byte	.LASF673
+	.byte	0x5
+	.uleb128 0xa4
+	.4byte	.LASF674
+	.byte	0x5
+	.uleb128 0xa5
+	.4byte	.LASF675
+	.byte	0x5
+	.uleb128 0xa6
+	.4byte	.LASF676
+	.byte	0x5
+	.uleb128 0xa8
+	.4byte	.LASF677
+	.byte	0x5
+	.uleb128 0xa9
+	.4byte	.LASF678
+	.byte	0x5
+	.uleb128 0xaa
+	.4byte	.LASF679
+	.byte	0x5
+	.uleb128 0xab
+	.4byte	.LASF680
+	.byte	0x5
+	.uleb128 0xad
+	.4byte	.LASF681
+	.byte	0x5
+	.uleb128 0xaf
+	.4byte	.LASF682
+	.byte	0x5
+	.uleb128 0xb0
+	.4byte	.LASF683
+	.byte	0x5
+	.uleb128 0xb1
+	.4byte	.LASF684
+	.byte	0x5
+	.uleb128 0xb2
+	.4byte	.LASF685
+	.byte	0x5
+	.uleb128 0xb3
+	.4byte	.LASF686
+	.byte	0x5
+	.uleb128 0xb4
+	.4byte	.LASF687
+	.byte	0x5
+	.uleb128 0xbc
+	.4byte	.LASF688
+	.byte	0x5
+	.uleb128 0xbd
+	.4byte	.LASF689
+	.byte	0x5
+	.uleb128 0xbe
+	.4byte	.LASF690
+	.byte	0x5
+	.uleb128 0xbf
+	.4byte	.LASF691
+	.byte	0x5
+	.uleb128 0xc1
+	.4byte	.LASF692
+	.byte	0x5
+	.uleb128 0xc2
+	.4byte	.LASF693
+	.byte	0x5
+	.uleb128 0xc3
+	.4byte	.LASF694
+	.byte	0x5
+	.uleb128 0xc4
+	.4byte	.LASF695
+	.byte	0x5
+	.uleb128 0xc6
+	.4byte	.LASF696
+	.byte	0x5
+	.uleb128 0xc7
+	.4byte	.LASF697
+	.byte	0x5
+	.uleb128 0xc8
+	.4byte	.LASF698
+	.byte	0x5
+	.uleb128 0xc9
+	.4byte	.LASF699
+	.byte	0x5
+	.uleb128 0xcb
+	.4byte	.LASF700
+	.byte	0x5
+	.uleb128 0xce
+	.4byte	.LASF701
+	.byte	0x5
+	.uleb128 0xcf
+	.4byte	.LASF702
+	.byte	0x5
+	.uleb128 0xd0
+	.4byte	.LASF703
+	.byte	0x5
+	.uleb128 0xd1
+	.4byte	.LASF704
+	.byte	0x5
+	.uleb128 0xd3
+	.4byte	.LASF705
+	.byte	0x5
+	.uleb128 0xd4
+	.4byte	.LASF706
+	.byte	0x5
+	.uleb128 0xd5
+	.4byte	.LASF707
+	.byte	0x5
+	.uleb128 0xd6
+	.4byte	.LASF708
+	.byte	0x5
+	.uleb128 0xd8
+	.4byte	.LASF709
+	.byte	0x5
+	.uleb128 0xd9
+	.4byte	.LASF710
+	.byte	0x5
+	.uleb128 0xda
+	.4byte	.LASF711
+	.byte	0x5
+	.uleb128 0xdb
+	.4byte	.LASF712
+	.byte	0x5
+	.uleb128 0xdd
+	.4byte	.LASF713
+	.byte	0x5
+	.uleb128 0xe0
+	.4byte	.LASF714
+	.byte	0x5
+	.uleb128 0xe1
+	.4byte	.LASF715
+	.byte	0x5
+	.uleb128 0xe2
+	.4byte	.LASF716
+	.byte	0x5
+	.uleb128 0xe3
+	.4byte	.LASF717
+	.byte	0x5
+	.uleb128 0xe5
+	.4byte	.LASF718
+	.byte	0x5
+	.uleb128 0xe6
+	.4byte	.LASF719
+	.byte	0x5
+	.uleb128 0xe7
+	.4byte	.LASF720
+	.byte	0x5
+	.uleb128 0xe8
+	.4byte	.LASF721
+	.byte	0x5
+	.uleb128 0xea
+	.4byte	.LASF722
+	.byte	0x5
+	.uleb128 0xeb
+	.4byte	.LASF723
+	.byte	0x5
+	.uleb128 0xec
+	.4byte	.LASF724
+	.byte	0x5
+	.uleb128 0xed
+	.4byte	.LASF725
+	.byte	0x5
+	.uleb128 0xef
+	.4byte	.LASF726
+	.byte	0x5
+	.uleb128 0xf2
+	.4byte	.LASF727
+	.byte	0x5
+	.uleb128 0xf3
+	.4byte	.LASF728
+	.byte	0x5
+	.uleb128 0xf4
+	.4byte	.LASF729
+	.byte	0x5
+	.uleb128 0xf5
+	.4byte	.LASF730
+	.byte	0x5
+	.uleb128 0xf7
+	.4byte	.LASF731
+	.byte	0x5
+	.uleb128 0xf8
+	.4byte	.LASF732
+	.byte	0x5
+	.uleb128 0xf9
+	.4byte	.LASF733
+	.byte	0x5
+	.uleb128 0xfa
+	.4byte	.LASF734
+	.byte	0x5
+	.uleb128 0xfc
+	.4byte	.LASF735
+	.byte	0x5
+	.uleb128 0xfd
+	.4byte	.LASF736
+	.byte	0x5
+	.uleb128 0xfe
+	.4byte	.LASF737
+	.byte	0x5
+	.uleb128 0xff
+	.4byte	.LASF738
+	.byte	0x5
+	.uleb128 0x101
+	.4byte	.LASF739
+	.byte	0x5
+	.uleb128 0x104
+	.4byte	.LASF740
+	.byte	0x5
+	.uleb128 0x105
+	.4byte	.LASF741
+	.byte	0x5
+	.uleb128 0x106
+	.4byte	.LASF742
+	.byte	0x5
+	.uleb128 0x107
+	.4byte	.LASF743
+	.byte	0x5
+	.uleb128 0x109
+	.4byte	.LASF744
+	.byte	0x5
+	.uleb128 0x10a
+	.4byte	.LASF745
+	.byte	0x5
+	.uleb128 0x10b
+	.4byte	.LASF746
+	.byte	0x5
+	.uleb128 0x10c
+	.4byte	.LASF747
+	.byte	0x5
+	.uleb128 0x10e
+	.4byte	.LASF748
+	.byte	0x5
+	.uleb128 0x10f
+	.4byte	.LASF749
+	.byte	0x5
+	.uleb128 0x110
+	.4byte	.LASF750
+	.byte	0x5
+	.uleb128 0x111
+	.4byte	.LASF751
+	.byte	0x5
+	.uleb128 0x113
+	.4byte	.LASF752
 	.byte	0
-	.section	.debug_macro,"G",%progbits,wm4.inttypes.h.51.8f95d4f617ed7727de4df087c228bd6c,comdat
+	.section	.debug_macro,"G",%progbits,wm4.__crossworks.h.45.c15bb6e0a60630589d552427ceaabe49,comdat
 .Ldebug_macro6:
 	.2byte	0x4
 	.byte	0
 	.byte	0x5
-	.uleb128 0x33
-	.4byte	.LASF602
+	.uleb128 0x2d
+	.4byte	.LASF754
 	.byte	0x5
-	.uleb128 0x34
-	.4byte	.LASF603
-	.byte	0x5
-	.uleb128 0x35
-	.4byte	.LASF604
-	.byte	0x5
-	.uleb128 0x36
-	.4byte	.LASF605
-	.byte	0x5
-	.uleb128 0x44
-	.4byte	.LASF606
+	.uleb128 0x41
+	.4byte	.LASF755
+	.byte	0x6
+	.uleb128 0x43
+	.4byte	.LASF756
 	.byte	0x5
 	.uleb128 0x45
-	.4byte	.LASF607
-	.byte	0x5
-	.uleb128 0x46
-	.4byte	.LASF608
-	.byte	0x5
-	.uleb128 0x47
-	.4byte	.LASF609
+	.4byte	.LASF757
 	.byte	0x5
 	.uleb128 0x49
-	.4byte	.LASF610
-	.byte	0x5
-	.uleb128 0x4a
-	.4byte	.LASF611
+	.4byte	.LASF758
 	.byte	0x5
 	.uleb128 0x4b
-	.4byte	.LASF612
-	.byte	0x5
-	.uleb128 0x4c
-	.4byte	.LASF613
-	.byte	0x5
-	.uleb128 0x4e
-	.4byte	.LASF614
-	.byte	0x5
-	.uleb128 0x4f
-	.4byte	.LASF615
-	.byte	0x5
-	.uleb128 0x50
-	.4byte	.LASF616
-	.byte	0x5
-	.uleb128 0x51
-	.4byte	.LASF617
-	.byte	0x5
-	.uleb128 0x53
-	.4byte	.LASF618
-	.byte	0x5
-	.uleb128 0x56
-	.4byte	.LASF619
-	.byte	0x5
-	.uleb128 0x57
-	.4byte	.LASF620
-	.byte	0x5
-	.uleb128 0x58
-	.4byte	.LASF621
-	.byte	0x5
-	.uleb128 0x59
-	.4byte	.LASF622
-	.byte	0x5
-	.uleb128 0x5b
-	.4byte	.LASF623
+	.4byte	.LASF759
 	.byte	0x5
 	.uleb128 0x5c
-	.4byte	.LASF624
-	.byte	0x5
-	.uleb128 0x5d
-	.4byte	.LASF625
-	.byte	0x5
-	.uleb128 0x5e
-	.4byte	.LASF626
-	.byte	0x5
-	.uleb128 0x60
-	.4byte	.LASF627
-	.byte	0x5
-	.uleb128 0x61
-	.4byte	.LASF628
-	.byte	0x5
-	.uleb128 0x62
-	.4byte	.LASF629
+	.4byte	.LASF760
 	.byte	0x5
 	.uleb128 0x63
-	.4byte	.LASF630
-	.byte	0x5
-	.uleb128 0x65
-	.4byte	.LASF631
-	.byte	0x5
-	.uleb128 0x68
-	.4byte	.LASF632
+	.4byte	.LASF755
 	.byte	0x5
 	.uleb128 0x69
-	.4byte	.LASF633
+	.4byte	.LASF761
 	.byte	0x5
 	.uleb128 0x6a
-	.4byte	.LASF634
+	.4byte	.LASF762
 	.byte	0x5
 	.uleb128 0x6b
-	.4byte	.LASF635
+	.4byte	.LASF763
+	.byte	0x5
+	.uleb128 0x6c
+	.4byte	.LASF764
 	.byte	0x5
 	.uleb128 0x6d
-	.4byte	.LASF636
+	.4byte	.LASF765
 	.byte	0x5
 	.uleb128 0x6e
-	.4byte	.LASF637
+	.4byte	.LASF766
 	.byte	0x5
 	.uleb128 0x6f
-	.4byte	.LASF638
+	.4byte	.LASF767
 	.byte	0x5
 	.uleb128 0x70
-	.4byte	.LASF639
-	.byte	0x5
-	.uleb128 0x72
-	.4byte	.LASF640
+	.4byte	.LASF768
 	.byte	0x5
 	.uleb128 0x73
-	.4byte	.LASF641
+	.4byte	.LASF769
 	.byte	0x5
 	.uleb128 0x74
-	.4byte	.LASF642
+	.4byte	.LASF770
 	.byte	0x5
 	.uleb128 0x75
-	.4byte	.LASF643
+	.4byte	.LASF771
 	.byte	0x5
-	.uleb128 0x77
-	.4byte	.LASF644
-	.byte	0x5
-	.uleb128 0x7a
-	.4byte	.LASF645
+	.uleb128 0x76
+	.4byte	.LASF772
 	.byte	0x5
 	.uleb128 0x7b
-	.4byte	.LASF646
-	.byte	0x5
-	.uleb128 0x7c
-	.4byte	.LASF647
-	.byte	0x5
-	.uleb128 0x7d
-	.4byte	.LASF648
-	.byte	0x5
-	.uleb128 0x7f
-	.4byte	.LASF649
-	.byte	0x5
-	.uleb128 0x80
-	.4byte	.LASF650
-	.byte	0x5
-	.uleb128 0x81
-	.4byte	.LASF651
-	.byte	0x5
-	.uleb128 0x82
-	.4byte	.LASF652
-	.byte	0x5
-	.uleb128 0x84
-	.4byte	.LASF653
-	.byte	0x5
-	.uleb128 0x85
-	.4byte	.LASF654
-	.byte	0x5
-	.uleb128 0x86
-	.4byte	.LASF655
-	.byte	0x5
-	.uleb128 0x87
-	.4byte	.LASF656
-	.byte	0x5
-	.uleb128 0x89
-	.4byte	.LASF657
-	.byte	0x5
-	.uleb128 0x8c
-	.4byte	.LASF658
-	.byte	0x5
-	.uleb128 0x8d
-	.4byte	.LASF659
-	.byte	0x5
-	.uleb128 0x8e
-	.4byte	.LASF660
-	.byte	0x5
-	.uleb128 0x8f
-	.4byte	.LASF661
-	.byte	0x5
-	.uleb128 0x91
-	.4byte	.LASF662
-	.byte	0x5
-	.uleb128 0x92
-	.4byte	.LASF663
-	.byte	0x5
-	.uleb128 0x93
-	.4byte	.LASF664
-	.byte	0x5
-	.uleb128 0x94
-	.4byte	.LASF665
-	.byte	0x5
-	.uleb128 0x96
-	.4byte	.LASF666
-	.byte	0x5
-	.uleb128 0x97
-	.4byte	.LASF667
-	.byte	0x5
-	.uleb128 0x98
-	.4byte	.LASF668
-	.byte	0x5
-	.uleb128 0x99
-	.4byte	.LASF669
-	.byte	0x5
-	.uleb128 0x9b
-	.4byte	.LASF670
-	.byte	0x5
-	.uleb128 0x9e
-	.4byte	.LASF671
-	.byte	0x5
-	.uleb128 0x9f
-	.4byte	.LASF672
-	.byte	0x5
-	.uleb128 0xa0
-	.4byte	.LASF673
-	.byte	0x5
-	.uleb128 0xa1
-	.4byte	.LASF674
-	.byte	0x5
-	.uleb128 0xa3
-	.4byte	.LASF675
-	.byte	0x5
-	.uleb128 0xa4
-	.4byte	.LASF676
-	.byte	0x5
-	.uleb128 0xa5
-	.4byte	.LASF677
-	.byte	0x5
-	.uleb128 0xa6
-	.4byte	.LASF678
-	.byte	0x5
-	.uleb128 0xa8
-	.4byte	.LASF679
-	.byte	0x5
-	.uleb128 0xa9
-	.4byte	.LASF680
-	.byte	0x5
-	.uleb128 0xaa
-	.4byte	.LASF681
-	.byte	0x5
-	.uleb128 0xab
-	.4byte	.LASF682
-	.byte	0x5
-	.uleb128 0xad
-	.4byte	.LASF683
-	.byte	0x5
-	.uleb128 0xaf
-	.4byte	.LASF684
-	.byte	0x5
-	.uleb128 0xb0
-	.4byte	.LASF685
-	.byte	0x5
-	.uleb128 0xb1
-	.4byte	.LASF686
-	.byte	0x5
-	.uleb128 0xb2
-	.4byte	.LASF687
-	.byte	0x5
-	.uleb128 0xb3
-	.4byte	.LASF688
-	.byte	0x5
-	.uleb128 0xb4
-	.4byte	.LASF689
-	.byte	0x5
-	.uleb128 0xbc
-	.4byte	.LASF690
-	.byte	0x5
-	.uleb128 0xbd
-	.4byte	.LASF691
-	.byte	0x5
-	.uleb128 0xbe
-	.4byte	.LASF692
-	.byte	0x5
-	.uleb128 0xbf
-	.4byte	.LASF693
-	.byte	0x5
-	.uleb128 0xc1
-	.4byte	.LASF694
-	.byte	0x5
-	.uleb128 0xc2
-	.4byte	.LASF695
-	.byte	0x5
-	.uleb128 0xc3
-	.4byte	.LASF696
-	.byte	0x5
-	.uleb128 0xc4
-	.4byte	.LASF697
-	.byte	0x5
-	.uleb128 0xc6
-	.4byte	.LASF698
-	.byte	0x5
-	.uleb128 0xc7
-	.4byte	.LASF699
-	.byte	0x5
-	.uleb128 0xc8
-	.4byte	.LASF700
-	.byte	0x5
-	.uleb128 0xc9
-	.4byte	.LASF701
-	.byte	0x5
-	.uleb128 0xcb
-	.4byte	.LASF702
-	.byte	0x5
-	.uleb128 0xce
-	.4byte	.LASF703
-	.byte	0x5
-	.uleb128 0xcf
-	.4byte	.LASF704
-	.byte	0x5
-	.uleb128 0xd0
-	.4byte	.LASF705
-	.byte	0x5
-	.uleb128 0xd1
-	.4byte	.LASF706
-	.byte	0x5
-	.uleb128 0xd3
-	.4byte	.LASF707
-	.byte	0x5
-	.uleb128 0xd4
-	.4byte	.LASF708
-	.byte	0x5
-	.uleb128 0xd5
-	.4byte	.LASF709
-	.byte	0x5
-	.uleb128 0xd6
-	.4byte	.LASF710
-	.byte	0x5
-	.uleb128 0xd8
-	.4byte	.LASF711
-	.byte	0x5
-	.uleb128 0xd9
-	.4byte	.LASF712
+	.4byte	.LASF773
 	.byte	0x5
 	.uleb128 0xda
-	.4byte	.LASF713
-	.byte	0x5
-	.uleb128 0xdb
-	.4byte	.LASF714
-	.byte	0x5
-	.uleb128 0xdd
-	.4byte	.LASF715
-	.byte	0x5
-	.uleb128 0xe0
-	.4byte	.LASF716
-	.byte	0x5
-	.uleb128 0xe1
-	.4byte	.LASF717
-	.byte	0x5
-	.uleb128 0xe2
-	.4byte	.LASF718
-	.byte	0x5
-	.uleb128 0xe3
-	.4byte	.LASF719
-	.byte	0x5
-	.uleb128 0xe5
-	.4byte	.LASF720
-	.byte	0x5
-	.uleb128 0xe6
-	.4byte	.LASF721
-	.byte	0x5
-	.uleb128 0xe7
-	.4byte	.LASF722
-	.byte	0x5
-	.uleb128 0xe8
-	.4byte	.LASF723
-	.byte	0x5
-	.uleb128 0xea
-	.4byte	.LASF724
-	.byte	0x5
-	.uleb128 0xeb
-	.4byte	.LASF725
-	.byte	0x5
-	.uleb128 0xec
-	.4byte	.LASF726
-	.byte	0x5
-	.uleb128 0xed
-	.4byte	.LASF727
-	.byte	0x5
-	.uleb128 0xef
-	.4byte	.LASF728
-	.byte	0x5
-	.uleb128 0xf2
-	.4byte	.LASF729
-	.byte	0x5
-	.uleb128 0xf3
-	.4byte	.LASF730
-	.byte	0x5
-	.uleb128 0xf4
-	.4byte	.LASF731
-	.byte	0x5
-	.uleb128 0xf5
-	.4byte	.LASF732
-	.byte	0x5
-	.uleb128 0xf7
-	.4byte	.LASF733
-	.byte	0x5
-	.uleb128 0xf8
-	.4byte	.LASF734
-	.byte	0x5
-	.uleb128 0xf9
-	.4byte	.LASF735
-	.byte	0x5
-	.uleb128 0xfa
-	.4byte	.LASF736
-	.byte	0x5
-	.uleb128 0xfc
-	.4byte	.LASF737
-	.byte	0x5
-	.uleb128 0xfd
-	.4byte	.LASF738
-	.byte	0x5
-	.uleb128 0xfe
-	.4byte	.LASF739
-	.byte	0x5
-	.uleb128 0xff
-	.4byte	.LASF740
-	.byte	0x5
-	.uleb128 0x101
-	.4byte	.LASF741
-	.byte	0x5
-	.uleb128 0x104
-	.4byte	.LASF742
-	.byte	0x5
-	.uleb128 0x105
-	.4byte	.LASF743
-	.byte	0x5
-	.uleb128 0x106
-	.4byte	.LASF744
-	.byte	0x5
-	.uleb128 0x107
-	.4byte	.LASF745
-	.byte	0x5
-	.uleb128 0x109
-	.4byte	.LASF746
-	.byte	0x5
-	.uleb128 0x10a
-	.4byte	.LASF747
-	.byte	0x5
-	.uleb128 0x10b
-	.4byte	.LASF748
-	.byte	0x5
-	.uleb128 0x10c
-	.4byte	.LASF749
-	.byte	0x5
-	.uleb128 0x10e
-	.4byte	.LASF750
-	.byte	0x5
-	.uleb128 0x10f
-	.4byte	.LASF751
-	.byte	0x5
-	.uleb128 0x110
-	.4byte	.LASF752
-	.byte	0x5
-	.uleb128 0x111
-	.4byte	.LASF753
-	.byte	0x5
-	.uleb128 0x113
-	.4byte	.LASF754
+	.4byte	.LASF774
 	.byte	0
-	.section	.debug_macro,"G",%progbits,wm4.__crossworks.h.45.c15bb6e0a60630589d552427ceaabe49,comdat
+	.section	.debug_macro,"G",%progbits,wm4.string.h.54.1251887c85434229a131a5f3ce872657,comdat
 .Ldebug_macro7:
 	.2byte	0x4
 	.byte	0
 	.byte	0x5
-	.uleb128 0x2d
-	.4byte	.LASF756
-	.byte	0x5
-	.uleb128 0x41
-	.4byte	.LASF757
-	.byte	0x6
-	.uleb128 0x43
-	.4byte	.LASF758
-	.byte	0x5
-	.uleb128 0x45
-	.4byte	.LASF759
-	.byte	0x5
-	.uleb128 0x49
-	.4byte	.LASF760
-	.byte	0x5
-	.uleb128 0x4b
-	.4byte	.LASF761
-	.byte	0x5
-	.uleb128 0x5c
-	.4byte	.LASF762
-	.byte	0x5
-	.uleb128 0x63
-	.4byte	.LASF757
-	.byte	0x5
-	.uleb128 0x69
-	.4byte	.LASF763
-	.byte	0x5
-	.uleb128 0x6a
-	.4byte	.LASF764
-	.byte	0x5
-	.uleb128 0x6b
-	.4byte	.LASF765
-	.byte	0x5
-	.uleb128 0x6c
-	.4byte	.LASF766
-	.byte	0x5
-	.uleb128 0x6d
-	.4byte	.LASF767
-	.byte	0x5
-	.uleb128 0x6e
-	.4byte	.LASF768
-	.byte	0x5
-	.uleb128 0x6f
-	.4byte	.LASF769
-	.byte	0x5
-	.uleb128 0x70
-	.4byte	.LASF770
-	.byte	0x5
-	.uleb128 0x73
-	.4byte	.LASF771
-	.byte	0x5
-	.uleb128 0x74
-	.4byte	.LASF772
-	.byte	0x5
-	.uleb128 0x75
-	.4byte	.LASF773
-	.byte	0x5
-	.uleb128 0x76
-	.4byte	.LASF774
-	.byte	0x5
-	.uleb128 0x7b
+	.uleb128 0x36
 	.4byte	.LASF775
 	.byte	0x5
-	.uleb128 0xda
+	.uleb128 0x3b
 	.4byte	.LASF776
 	.byte	0
-	.section	.debug_macro,"G",%progbits,wm4.string.h.54.1251887c85434229a131a5f3ce872657,comdat
+	.section	.debug_macro,"G",%progbits,wm4.stdbool.h.45.e4cbe9931a68266e95ea034b4b9fd8bf,comdat
 .Ldebug_macro8:
 	.2byte	0x4
 	.byte	0
 	.byte	0x5
-	.uleb128 0x36
+	.uleb128 0x2d
 	.4byte	.LASF777
 	.byte	0x5
-	.uleb128 0x3b
+	.uleb128 0x31
 	.4byte	.LASF778
+	.byte	0x5
+	.uleb128 0x35
+	.4byte	.LASF779
+	.byte	0x5
+	.uleb128 0x36
+	.4byte	.LASF780
+	.byte	0x5
+	.uleb128 0x38
+	.4byte	.LASF781
 	.byte	0
-	.section	.debug_macro,"G",%progbits,wm4.stdbool.h.45.e4cbe9931a68266e95ea034b4b9fd8bf,comdat
+	.section	.debug_macro,"G",%progbits,wm4.tc_ecc.h.72.4cf505efe46af49ef185e88a1dbb018c,comdat
 .Ldebug_macro9:
 	.2byte	0x4
 	.byte	0
 	.byte	0x5
-	.uleb128 0x2d
-	.4byte	.LASF779
-	.byte	0x5
-	.uleb128 0x31
-	.4byte	.LASF780
-	.byte	0x5
-	.uleb128 0x35
-	.4byte	.LASF781
-	.byte	0x5
-	.uleb128 0x36
-	.4byte	.LASF782
-	.byte	0x5
-	.uleb128 0x38
+	.uleb128 0x48
 	.4byte	.LASF783
+	.byte	0x5
+	.uleb128 0x51
+	.4byte	.LASF784
+	.byte	0x5
+	.uleb128 0x55
+	.4byte	.LASF785
+	.byte	0x5
+	.uleb128 0x63
+	.4byte	.LASF786
+	.byte	0x5
+	.uleb128 0x64
+	.4byte	.LASF787
+	.byte	0x5
+	.uleb128 0x65
+	.4byte	.LASF788
+	.byte	0x5
+	.uleb128 0x66
+	.4byte	.LASF789
+	.byte	0x5
+	.uleb128 0x69
+	.4byte	.LASF790
+	.byte	0x5
+	.uleb128 0x6b
+	.4byte	.LASF791
+	.byte	0x5
+	.uleb128 0x9a
+	.4byte	.LASF792
+	.byte	0x5
+	.uleb128 0x9b
+	.4byte	.LASF793
+	.byte	0x5
+	.uleb128 0x9c
+	.4byte	.LASF794
+	.byte	0x5
+	.uleb128 0x9e
+	.4byte	.LASF795
 	.byte	0
-	.section	.debug_macro,"G",%progbits,wm4.stddef.h.45.62d50d89638d7955f25aa153b574b44e,comdat
+	.section	.debug_macro,"G",%progbits,wm4.tc_constants.h.40.407ea91e7e4f52abaf44e9d8e99a6316,comdat
 .Ldebug_macro10:
 	.2byte	0x4
 	.byte	0
 	.byte	0x5
-	.uleb128 0x2d
-	.4byte	.LASF785
-	.byte	0x5
-	.uleb128 0x4b
-	.4byte	.LASF786
-	.byte	0x5
-	.uleb128 0x52
-	.4byte	.LASF787
-	.byte	0
-	.section	.debug_macro,"G",%progbits,wm4.tc_sha256.h.58.c6081f059ad19032558fd800bf97477f,comdat
-.Ldebug_macro11:
-	.2byte	0x4
-	.byte	0
-	.byte	0x5
-	.uleb128 0x3a
-	.4byte	.LASF790
-	.byte	0x5
-	.uleb128 0x43
-	.4byte	.LASF791
-	.byte	0x5
-	.uleb128 0x44
-	.4byte	.LASF792
-	.byte	0x5
-	.uleb128 0x45
-	.4byte	.LASF793
-	.byte	0
-	.section	.debug_macro,"G",%progbits,wm4.uecc.h.4.8ed106cc303b797f8a84e2dbe1ab5954,comdat
-.Ldebug_macro12:
-	.2byte	0x4
-	.byte	0
-	.byte	0x5
-	.uleb128 0x4
-	.4byte	.LASF794
-	.byte	0x5
-	.uleb128 0xb
-	.4byte	.LASF795
-	.byte	0x5
-	.uleb128 0xc
+	.uleb128 0x28
 	.4byte	.LASF796
 	.byte	0x5
-	.uleb128 0xd
+	.uleb128 0x34
 	.4byte	.LASF797
 	.byte	0x5
-	.uleb128 0xe
+	.uleb128 0x35
 	.4byte	.LASF798
 	.byte	0x5
-	.uleb128 0xf
+	.uleb128 0x37
 	.4byte	.LASF799
-	.byte	0x5
-	.uleb128 0x10
-	.4byte	.LASF800
-	.byte	0x5
-	.uleb128 0x11
-	.4byte	.LASF801
-	.byte	0x5
-	.uleb128 0x12
-	.4byte	.LASF802
-	.byte	0x5
-	.uleb128 0x39
-	.4byte	.LASF803
-	.byte	0x5
-	.uleb128 0x3c
-	.4byte	.LASF804
-	.byte	0x5
-	.uleb128 0x3f
-	.4byte	.LASF805
-	.byte	0x5
-	.uleb128 0x42
-	.4byte	.LASF806
-	.byte	0x5
-	.uleb128 0x45
-	.4byte	.LASF807
 	.byte	0
 	.section	.debug_line,"",%progbits
 .Ldebug_line0:
 	.section	.debug_str,"MS",%progbits,1
 .LASF233:
 	.ascii	"__DEC32_MANT_DIG__ 7\000"
-.LASF522:
+.LASF520:
 	.ascii	"NDN_SEC_UNSUPPORT_CRYPTO_ALGO -26\000"
 .LASF362:
 	.ascii	"__UHA_FBIT__ 8\000"
-.LASF789:
-	.ascii	"__TC_HMAC_H__ \000"
+.LASF808:
+	.ascii	"int8_t\000"
 .LASF252:
 	.ascii	"__DEC128_EPSILON__ 1E-33DL\000"
-.LASF927:
-	.ascii	"input_hash\000"
 .LASF382:
 	.ascii	"__GCC_ATOMIC_WCHAR_T_LOCK_FREE 2\000"
 .LASF374:
 	.ascii	"__CHAR_UNSIGNED__ 1\000"
-.LASF899:
-	.ascii	"size_t\000"
-.LASF874:
+.LASF683:
+	.ascii	"PRIiPTR \"i\"\000"
+.LASF254:
+	.ascii	"__SFRACT_FBIT__ 7\000"
+.LASF868:
 	.ascii	"__locale_s\000"
 .LASF217:
 	.ascii	"__FLT64_HAS_INFINITY__ 1\000"
-.LASF757:
+.LASF755:
 	.ascii	"__THREAD __thread\000"
-.LASF676:
+.LASF674:
 	.ascii	"PRIXFAST16 \"X\"\000"
 .LASF326:
 	.ascii	"__LLACCUM_MIN__ (-0X1P31LLK-0X1P31LLK)\000"
-.LASF200:
-	.ascii	"__FLT32_EPSILON__ 1.1\000"
 .LASF456:
 	.ascii	"uECC_SQUARE_FUNC 0\000"
-.LASF864:
-	.ascii	"__towupper\000"
-.LASF868:
+.LASF79:
+	.ascii	"__PTRDIFF_MAX__ 0x7fffffff\000"
+.LASF862:
 	.ascii	"__RAL_locale_codeset_t\000"
 .LASF91:
 	.ascii	"__INTMAX_C(c) c ## LL\000"
@@ -5917,13 +4343,13 @@ ndn_verifier_hmac_verify:
 	.ascii	"__DEC32_SUBNORMAL_MIN__ 0.000001E-95DF\000"
 .LASF343:
 	.ascii	"__TQ_IBIT__ 0\000"
-.LASF608:
+.LASF606:
 	.ascii	"PRId32 __RAL_PRI_32_PREFIX \"d\"\000"
 .LASF221:
 	.ascii	"__FLT32X_MIN_EXP__ (-1021)\000"
-.LASF686:
+.LASF684:
 	.ascii	"PRIoPTR \"o\"\000"
-.LASF722:
+.LASF720:
 	.ascii	"SCNoFAST32 __RAL_SCN_32_PREFIX \"o\"\000"
 .LASF14:
 	.ascii	"__ATOMIC_CONSUME 1\000"
@@ -5931,32 +4357,32 @@ ndn_verifier_hmac_verify:
 	.ascii	"__ULACCUM_FBIT__ 32\000"
 .LASF75:
 	.ascii	"__WCHAR_MAX__ 0xffffffffU\000"
-.LASF623:
+.LASF621:
 	.ascii	"PRIiFAST8 \"i\"\000"
 .LASF448:
 	.ascii	"NRF_SD_BLE_API_VERSION 6\000"
-.LASF524:
+.LASF799:
+	.ascii	"TC_ZERO_BYTE 0x00\000"
+.LASF522:
 	.ascii	"NDN_SEC_WRONG_AES_SIZE -27\000"
-.LASF814:
-	.ascii	"signed char\000"
+.LASF762:
+	.ascii	"__CTYPE_LOWER 0x02\000"
 .LASF18:
 	.ascii	"__SIZEOF_LONG_LONG__ 8\000"
-.LASF803:
-	.ascii	"uECC_SUPPORTS_secp160r1 1\000"
 .LASF167:
 	.ascii	"__DBL_MAX_10_EXP__ 308\000"
 .LASF266:
 	.ascii	"__FRACT_MIN__ (-0.5R-0.5R)\000"
 .LASF332:
 	.ascii	"__ULLACCUM_MAX__ 0XFFFFFFFFFFFFFFFFP-32ULLK\000"
-.LASF576:
+.LASF574:
 	.ascii	"INT_FAST32_MAX INT32_MAX\000"
 .LASF302:
 	.ascii	"__USACCUM_MAX__ 0XFFFFP-8UHK\000"
-.LASF254:
-	.ascii	"__SFRACT_FBIT__ 7\000"
-.LASF459:
-	.ascii	"NDN_LITE_SEC_CONFIG_H \000"
+.LASF236:
+	.ascii	"__DEC32_MIN__ 1E-95DF\000"
+.LASF94:
+	.ascii	"__INTMAX_WIDTH__ 64\000"
 .LASF339:
 	.ascii	"__SQ_IBIT__ 0\000"
 .LASF28:
@@ -5965,124 +4391,120 @@ ndn_verifier_hmac_verify:
 	.ascii	"__SIZE_TYPE__ unsigned int\000"
 .LASF242:
 	.ascii	"__DEC64_MAX_EXP__ 385\000"
-.LASF704:
+.LASF702:
 	.ascii	"SCNi16 __RAL_SCN_16_PREFIX \"i\"\000"
 .LASF158:
 	.ascii	"__FLT_HAS_DENORM__ 1\000"
-.LASF41:
-	.ascii	"__INT8_TYPE__ signed char\000"
+.LASF810:
+	.ascii	"int16_t\000"
 .LASF406:
 	.ascii	"__ARM_ARCH_PROFILE 77\000"
-.LASF613:
+.LASF611:
 	.ascii	"PRIdFAST64 \"lld\"\000"
 .LASF301:
 	.ascii	"__USACCUM_MIN__ 0.0UHK\000"
 .LASF197:
 	.ascii	"__FLT32_DECIMAL_DIG__ 9\000"
-.LASF603:
-	.ascii	"__RAL_SCN_16_PREFIX \"h\"\000"
-.LASF801:
-	.ascii	"uECC_arm64 6\000"
+.LASF630:
+	.ascii	"PRIo8 \"o\"\000"
 .LASF182:
 	.ascii	"__DECIMAL_DIG__ 17\000"
 .LASF178:
 	.ascii	"__LDBL_MIN_EXP__ (-1021)\000"
-.LASF530:
+.LASF528:
 	.ascii	"NDN_FRAG_WRONG_IDENTIFIER -33\000"
 .LASF176:
 	.ascii	"__LDBL_MANT_DIG__ 53\000"
-.LASF642:
+.LASF640:
 	.ascii	"PRIoLEAST32 __RAL_PRI_32_PREFIX \"o\"\000"
 .LASF119:
 	.ascii	"__UINT8_C(c) c\000"
-.LASF472:
+.LASF468:
 	.ascii	"NDN_NAME_COMPONENT_BLOCK_SIZE 38\000"
 .LASF42:
 	.ascii	"__INT16_TYPE__ short int\000"
-.LASF592:
+.LASF590:
 	.ascii	"INT32_C(x) (x ##L)\000"
-.LASF781:
+.LASF779:
 	.ascii	"true 1\000"
-.LASF583:
+.LASF581:
 	.ascii	"PTRDIFF_MAX INT32_MAX\000"
-.LASF759:
+.LASF757:
 	.ascii	"__RAL_SIZE_T unsigned\000"
-.LASF467:
+.LASF463:
 	.ascii	"NDN_ENCODING_TLV_H \000"
-.LASF555:
+.LASF553:
 	.ascii	"INTMAX_MIN (-9223372036854775807LL-1)\000"
-.LASF624:
-	.ascii	"PRIiFAST16 \"i\"\000"
-.LASF589:
+.LASF587:
 	.ascii	"UINT8_C(x) (x ##U)\000"
-.LASF508:
+.LASF504:
 	.ascii	"NDN_SEC_ENCRYPTION_KEYS_SIZE 5\000"
-.LASF778:
+.LASF776:
 	.ascii	"NULL 0\000"
 .LASF375:
 	.ascii	"__GCC_HAVE_SYNC_COMPARE_AND_SWAP_1 1\000"
-.LASF901:
-	.ascii	"bits_hashed\000"
-.LASF706:
+.LASF791:
+	.ascii	"NUM_ECC_BYTES (tc_uECC_WORD_SIZE*NUM_ECC_WORDS)\000"
+.LASF704:
 	.ascii	"SCNi64 \"lli\"\000"
-.LASF810:
+.LASF803:
 	.ascii	"NDN_ECDSA_CURVE_SECP224R1\000"
 .LASF4:
 	.ascii	"__STDC_HOSTED__ 1\000"
-.LASF942:
-	.ascii	"hmac_result\000"
+.LASF289:
+	.ascii	"__ULLFRACT_FBIT__ 64\000"
 .LASF40:
 	.ascii	"__SIG_ATOMIC_TYPE__ int\000"
-.LASF477:
+.LASF473:
 	.ascii	"NDN_INTEREST_PARAMS_BUFFER_SIZE 248\000"
-.LASF586:
+.LASF584:
 	.ascii	"INTPTR_MAX INT32_MAX\000"
-.LASF480:
+.LASF476:
 	.ascii	"NDN_CONTENT_BUFFER_SIZE 256\000"
 .LASF35:
 	.ascii	"__WINT_TYPE__ unsigned int\000"
 .LASF454:
 	.ascii	"uECC_ENABLE_VLI_API 0\000"
-.LASF830:
+.LASF824:
 	.ascii	"int_curr_symbol\000"
-.LASF498:
+.LASF196:
+	.ascii	"__FLT32_MAX_10_EXP__ 38\000"
+.LASF494:
 	.ascii	"NDN_APPSUPPORT_PREFIXES_SIZE 10\000"
-.LASF763:
+.LASF761:
 	.ascii	"__CTYPE_UPPER 0x01\000"
-.LASF749:
+.LASF747:
 	.ascii	"SCNxFAST64 \"llx\"\000"
 .LASF262:
 	.ascii	"__USFRACT_MAX__ 0XFFP-8UHR\000"
-.LASF482:
+.LASF478:
 	.ascii	"NDN_FIB_MAX_SIZE 20\000"
-.LASF872:
+.LASF866:
 	.ascii	"__RAL_locale_t\000"
 .LASF193:
 	.ascii	"__FLT32_MIN_EXP__ (-125)\000"
 .LASF102:
 	.ascii	"__UINT8_MAX__ 0xff\000"
-.LASF457:
-	.ascii	"uECC_SUPPORT_COMPRESSED_POINT 0\000"
-.LASF610:
+.LASF608:
 	.ascii	"PRIdFAST8 \"d\"\000"
-.LASF841:
+.LASF835:
 	.ascii	"n_cs_precedes\000"
-.LASF772:
+.LASF770:
 	.ascii	"__CTYPE_ALNUM (__CTYPE_UPPER | __CTYPE_LOWER | __CT"
 	.ascii	"YPE_DIGIT)\000"
-.LASF543:
+.LASF541:
 	.ascii	"UINT8_MAX 255\000"
 .LASF13:
 	.ascii	"__ATOMIC_ACQ_REL 4\000"
-.LASF483:
+.LASF479:
 	.ascii	"NDN_PIT_MAX_SIZE 32\000"
-.LASF716:
+.LASF714:
 	.ascii	"SCNo8 \"o\"\000"
 .LASF208:
 	.ascii	"__FLT64_MIN_10_EXP__ (-307)\000"
 .LASF354:
 	.ascii	"__HA_FBIT__ 7\000"
-.LASF545:
+.LASF543:
 	.ascii	"INT8_MIN (-128)\000"
 .LASF133:
 	.ascii	"__INT_FAST64_WIDTH__ 64\000"
@@ -6092,28 +4514,30 @@ ndn_verifier_hmac_verify:
 	.ascii	"NRF_CRYPTO_MAX_INSTANCE_COUNT 1\000"
 .LASF258:
 	.ascii	"__SFRACT_EPSILON__ 0x1P-7HR\000"
-.LASF476:
+.LASF601:
+	.ascii	"__RAL_SCN_16_PREFIX \"h\"\000"
+.LASF472:
 	.ascii	"NDN_FWD_INVALID_NAME_COMPONENT_SIZE ((uint32_t)(-1)"
 	.ascii	")\000"
 .LASF165:
 	.ascii	"__DBL_MIN_10_EXP__ (-307)\000"
-.LASF837:
+.LASF831:
 	.ascii	"int_frac_digits\000"
-.LASF621:
+.LASF619:
 	.ascii	"PRIi32 __RAL_PRI_32_PREFIX \"i\"\000"
-.LASF851:
-	.ascii	"day_names\000"
+.LASF66:
+	.ascii	"__UINTPTR_TYPE__ unsigned int\000"
 .LASF338:
 	.ascii	"__SQ_FBIT__ 31\000"
-.LASF580:
+.LASF578:
 	.ascii	"UINT_FAST32_MAX UINT32_MAX\000"
-.LASF643:
-	.ascii	"PRIoLEAST64 \"llo\"\000"
-.LASF510:
+.LASF282:
+	.ascii	"__ULFRACT_MAX__ 0XFFFFFFFFP-32ULR\000"
+.LASF506:
 	.ascii	"NDN_SEC_SHA256_HASH_SIZE 32\000"
 .LASF346:
 	.ascii	"__UHQ_FBIT__ 16\000"
-.LASF695:
+.LASF693:
 	.ascii	"SCNdFAST16 __RAL_SCN_16_PREFIX \"d\"\000"
 .LASF207:
 	.ascii	"__FLT64_MIN_EXP__ (-1021)\000"
@@ -6121,12 +4545,10 @@ ndn_verifier_hmac_verify:
 	.ascii	"BOARD_PCA10056 1\000"
 .LASF88:
 	.ascii	"__PTRDIFF_WIDTH__ 32\000"
-.LASF503:
+.LASF499:
 	.ascii	"NDN_APPSUPPORT_SERVICE_UNAVIALABLE 0\000"
 .LASF228:
 	.ascii	"__FLT32X_EPSILON__ 1.1\000"
-.LASF196:
-	.ascii	"__FLT32_MAX_10_EXP__ 38\000"
 .LASF134:
 	.ascii	"__UINT_FAST8_MAX__ 0xffffffffU\000"
 .LASF238:
@@ -6137,15 +4559,9 @@ ndn_verifier_hmac_verify:
 	.ascii	"__FLT_MAX__ 1.1\000"
 .LASF315:
 	.ascii	"__LACCUM_IBIT__ 32\000"
-.LASF859:
-	.ascii	"__RAL_locale_data_t\000"
-.LASF910:
-	.ascii	"finish_hash\000"
-.LASF799:
-	.ascii	"uECC_arm_thumb 4\000"
 .LASF129:
 	.ascii	"__INT_FAST16_WIDTH__ 32\000"
-.LASF729:
+.LASF727:
 	.ascii	"SCNu8 \"u\"\000"
 .LASF415:
 	.ascii	"__VFP_FP__ 1\000"
@@ -6153,58 +4569,59 @@ ndn_verifier_hmac_verify:
 	.ascii	"__LLFRACT_MIN__ (-0.5LLR-0.5LLR)\000"
 .LASF138:
 	.ascii	"__INTPTR_MAX__ 0x7fffffff\000"
+.LASF388:
+	.ascii	"__GCC_ATOMIC_POINTER_LOCK_FREE 2\000"
 .LASF135:
 	.ascii	"__UINT_FAST16_MAX__ 0xffffffffU\000"
-.LASF142:
-	.ascii	"__GCC_IEC_559_COMPLEX 0\000"
+.LASF782:
+	.ascii	"__TC_ECC_DH_H__ \000"
+.LASF200:
+	.ascii	"__FLT32_EPSILON__ 1.1\000"
 .LASF237:
 	.ascii	"__DEC32_MAX__ 9.999999E96DF\000"
 .LASF271:
 	.ascii	"__UFRACT_MIN__ 0.0UR\000"
-.LASF548:
+.LASF546:
 	.ascii	"INT16_MAX 32767\000"
-.LASF611:
+.LASF609:
 	.ascii	"PRIdFAST16 \"d\"\000"
-.LASF96:
-	.ascii	"__SIG_ATOMIC_MIN__ (-__SIG_ATOMIC_MAX__ - 1)\000"
 .LASF231:
 	.ascii	"__FLT32X_HAS_INFINITY__ 1\000"
-.LASF856:
+.LASF850:
 	.ascii	"date_format\000"
-.LASF945:
-	.ascii	"datalen\000"
+.LASF792:
+	.ascii	"BYTES_TO_WORDS_8(a,b,c,d,e,f,g,h) 0x ##d ##c ##b ##"
+	.ascii	"a, 0x ##h ##g ##f ##e\000"
 .LASF53:
 	.ascii	"__UINT_LEAST8_TYPE__ unsigned char\000"
-.LASF636:
+.LASF634:
 	.ascii	"PRIoFAST8 \"o\"\000"
-.LASF832:
+.LASF826:
 	.ascii	"mon_decimal_point\000"
-.LASF740:
+.LASF738:
 	.ascii	"SCNuLEAST64 \"llu\"\000"
 .LASF304:
 	.ascii	"__ACCUM_FBIT__ 15\000"
 .LASF310:
 	.ascii	"__UACCUM_IBIT__ 16\000"
-.LASF601:
-	.ascii	"WINT_MAX 2147483647L\000"
+.LASF819:
+	.ascii	"long int\000"
 .LASF227:
 	.ascii	"__FLT32X_MIN__ 1.1\000"
-.LASF955:
+.LASF920:
 	.ascii	"C:\\Users\\Rena Li\\Desktop\\adding_nrf_crypto_back"
 	.ascii	"end_to_ndn_lite\000"
 .LASF132:
 	.ascii	"__INT_FAST64_MAX__ 0x7fffffffffffffffLL\000"
 .LASF225:
 	.ascii	"__FLT32X_DECIMAL_DIG__ 17\000"
-.LASF463:
-	.ascii	"NDN_LITE_SEC_BACKEND_CRYPTO_KEY_DEFAULT \000"
+.LASF760:
+	.ascii	"__CODE \000"
 .LASF232:
 	.ascii	"__FLT32X_HAS_QUIET_NAN__ 1\000"
 .LASF273:
 	.ascii	"__UFRACT_EPSILON__ 0x1P-16UR\000"
-.LASF936:
-	.ascii	"prv_key_value\000"
-.LASF894:
+.LASF888:
 	.ascii	"__RAL_error_decoder_s\000"
 .LASF248:
 	.ascii	"__DEC128_MIN_EXP__ (-6142)\000"
@@ -6214,7 +4631,7 @@ ndn_verifier_hmac_verify:
 	.ascii	"__UDA_FBIT__ 32\000"
 .LASF210:
 	.ascii	"__FLT64_MAX_10_EXP__ 308\000"
-.LASF876:
+.LASF870:
 	.ascii	"__RAL_global_locale\000"
 .LASF93:
 	.ascii	"__UINTMAX_C(c) c ## ULL\000"
@@ -6228,8 +4645,6 @@ ndn_verifier_hmac_verify:
 	.ascii	"__ARM_NEON__\000"
 .LASF195:
 	.ascii	"__FLT32_MAX_EXP__ 128\000"
-.LASF924:
-	.ascii	"pub_key_size\000"
 .LASF426:
 	.ascii	"__THUMB_INTERWORK__ 1\000"
 .LASF292:
@@ -6239,106 +4654,103 @@ ndn_verifier_hmac_verify:
 .LASF452:
 	.ascii	"MBEDTLS_CONFIG_FILE \"nrf_crypto_mbedtls_config.h\""
 	.ascii	"\000"
-.LASF736:
+.LASF734:
 	.ascii	"SCNuFAST64 \"llu\"\000"
 .LASF222:
 	.ascii	"__FLT32X_MIN_10_EXP__ (-307)\000"
-.LASF655:
+.LASF653:
 	.ascii	"PRIuLEAST32 __RAL_PRI_32_PREFIX \"u\"\000"
 .LASF39:
 	.ascii	"__CHAR32_TYPE__ long unsigned int\000"
 .LASF421:
 	.ascii	"__ARM_FEATURE_FP16_VECTOR_ARITHMETIC\000"
-.LASF554:
+.LASF785:
+	.ascii	"tc_uECC_RNG_MAX_TRIES 64\000"
+.LASF552:
 	.ascii	"UINT64_MAX 18446744073709551615ULL\000"
-.LASF617:
+.LASF615:
 	.ascii	"PRIdLEAST64 \"lld\"\000"
 .LASF136:
 	.ascii	"__UINT_FAST32_MAX__ 0xffffffffU\000"
+.LASF794:
+	.ascii	"BITS_TO_WORDS(num_bits) ((num_bits + ((tc_uECC_WORD"
+	.ascii	"_SIZE * 8) - 1)) / (tc_uECC_WORD_SIZE * 8))\000"
 .LASF151:
 	.ascii	"__FLT_MAX_EXP__ 128\000"
 .LASF17:
 	.ascii	"__SIZEOF_LONG__ 4\000"
-.LASF675:
+.LASF673:
 	.ascii	"PRIXFAST8 \"X\"\000"
-.LASF501:
+.LASF497:
 	.ascii	"NDN_APPSUPPORT_INVALID_SERVICE_ID_SIZE ((uint32_t)("
 	.ascii	"-1))\000"
-.LASF853:
+.LASF847:
 	.ascii	"month_names\000"
-.LASF114:
-	.ascii	"__INT_LEAST32_WIDTH__ 32\000"
-.LASF664:
-	.ascii	"PRIxFAST32 __RAL_PRI_32_PREFIX \"x\"\000"
-.LASF709:
+.LASF402:
+	.ascii	"__ARM_FEATURE_NUMERIC_MAXMIN\000"
+.LASF707:
 	.ascii	"SCNiFAST32 __RAL_SCN_32_PREFIX \"i\"\000"
-.LASF568:
+.LASF566:
 	.ascii	"UINT_LEAST32_MAX UINT32_MAX\000"
-.LASF911:
-	.ascii	"block_size\000"
+.LASF695:
+	.ascii	"SCNdFAST64 \"lld\"\000"
 .LASF244:
 	.ascii	"__DEC64_MAX__ 9.999999999999999E384DD\000"
-.LASF867:
+.LASF861:
 	.ascii	"__mbtowc\000"
-.LASF579:
+.LASF577:
 	.ascii	"UINT_FAST16_MAX UINT32_MAX\000"
-.LASF534:
+.LASF532:
 	.ascii	"NDN_FWD_FIB_FULL -43\000"
 .LASF368:
 	.ascii	"__UTA_FBIT__ 64\000"
-.LASF898:
+.LASF509:
+	.ascii	"NDN_SEC_ECC_SECP256R1_PRIVATE_KEY_SIZE 32\000"
+.LASF892:
 	.ascii	"__RAL_error_decoder_head\000"
-.LASF506:
+.LASF502:
 	.ascii	"NDN_APPSUPPORT_SERVICE_PERMISSION_DENIED 3\000"
-.LASF596:
+.LASF594:
 	.ascii	"INTMAX_C(x) (x ##LL)\000"
 .LASF112:
 	.ascii	"__INT_LEAST32_MAX__ 0x7fffffffL\000"
-.LASF48:
-	.ascii	"__UINT64_TYPE__ long long unsigned int\000"
-.LASF817:
+.LASF807:
+	.ascii	"signed char\000"
+.LASF809:
 	.ascii	"uint8_t\000"
-.LASF921:
-	.ascii	"ndn_verifier_hmac_verify\000"
-.LASF422:
-	.ascii	"__ARM_FEATURE_FMA 1\000"
 .LASF186:
 	.ascii	"__LDBL_EPSILON__ 1.1\000"
 .LASF372:
 	.ascii	"__GNUC_STDC_INLINE__ 1\000"
-.LASF866:
-	.ascii	"__wctomb\000"
 .LASF264:
 	.ascii	"__FRACT_FBIT__ 15\000"
-.LASF160:
-	.ascii	"__FLT_HAS_QUIET_NAN__ 1\000"
+.LASF565:
+	.ascii	"UINT_LEAST16_MAX UINT16_MAX\000"
+.LASF328:
+	.ascii	"__LLACCUM_EPSILON__ 0x1P-31LLK\000"
 .LASF7:
 	.ascii	"__GNUC_PATCHLEVEL__ 1\000"
 .LASF381:
 	.ascii	"__GCC_ATOMIC_CHAR32_T_LOCK_FREE 2\000"
-.LASF794:
-	.ascii	"_UECC_H_ \000"
-.LASF743:
+.LASF741:
 	.ascii	"SCNx16 __RAL_SCN_16_PREFIX \"x\"\000"
 .LASF120:
 	.ascii	"__UINT_LEAST16_MAX__ 0xffff\000"
-.LASF948:
-	.ascii	"context\000"
-.LASF793:
-	.ascii	"TC_SHA256_STATE_BLOCKS (TC_SHA256_DIGEST_SIZE/4)\000"
-.LASF696:
+.LASF694:
 	.ascii	"SCNdFAST32 __RAL_SCN_32_PREFIX \"d\"\000"
-.LASF751:
+.LASF749:
 	.ascii	"SCNxLEAST16 __RAL_SCN_LEAST16_PREFIX \"x\"\000"
-.LASF755:
+.LASF753:
 	.ascii	"__string_H \000"
 .LASF148:
 	.ascii	"__FLT_DIG__ 6\000"
 .LASF215:
 	.ascii	"__FLT64_DENORM_MIN__ 1.1\000"
+.LASF788:
+	.ascii	"tc_uECC_WORD_BITS_SHIFT 5\000"
 .LASF63:
 	.ascii	"__UINT_FAST32_TYPE__ unsigned int\000"
-.LASF598:
+.LASF596:
 	.ascii	"WCHAR_MIN (-2147483647L-1)\000"
 .LASF3:
 	.ascii	"__STDC_UTF_32__ 1\000"
@@ -6346,7 +4758,7 @@ ndn_verifier_hmac_verify:
 	.ascii	"__SIZEOF_FLOAT__ 4\000"
 .LASF295:
 	.ascii	"__SACCUM_IBIT__ 8\000"
-.LASF928:
+.LASF917:
 	.ascii	"curve\000"
 .LASF152:
 	.ascii	"__FLT_MAX_10_EXP__ 38\000"
@@ -6355,45 +4767,39 @@ ndn_verifier_hmac_verify:
 	.ascii	"6144DL\000"
 .LASF267:
 	.ascii	"__FRACT_MAX__ 0X7FFFP-15R\000"
-.LASF141:
-	.ascii	"__GCC_IEC_559 0\000"
-.LASF842:
+.LASF652:
+	.ascii	"PRIuLEAST16 \"u\"\000"
+.LASF836:
 	.ascii	"n_sep_by_space\000"
 .LASF130:
 	.ascii	"__INT_FAST32_MAX__ 0x7fffffff\000"
 .LASF10:
 	.ascii	"__ATOMIC_SEQ_CST 5\000"
-.LASF753:
+.LASF907:
+	.ascii	"num_bytes\000"
+.LASF751:
 	.ascii	"SCNxLEAST64 \"llx\"\000"
-.LASF637:
-	.ascii	"PRIoFAST16 \"o\"\000"
-.LASF599:
+.LASF597:
 	.ascii	"WCHAR_MAX 2147483647L\000"
-.LASF932:
-	.ascii	"output_max_size\000"
-.LASF552:
+.LASF550:
 	.ascii	"INT64_MIN (-9223372036854775807LL-1)\000"
-.LASF903:
-	.ascii	"leftover_offset\000"
-.LASF519:
+.LASF517:
 	.ascii	"NDN_SEC_WRONG_SIG_SIZE -23\000"
-.LASF342:
-	.ascii	"__TQ_FBIT__ 127\000"
-.LASF499:
+.LASF457:
+	.ascii	"uECC_SUPPORT_COMPRESSED_POINT 0\000"
+.LASF495:
 	.ascii	"NDN_APPSUPPORT_SERVICES_SIZE 10\000"
-.LASF71:
-	.ascii	"__SHRT_MAX__ 0x7fff\000"
-.LASF594:
+.LASF592:
 	.ascii	"INT64_C(x) (x ##LL)\000"
-.LASF887:
+.LASF881:
 	.ascii	"__RAL_data_utf8_space\000"
-.LASF791:
-	.ascii	"TC_SHA256_BLOCK_SIZE (64)\000"
-.LASF691:
+.LASF689:
 	.ascii	"SCNd16 __RAL_SCN_16_PREFIX \"d\"\000"
 .LASF172:
 	.ascii	"__DBL_DENORM_MIN__ ((double)1.1)\000"
-.LASF547:
+.LASF510:
+	.ascii	"NDN_ERROR_CODE_H \000"
+.LASF545:
 	.ascii	"INT16_MIN (-32767-1)\000"
 .LASF19:
 	.ascii	"__SIZEOF_SHORT__ 2\000"
@@ -6401,43 +4807,47 @@ ndn_verifier_hmac_verify:
 	.ascii	"__ULLACCUM_FBIT__ 32\000"
 .LASF60:
 	.ascii	"__INT_FAST64_TYPE__ long long int\000"
-.LASF844:
+.LASF838:
 	.ascii	"n_sign_posn\000"
-.LASF657:
+.LASF655:
 	.ascii	"PRIuMAX \"llu\"\000"
+.LASF460:
+	.ascii	"NDN_SECURITY_CRYPTO_KEY_H \000"
 .LASF318:
 	.ascii	"__LACCUM_EPSILON__ 0x1P-31LK\000"
-.LASF677:
+.LASF675:
 	.ascii	"PRIXFAST32 __RAL_PRI_32_PREFIX \"X\"\000"
-.LASF632:
-	.ascii	"PRIo8 \"o\"\000"
+.LASF168:
+	.ascii	"__DBL_DECIMAL_DIG__ 17\000"
 .LASF22:
 	.ascii	"__SIZEOF_LONG_DOUBLE__ 8\000"
-.LASF471:
+.LASF467:
 	.ascii	"NDN_NAME_COMPONENT_BUFFER_SIZE 36\000"
 .LASF389:
 	.ascii	"__PRAGMA_REDEFINE_EXTNAME 1\000"
 .LASF34:
 	.ascii	"__WCHAR_TYPE__ unsigned int\000"
-.LASF909:
-	.ascii	"update_hash\000"
-.LASF826:
+.LASF571:
+	.ascii	"INT_FAST64_MIN INT64_MIN\000"
+.LASF820:
 	.ascii	"char\000"
 .LASF365:
 	.ascii	"__USA_IBIT__ 16\000"
 .LASF376:
 	.ascii	"__GCC_HAVE_SYNC_COMPARE_AND_SWAP_2 1\000"
-.LASF496:
+.LASF491:
+	.ascii	"NDN_APPSUPPORT_AC_SALT_SIZE 16\000"
+.LASF492:
 	.ascii	"NDN_APPSUPPORT_AC_KEY_LIST_SIZE 5\000"
-.LASF523:
+.LASF521:
 	.ascii	"NDN_SEC_UNSUPPORT_SIGN_TYPE -26\000"
-.LASF64:
-	.ascii	"__UINT_FAST64_TYPE__ long long unsigned int\000"
-.LASF920:
+.LASF914:
+	.ascii	"output\000"
+.LASF896:
 	.ascii	"key_size\000"
-.LASF484:
+.LASF480:
 	.ascii	"NDN_CS_MAX_SIZE 10\000"
-.LASF575:
+.LASF573:
 	.ascii	"INT_FAST16_MAX INT32_MAX\000"
 .LASF229:
 	.ascii	"__FLT32X_DENORM_MIN__ 1.1\000"
@@ -6445,43 +4855,43 @@ ndn_verifier_hmac_verify:
 	.ascii	"__USFRACT_IBIT__ 0\000"
 .LASF113:
 	.ascii	"__INT32_C(c) c ## L\000"
+.LASF909:
+	.ascii	"double_jacobian\000"
 .LASF261:
 	.ascii	"__USFRACT_MIN__ 0.0UHR\000"
 .LASF436:
 	.ascii	"__SIZEOF_WCHAR_T 4\000"
 .LASF424:
 	.ascii	"__ARM_NEON\000"
-.LASF650:
+.LASF648:
 	.ascii	"PRIuFAST16 \"u\"\000"
-.LASF905:
+.LASF921:
 	.ascii	"timeval\000"
-.LASF943:
-	.ascii	"hmac_sha256\000"
-.LASF710:
+.LASF708:
 	.ascii	"SCNiFAST64 \"lli\"\000"
 .LASF180:
 	.ascii	"__LDBL_MAX_EXP__ 1024\000"
-.LASF591:
+.LASF589:
 	.ascii	"UINT16_C(x) (x ##U)\000"
-.LASF651:
+.LASF649:
 	.ascii	"PRIuFAST32 __RAL_PRI_32_PREFIX \"u\"\000"
 .LASF173:
 	.ascii	"__DBL_HAS_DENORM__ 1\000"
-.LASF518:
+.LASF516:
 	.ascii	"NDN_SEC_WRONG_KEY_SIZE -22\000"
-.LASF615:
+.LASF613:
 	.ascii	"PRIdLEAST16 \"d\"\000"
-.LASF628:
+.LASF626:
 	.ascii	"PRIiLEAST16 \"i\"\000"
-.LASF748:
+.LASF746:
 	.ascii	"SCNxFAST32 __RAL_SCN_32_PREFIX \"x\"\000"
-.LASF639:
+.LASF637:
 	.ascii	"PRIoFAST64 \"llo\"\000"
-.LASF884:
+.LASF878:
 	.ascii	"__RAL_c_locale_abbrev_month_names\000"
 .LASF69:
 	.ascii	"__GXX_ABI_VERSION 1011\000"
-.LASF604:
+.LASF602:
 	.ascii	"__RAL_SCN_32_PREFIX \"\"\000"
 .LASF358:
 	.ascii	"__DA_FBIT__ 31\000"
@@ -6489,114 +4899,116 @@ ndn_verifier_hmac_verify:
 	.ascii	"NRF52840_XXAA 1\000"
 .LASF109:
 	.ascii	"__INT_LEAST16_MAX__ 0x7fff\000"
-.LASF750:
+.LASF748:
 	.ascii	"SCNxLEAST8 \"hhx\"\000"
-.LASF833:
+.LASF342:
+	.ascii	"__TQ_FBIT__ 127\000"
+.LASF827:
 	.ascii	"mon_thousands_sep\000"
+.LASF798:
+	.ascii	"TC_CRYPTO_FAIL 0\000"
+.LASF114:
+	.ascii	"__INT_LEAST32_WIDTH__ 32\000"
 .LASF68:
 	.ascii	"__has_include_next(STR) __has_include_next__(STR)\000"
 .LASF123:
 	.ascii	"__UINT32_C(c) c ## UL\000"
-.LASF673:
+.LASF671:
 	.ascii	"PRIX32 __RAL_PRI_32_PREFIX \"X\"\000"
-.LASF635:
+.LASF633:
 	.ascii	"PRIo64 \"llo\"\000"
-.LASF515:
+.LASF513:
 	.ascii	"NDN_NAME_INVALID_FORMAT -11\000"
 .LASF311:
 	.ascii	"__UACCUM_MIN__ 0.0UK\000"
-.LASF865:
+.LASF859:
 	.ascii	"__towlower\000"
-.LASF681:
+.LASF679:
 	.ascii	"PRIXLEAST32 __RAL_PRI_32_PREFIX \"X\"\000"
-.LASF670:
+.LASF668:
 	.ascii	"PRIxMAX \"llx\"\000"
-.LASF836:
+.LASF830:
 	.ascii	"negative_sign\000"
-.LASF527:
+.LASF525:
 	.ascii	"NDN_FRAG_NO_MORE_FRAGS -30\000"
 .LASF21:
 	.ascii	"__SIZEOF_DOUBLE__ 8\000"
-.LASF490:
+.LASF486:
 	.ascii	"NDN_FRAG_MF_MASK 0x20\000"
 .LASF33:
 	.ascii	"__PTRDIFF_TYPE__ int\000"
-.LASF754:
+.LASF752:
 	.ascii	"SCNxMAX \"llx\"\000"
-.LASF918:
-	.ascii	"sig_size\000"
-.LASF845:
+.LASF839:
 	.ascii	"int_p_cs_precedes\000"
-.LASF313:
-	.ascii	"__UACCUM_EPSILON__ 0x1P-16UK\000"
-.LASF698:
+.LASF822:
+	.ascii	"thousands_sep\000"
+.LASF696:
 	.ascii	"SCNdLEAST8 \"hhd\"\000"
-.LASF895:
+.LASF889:
 	.ascii	"decode\000"
 .LASF383:
 	.ascii	"__GCC_ATOMIC_SHORT_LOCK_FREE 2\000"
-.LASF863:
+.LASF857:
 	.ascii	"__iswctype\000"
 .LASF299:
 	.ascii	"__USACCUM_FBIT__ 8\000"
-.LASF574:
+.LASF572:
 	.ascii	"INT_FAST8_MAX INT8_MAX\000"
 .LASF387:
 	.ascii	"__GCC_ATOMIC_TEST_AND_SET_TRUEVAL 1\000"
-.LASF703:
-	.ascii	"SCNi8 \"i\"\000"
-.LASF957:
-	.ascii	"_init_sha256\000"
+.LASF732:
+	.ascii	"SCNuFAST16 __RAL_SCN_16_PREFIX \"u\"\000"
 .LASF314:
 	.ascii	"__LACCUM_FBIT__ 31\000"
-.LASF835:
+.LASF784:
+	.ascii	"tc_uECC_WORD_SIZE 4\000"
+.LASF829:
 	.ascii	"positive_sign\000"
-.LASF913:
-	.ascii	"uECC_SHA256_HashContext\000"
 .LASF204:
 	.ascii	"__FLT32_HAS_QUIET_NAN__ 1\000"
-.LASF774:
+.LASF772:
 	.ascii	"__CTYPE_PRINT (__CTYPE_BLANK | __CTYPE_PUNCT | __CT"
 	.ascii	"YPE_UPPER | __CTYPE_LOWER | __CTYPE_DIGIT)\000"
-.LASF678:
+.LASF676:
 	.ascii	"PRIXFAST64 \"llX\"\000"
 .LASF189:
 	.ascii	"__LDBL_HAS_INFINITY__ 1\000"
-.LASF514:
+.LASF512:
 	.ascii	"NDN_OVERSIZE -10\000"
 .LASF360:
 	.ascii	"__TA_FBIT__ 63\000"
 .LASF224:
 	.ascii	"__FLT32X_MAX_10_EXP__ 308\000"
-.LASF631:
+.LASF629:
 	.ascii	"PRIiMAX \"lli\"\000"
-.LASF919:
+.LASF895:
 	.ascii	"key_value\000"
-.LASF780:
+.LASF778:
 	.ascii	"bool _Bool\000"
-.LASF183:
-	.ascii	"__LDBL_DECIMAL_DIG__ 17\000"
+.LASF96:
+	.ascii	"__SIG_ATOMIC_MIN__ (-__SIG_ATOMIC_MAX__ - 1)\000"
+.LASF916:
+	.ascii	"curve_secp256r1\000"
 .LASF118:
 	.ascii	"__UINT_LEAST8_MAX__ 0xff\000"
-.LASF809:
+.LASF802:
 	.ascii	"NDN_ECDSA_CURVE_SECP192R1\000"
 .LASF385:
 	.ascii	"__GCC_ATOMIC_LONG_LOCK_FREE 2\000"
-.LASF582:
+.LASF580:
 	.ascii	"PTRDIFF_MIN INT32_MIN\000"
-.LASF760:
+.LASF758:
 	.ascii	"__RAL_SIZE_MAX 4294967295UL\000"
-.LASF934:
-	.ascii	"ret_val\000"
-.LASF878:
+.LASF872:
 	.ascii	"__RAL_codeset_ascii\000"
 .LASF161:
 	.ascii	"__FP_FAST_FMAF 1\000"
-.LASF731:
+.LASF729:
 	.ascii	"SCNu32 __RAL_SCN_32_PREFIX \"u\"\000"
-.LASF669:
+.LASF667:
 	.ascii	"PRIxLEAST64 \"llx\"\000"
-.LASF535:
+.LASF533:
 	.ascii	"NDN_FWD_INTEREST_REJECTED -44\000"
 .LASF140:
 	.ascii	"__UINTPTR_MAX__ 0xffffffffU\000"
@@ -6606,15 +5018,15 @@ ndn_verifier_hmac_verify:
 	.ascii	"__ULFRACT_FBIT__ 32\000"
 .LASF145:
 	.ascii	"__DEC_EVAL_METHOD__ 2\000"
-.LASF776:
+.LASF774:
 	.ascii	"__MAX_CATEGORY 5\000"
-.LASF688:
+.LASF686:
 	.ascii	"PRIxPTR \"x\"\000"
-.LASF585:
+.LASF583:
 	.ascii	"INTPTR_MIN INT32_MIN\000"
-.LASF529:
+.LASF527:
 	.ascii	"NDN_FRAG_NOT_ENOUGH_MEM -32\000"
-.LASF953:
+.LASF918:
 	.ascii	"GNU C99 7.3.1 20180622 (release) [ARM/embedded-7-br"
 	.ascii	"anch revision 261907] -fmessage-length=0 -mcpu=cort"
 	.ascii	"ex-m4 -mlittle-endian -mfloat-abi=hard -mfpu=fpv4-s"
@@ -6626,49 +5038,53 @@ ndn_verifier_hmac_verify:
 	.ascii	"__DEC64_SUBNORMAL_MIN__ 0.000000000000001E-383DD\000"
 .LASF263:
 	.ascii	"__USFRACT_EPSILON__ 0x1P-8UHR\000"
-.LASF713:
+.LASF711:
 	.ascii	"SCNiLEAST32 __RAL_SCN_32_PREFIX \"i\"\000"
-.LASF559:
+.LASF557:
 	.ascii	"INT_LEAST16_MIN INT16_MIN\000"
-.LASF742:
+.LASF740:
 	.ascii	"SCNx8 \"x\"\000"
 .LASF77:
 	.ascii	"__WINT_MAX__ 0xffffffffU\000"
 .LASF259:
 	.ascii	"__USFRACT_FBIT__ 8\000"
-.LASF854:
+.LASF848:
 	.ascii	"abbrev_month_names\000"
 .LASF327:
 	.ascii	"__LLACCUM_MAX__ 0X7FFFFFFFFFFFFFFFP-31LLK\000"
-.LASF747:
-	.ascii	"SCNxFAST16 __RAL_SCN_16_PREFIX \"x\"\000"
 .LASF371:
 	.ascii	"__USER_LABEL_PREFIX__ \000"
 .LASF105:
 	.ascii	"__UINT64_MAX__ 0xffffffffffffffffULL\000"
-.LASF462:
-	.ascii	"NDN_LITE_SEC_BACKEND_RANDOM_DEFAULT \000"
-.LASF871:
+.LASF586:
+	.ascii	"INT8_C(x) (x)\000"
+.LASF865:
 	.ascii	"codeset\000"
-.LASF646:
+.LASF644:
 	.ascii	"PRIu16 \"u\"\000"
 .LASF104:
 	.ascii	"__UINT32_MAX__ 0xffffffffUL\000"
-.LASF752:
+.LASF783:
+	.ascii	"__TC_UECC_H__ \000"
+.LASF898:
+	.ascii	"ndn_ecc_pub_t\000"
+.LASF750:
 	.ascii	"SCNxLEAST32 __RAL_SCN_32_PREFIX \"x\"\000"
 .LASF106:
 	.ascii	"__INT_LEAST8_MAX__ 0x7f\000"
-.LASF388:
-	.ascii	"__GCC_ATOMIC_POINTER_LOCK_FREE 2\000"
+.LASF715:
+	.ascii	"SCNo16 __RAL_SCN_16_PREFIX \"o\"\000"
+.LASF899:
+	.ascii	"ndn_ecc_prv\000"
 .LASF394:
 	.ascii	"__ARM_FEATURE_QBIT 1\000"
 .LASF401:
 	.ascii	"__ARM_FEATURE_CLZ 1\000"
-.LASF11:
-	.ascii	"__ATOMIC_ACQUIRE 2\000"
-.LASF474:
+.LASF422:
+	.ascii	"__ARM_FEATURE_FMA 1\000"
+.LASF470:
 	.ascii	"NDN_NAME_MAX_BLOCK_SIZE 384\000"
-.LASF719:
+.LASF717:
 	.ascii	"SCNo64 \"llo\"\000"
 .LASF405:
 	.ascii	"__ARM_SIZEOF_WCHAR_T 4\000"
@@ -6676,108 +5092,111 @@ ndn_verifier_hmac_verify:
 	.ascii	"__FLT32X_MAX_EXP__ 1024\000"
 .LASF67:
 	.ascii	"__has_include(STR) __has_include__(STR)\000"
-.LASF485:
+.LASF620:
+	.ascii	"PRIi64 \"lli\"\000"
+.LASF481:
 	.ascii	"NDN_FACE_TABLE_MAX_SIZE 10\000"
 .LASF122:
 	.ascii	"__UINT_LEAST32_MAX__ 0xffffffffUL\000"
-.LASF509:
+.LASF505:
 	.ascii	"NDN_SEC_INVALID_KEY_SIZE ((uint32_t)(-1))\000"
 .LASF276:
 	.ascii	"__LFRACT_MIN__ (-0.5LR-0.5LR)\000"
-.LASF784:
-	.ascii	"NDN_LITE_HMAC_TINYCRIPT_IMPL_H \000"
 .LASF437:
 	.ascii	"__SES_ARM 1\000"
 .LASF117:
 	.ascii	"__INT_LEAST64_WIDTH__ 64\000"
 .LASF159:
 	.ascii	"__FLT_HAS_INFINITY__ 1\000"
-.LASF597:
+.LASF595:
 	.ascii	"UINTMAX_C(x) (x ##ULL)\000"
-.LASF620:
+.LASF618:
 	.ascii	"PRIi16 \"i\"\000"
 .LASF307:
 	.ascii	"__ACCUM_MAX__ 0X7FFFFFFFP-15K\000"
 .LASF98:
 	.ascii	"__INT8_MAX__ 0x7f\000"
-.LASF824:
+.LASF737:
+	.ascii	"SCNuLEAST32 __RAL_SCN_32_PREFIX \"u\"\000"
+.LASF818:
 	.ascii	"__wchar\000"
-.LASF525:
+.LASF523:
 	.ascii	"NDN_SEC_INIT_FAILURE -28\000"
 .LASF256:
 	.ascii	"__SFRACT_MIN__ (-0.5HR-0.5HR)\000"
 .LASF357:
 	.ascii	"__SA_IBIT__ 16\000"
-.LASF249:
-	.ascii	"__DEC128_MAX_EXP__ 6145\000"
+.LASF142:
+	.ascii	"__GCC_IEC_559_COMPLEX 0\000"
 .LASF5:
 	.ascii	"__GNUC__ 7\000"
 .LASF417:
 	.ascii	"__ARM_FP16_FORMAT_IEEE\000"
 .LASF46:
 	.ascii	"__UINT16_TYPE__ short unsigned int\000"
-.LASF470:
-	.ascii	"NDN_CONSTANTS_H \000"
-.LASF777:
+.LASF853:
+	.ascii	"__RAL_locale_data_t\000"
+.LASF775:
 	.ascii	"__RAL_SIZE_T_DEFINED \000"
-.LASF549:
+.LASF547:
 	.ascii	"UINT32_MAX 4294967295UL\000"
-.LASF653:
+.LASF651:
 	.ascii	"PRIuLEAST8 \"u\"\000"
-.LASF504:
+.LASF500:
 	.ascii	"NDN_APPSUPPORT_SERVICE_AVIALABLE 1\000"
-.LASF893:
+.LASF887:
 	.ascii	"__RAL_error_decoder_fn_t\000"
 .LASF235:
 	.ascii	"__DEC32_MAX_EXP__ 97\000"
-.LASF883:
+.LASF877:
 	.ascii	"__RAL_c_locale_month_names\000"
 .LASF144:
 	.ascii	"__FLT_EVAL_METHOD_TS_18661_3__ 0\000"
 .LASF81:
 	.ascii	"__SCHAR_WIDTH__ 8\000"
+.LASF800:
+	.ascii	"NDN_LITE_RNG_TINYCRIPT_IMPL_H \000"
+.LASF828:
+	.ascii	"mon_grouping\000"
 .LASF61:
 	.ascii	"__UINT_FAST8_TYPE__ unsigned int\000"
 .LASF325:
 	.ascii	"__LLACCUM_IBIT__ 32\000"
-.LASF539:
+.LASF537:
 	.ascii	"NDN_AC_UNRECOGNIZE_KEY_REQUEST -52\000"
 .LASF268:
 	.ascii	"__FRACT_EPSILON__ 0x1P-15R\000"
-.LASF744:
+.LASF742:
 	.ascii	"SCNx32 __RAL_SCN_32_PREFIX \"x\"\000"
 .LASF352:
 	.ascii	"__UTQ_FBIT__ 128\000"
-.LASF511:
+.LASF507:
 	.ascii	"NDN_SEC_AES_MIN_KEY_SIZE 16\000"
 .LASF100:
 	.ascii	"__INT32_MAX__ 0x7fffffffL\000"
-.LASF701:
+.LASF699:
 	.ascii	"SCNdLEAST64 \"lld\"\000"
 .LASF115:
 	.ascii	"__INT_LEAST64_MAX__ 0x7fffffffffffffffLL\000"
-.LASF808:
+.LASF801:
 	.ascii	"NDN_ECDSA_CURVE_SECP160R1\000"
-.LASF497:
+.LASF493:
 	.ascii	"NDN_APPSUPPORT_NEIGHBORS_SIZE 10\000"
 .LASF201:
 	.ascii	"__FLT32_DENORM_MIN__ 1.1\000"
-.LASF792:
-	.ascii	"TC_SHA256_DIGEST_SIZE (32)\000"
-.LASF489:
+.LASF485:
 	.ascii	"NDN_FRAG_HB_MASK 0x80\000"
-.LASF8:
-	.ascii	"__VERSION__ \"7.3.1 20180622 (release) [ARM/embedde"
-	.ascii	"d-7-branch revision 261907]\"\000"
+.LASF599:
+	.ascii	"WINT_MAX 2147483647L\000"
+.LASF793:
+	.ascii	"BYTES_TO_WORDS_4(a,b,c,d) 0x ##d ##c ##b ##a\000"
 .LASF125:
 	.ascii	"__UINT64_C(c) c ## ULL\000"
 .LASF56:
 	.ascii	"__UINT_LEAST64_TYPE__ long long unsigned int\000"
-.LASF797:
-	.ascii	"uECC_x86_64 2\000"
 .LASF380:
 	.ascii	"__GCC_ATOMIC_CHAR16_T_LOCK_FREE 2\000"
-.LASF855:
+.LASF849:
 	.ascii	"am_pm_indicator\000"
 .LASF166:
 	.ascii	"__DBL_MAX_EXP__ 1024\000"
@@ -6787,59 +5206,57 @@ ndn_verifier_hmac_verify:
 	.ascii	"__FLT32X_HAS_DENORM__ 1\000"
 .LASF147:
 	.ascii	"__FLT_MANT_DIG__ 24\000"
+.LASF894:
+	.ascii	"key_id\000"
 .LASF351:
 	.ascii	"__UDQ_IBIT__ 0\000"
-.LASF788:
-	.ascii	"NDN_LITE_SHA256_TINYCRIPT_IMPL_H \000"
-.LASF795:
-	.ascii	"uECC_arch_other 0\000"
-.LASF634:
+.LASF632:
 	.ascii	"PRIo32 __RAL_PRI_32_PREFIX \"o\"\000"
-.LASF531:
-	.ascii	"NDN_FWD_INSUFFICIENT_MEMORY -40\000"
-.LASF933:
-	.ascii	"output_used_size\000"
-.LASF683:
+.LASF312:
+	.ascii	"__UACCUM_MAX__ 0XFFFFFFFFP-16UK\000"
+.LASF642:
+	.ascii	"PRIoMAX \"llo\"\000"
+.LASF681:
 	.ascii	"PRIXMAX \"llX\"\000"
-.LASF15:
-	.ascii	"__FINITE_MATH_ONLY__ 0\000"
 .LASF451:
 	.ascii	"SWI_DISABLE0 1\000"
-.LASF561:
+.LASF559:
 	.ascii	"INT_LEAST64_MIN INT64_MIN\000"
-.LASF533:
+.LASF531:
 	.ascii	"NDN_FWD_PIT_ENTRY_FACE_LIST_FULL -42\000"
 .LASF101:
 	.ascii	"__INT64_MAX__ 0x7fffffffffffffffLL\000"
 .LASF395:
 	.ascii	"__ARM_FEATURE_SAT 1\000"
-.LASF767:
+.LASF765:
 	.ascii	"__CTYPE_PUNCT 0x10\000"
-.LASF950:
-	.ascii	"_update_sha256\000"
+.LASF529:
+	.ascii	"NDN_FWD_INSUFFICIENT_MEMORY -40\000"
 .LASF290:
 	.ascii	"__ULLFRACT_IBIT__ 0\000"
-.LASF848:
+.LASF842:
 	.ascii	"int_n_sep_by_space\000"
-.LASF507:
+.LASF503:
 	.ascii	"NDN_SEC_SIGNING_KEYS_SIZE 10\000"
-.LASF491:
+.LASF487:
 	.ascii	"NDN_FRAG_SEQ_MASK 0x1F\000"
-.LASF690:
+.LASF688:
 	.ascii	"SCNd8 \"d\"\000"
-.LASF526:
+.LASF524:
 	.ascii	"NDN_SEC_FAIL_VERIFY_SIG -29\000"
-.LASF891:
+.LASF885:
 	.ascii	"__user_set_time_of_day\000"
-.LASF473:
+.LASF469:
 	.ascii	"NDN_NAME_COMPONENTS_SIZE 10\000"
-.LASF806:
-	.ascii	"uECC_SUPPORTS_secp256r1 1\000"
+.LASF904:
+	.ascii	"tc_uECC_Curve\000"
+.LASF893:
+	.ascii	"ndn_ecc_pub\000"
 .LASF84:
 	.ascii	"__LONG_WIDTH__ 32\000"
 .LASF309:
 	.ascii	"__UACCUM_FBIT__ 16\000"
-.LASF469:
+.LASF465:
 	.ascii	"NDN_ENCODING_ENCODER_H \000"
 .LASF76:
 	.ascii	"__WCHAR_MIN__ 0U\000"
@@ -6851,34 +5268,34 @@ ndn_verifier_hmac_verify:
 	.ascii	"__UQQ_IBIT__ 0\000"
 .LASF199:
 	.ascii	"__FLT32_MIN__ 1.1\000"
-.LASF741:
+.LASF739:
 	.ascii	"SCNuMAX \"llu\"\000"
-.LASF595:
+.LASF593:
 	.ascii	"UINT64_C(x) (x ##ULL)\000"
 .LASF321:
 	.ascii	"__ULACCUM_MIN__ 0.0ULK\000"
-.LASF941:
-	.ascii	"data_length\000"
 .LASF408:
 	.ascii	"__ARM_ARCH 7\000"
-.LASF662:
+.LASF906:
+	.ascii	"num_words\000"
+.LASF660:
 	.ascii	"PRIxFAST8 \"x\"\000"
 .LASF146:
 	.ascii	"__FLT_RADIX__ 2\000"
-.LASF505:
+.LASF501:
 	.ascii	"NDN_APPSUPPORT_SERVICE_BUSY 2\000"
-.LASF820:
+.LASF815:
 	.ascii	"long long int\000"
-.LASF873:
+.LASF867:
 	.ascii	"__mbstate_s\000"
-.LASF521:
+.LASF477:
+	.ascii	"NDN_SIGNATURE_BUFFER_SIZE 128\000"
+.LASF519:
 	.ascii	"NDN_SEC_CRYPTO_ALGO_FAILURE -25\000"
 .LASF190:
 	.ascii	"__LDBL_HAS_QUIET_NAN__ 1\000"
 .LASF85:
 	.ascii	"__LONG_LONG_WIDTH__ 64\000"
-.LASF929:
-	.ascii	"ndn_verifier_sha256_verify\000"
 .LASF137:
 	.ascii	"__UINT_FAST64_MAX__ 0xffffffffffffffffULL\000"
 .LASF355:
@@ -6887,55 +5304,47 @@ ndn_verifier_hmac_verify:
 	.ascii	"__INTPTR_WIDTH__ 32\000"
 .LASF386:
 	.ascii	"__GCC_ATOMIC_LLONG_LOCK_FREE 1\000"
-.LASF680:
+.LASF678:
 	.ascii	"PRIXLEAST16 \"X\"\000"
-.LASF938:
-	.ascii	"ecc_sign_result\000"
-.LASF738:
+.LASF736:
 	.ascii	"SCNuLEAST16 __RAL_SCN_LEAST16_PREFIX \"u\"\000"
-.LASF577:
+.LASF598:
+	.ascii	"WINT_MIN (-2147483647L-1)\000"
+.LASF575:
 	.ascii	"INT_FAST64_MAX INT64_MAX\000"
 .LASF209:
 	.ascii	"__FLT64_MAX_EXP__ 1024\000"
 .LASF169:
 	.ascii	"__DBL_MAX__ ((double)1.1)\000"
-.LASF733:
+.LASF731:
 	.ascii	"SCNuFAST8 \"hhu\"\000"
-.LASF616:
+.LASF614:
 	.ascii	"PRIdLEAST32 __RAL_PRI_32_PREFIX \"d\"\000"
-.LASF734:
-	.ascii	"SCNuFAST16 __RAL_SCN_16_PREFIX \"u\"\000"
 .LASF87:
 	.ascii	"__WINT_WIDTH__ 32\000"
 .LASF44:
 	.ascii	"__INT64_TYPE__ long long int\000"
 .LASF185:
 	.ascii	"__LDBL_MIN__ 1.1\000"
-.LASF609:
+.LASF607:
 	.ascii	"PRId64 \"lld\"\000"
 .LASF390:
 	.ascii	"__SIZEOF_WCHAR_T__ 4\000"
-.LASF939:
-	.ascii	"HashContext\000"
-.LASF875:
+.LASF869:
 	.ascii	"__category\000"
 .LASF171:
 	.ascii	"__DBL_EPSILON__ ((double)1.1)\000"
 .LASF272:
 	.ascii	"__UFRACT_MAX__ 0XFFFFP-16UR\000"
-.LASF629:
-	.ascii	"PRIiLEAST32 __RAL_PRI_32_PREFIX \"i\"\000"
 .LASF55:
 	.ascii	"__UINT_LEAST32_TYPE__ long unsigned int\000"
-.LASF798:
-	.ascii	"uECC_arm 3\000"
-.LASF649:
-	.ascii	"PRIuFAST8 \"u\"\000"
-.LASF661:
+.LASF659:
 	.ascii	"PRIx64 \"llx\"\000"
-.LASF739:
-	.ascii	"SCNuLEAST32 __RAL_SCN_32_PREFIX \"u\"\000"
-.LASF858:
+.LASF789:
+	.ascii	"tc_uECC_WORD_BITS_MASK 0x01F\000"
+.LASF255:
+	.ascii	"__SFRACT_IBIT__ 0\000"
+.LASF852:
 	.ascii	"date_time_format\000"
 .LASF29:
 	.ascii	"__BYTE_ORDER__ __ORDER_LITTLE_ENDIAN__\000"
@@ -6943,67 +5352,61 @@ ndn_verifier_hmac_verify:
 	.ascii	"__ARM_NEON_FP\000"
 .LASF458:
 	.ascii	"uECC_VLI_NATIVE_LITTLE_ENDIAN 1\000"
-.LASF658:
-	.ascii	"PRIx8 \"x\"\000"
-.LASF800:
-	.ascii	"uECC_arm_thumb2 5\000"
-.LASF956:
-	.ascii	"ndn_lite_hmac_sign_tinycrypt\000"
+.LASF459:
+	.ascii	"NDN_LITE_ECC_TINYCRYPT_H \000"
 .LASF269:
 	.ascii	"__UFRACT_FBIT__ 16\000"
-.LASF308:
-	.ascii	"__ACCUM_EPSILON__ 0x1P-15K\000"
 .LASF350:
 	.ascii	"__UDQ_FBIT__ 64\000"
 .LASF157:
 	.ascii	"__FLT_DENORM_MIN__ 1.1\000"
 .LASF274:
 	.ascii	"__LFRACT_FBIT__ 31\000"
-.LASF79:
-	.ascii	"__PTRDIFF_MAX__ 0x7fffffff\000"
-.LASF720:
+.LASF181:
+	.ascii	"__LDBL_MAX_10_EXP__ 308\000"
+.LASF718:
 	.ascii	"SCNoFAST8 \"hho\"\000"
-.LASF512:
-	.ascii	"NDN_ERROR_CODE_H \000"
-.LASF904:
-	.ascii	"uECC_Curve\000"
-.LASF59:
-	.ascii	"__INT_FAST32_TYPE__ int\000"
+.LASF919:
+	.ascii	"C:\\Users\\Rena Li\\Desktop\\adding_nrf_crypto_back"
+	.ascii	"end_to_ndn_lite\\Application\\ndn_standalone\\secur"
+	.ascii	"ity\\detail\\detail-ecc\\ndn-lite-ecc-tinycrypt.c\000"
+.LASF905:
+	.ascii	"tc_uECC_Curve_t\000"
+.LASF701:
+	.ascii	"SCNi8 \"i\"\000"
+.LASF549:
+	.ascii	"INT32_MIN (-2147483647L-1)\000"
 .LASF226:
 	.ascii	"__FLT32X_MAX__ 1.1\000"
-.LASF819:
+.LASF814:
 	.ascii	"unsigned int\000"
-.LASF558:
+.LASF556:
 	.ascii	"INT_LEAST8_MIN INT8_MIN\000"
-.LASF570:
+.LASF568:
 	.ascii	"INT_FAST8_MIN INT8_MIN\000"
 .LASF149:
 	.ascii	"__FLT_MIN_EXP__ (-125)\000"
 .LASF218:
 	.ascii	"__FLT64_HAS_QUIET_NAN__ 1\000"
-.LASF802:
-	.ascii	"uECC_avr 7\000"
 .LASF300:
 	.ascii	"__USACCUM_IBIT__ 8\000"
-.LASF685:
-	.ascii	"PRIiPTR \"i\"\000"
-.LASF725:
+.LASF723:
 	.ascii	"SCNoLEAST16 __RAL_SCN_LEAST16_PREFIX \"o\"\000"
 .LASF427:
 	.ascii	"__ARM_ARCH_7EM__ 1\000"
-.LASF216:
-	.ascii	"__FLT64_HAS_DENORM__ 1\000"
+.LASF635:
+	.ascii	"PRIoFAST16 \"o\"\000"
 .LASF330:
 	.ascii	"__ULLACCUM_IBIT__ 32\000"
 .LASF37:
 	.ascii	"__UINTMAX_TYPE__ long long unsigned int\000"
-.LASF843:
+.LASF837:
 	.ascii	"p_sign_posn\000"
 .LASF24:
 	.ascii	"__CHAR_BIT__ 8\000"
 .LASF143:
 	.ascii	"__FLT_EVAL_METHOD__ 0\000"
-.LASF692:
+.LASF690:
 	.ascii	"SCNd32 __RAL_SCN_32_PREFIX \"d\"\000"
 .LASF70:
 	.ascii	"__SCHAR_MAX__ 0x7f\000"
@@ -7015,29 +5418,27 @@ ndn_verifier_hmac_verify:
 	.ascii	"uECC_OPTIMIZATION_LEVEL 3\000"
 .LASF344:
 	.ascii	"__UQQ_FBIT__ 8\000"
-.LASF796:
-	.ascii	"uECC_x86 1\000"
-.LASF724:
+.LASF722:
 	.ascii	"SCNoLEAST8 \"hho\"\000"
 .LASF241:
 	.ascii	"__DEC64_MIN_EXP__ (-382)\000"
-.LASF312:
-	.ascii	"__UACCUM_MAX__ 0XFFFFFFFFP-16UK\000"
-.LASF687:
+.LASF141:
+	.ascii	"__GCC_IEC_559 0\000"
+.LASF685:
 	.ascii	"PRIuPTR \"u\"\000"
-.LASF627:
+.LASF625:
 	.ascii	"PRIiLEAST8 \"i\"\000"
 .LASF277:
 	.ascii	"__LFRACT_MAX__ 0X7FFFFFFFP-31LR\000"
 .LASF392:
 	.ascii	"__SIZEOF_PTRDIFF_T__ 4\000"
-.LASF892:
+.LASF886:
 	.ascii	"__user_get_time_of_day\000"
 .LASF0:
 	.ascii	"__STDC__ 1\000"
-.LASF645:
+.LASF643:
 	.ascii	"PRIu8 \"u\"\000"
-.LASF614:
+.LASF612:
 	.ascii	"PRIdLEAST8 \"d\"\000"
 .LASF438:
 	.ascii	"__ARM_ARCH_FPV4_SP_D16__ 1\000"
@@ -7047,218 +5448,210 @@ ndn_verifier_hmac_verify:
 	.ascii	"__FLOAT_WORD_ORDER__ __ORDER_LITTLE_ENDIAN__\000"
 .LASF153:
 	.ascii	"__FLT_DECIMAL_DIG__ 9\000"
+.LASF797:
+	.ascii	"TC_CRYPTO_SUCCESS 1\000"
 .LASF45:
 	.ascii	"__UINT8_TYPE__ unsigned char\000"
 .LASF170:
 	.ascii	"__DBL_MIN__ ((double)1.1)\000"
-.LASF569:
-	.ascii	"UINT_LEAST64_MAX UINT64_MAX\000"
-.LASF735:
+.LASF733:
 	.ascii	"SCNuFAST32 __RAL_SCN_32_PREFIX \"u\"\000"
 .LASF433:
 	.ascii	"__ARM_FEATURE_COPROC 15\000"
-.LASF885:
+.LASF879:
 	.ascii	"__RAL_data_utf8_period\000"
-.LASF782:
+.LASF780:
 	.ascii	"false 0\000"
+.LASF656:
+	.ascii	"PRIx8 \"x\"\000"
 .LASF82:
 	.ascii	"__SHRT_WIDTH__ 16\000"
 .LASF247:
 	.ascii	"__DEC128_MANT_DIG__ 34\000"
-.LASF930:
-	.ascii	"ndn_signer_hmac_sign\000"
-.LASF402:
-	.ascii	"__ARM_FEATURE_NUMERIC_MAXMIN\000"
-.LASF879:
+.LASF449:
+	.ascii	"S140 1\000"
+.LASF216:
+	.ascii	"__FLT64_HAS_DENORM__ 1\000"
+.LASF873:
 	.ascii	"__RAL_codeset_utf8\000"
 .LASF364:
 	.ascii	"__USA_FBIT__ 16\000"
-.LASF630:
+.LASF628:
 	.ascii	"PRIiLEAST64 \"lli\"\000"
-.LASF877:
+.LASF871:
 	.ascii	"__RAL_c_locale\000"
-.LASF618:
+.LASF616:
 	.ascii	"PRIdMAX \"lld\"\000"
-.LASF665:
+.LASF59:
+	.ascii	"__INT_FAST32_TYPE__ int\000"
+.LASF663:
 	.ascii	"PRIxFAST64 \"llx\"\000"
 .LASF179:
 	.ascii	"__LDBL_MIN_10_EXP__ (-307)\000"
-.LASF825:
-	.ascii	"long int\000"
-.LASF478:
+.LASF845:
+	.ascii	"day_names\000"
+.LASF160:
+	.ascii	"__FLT_HAS_QUIET_NAN__ 1\000"
+.LASF474:
 	.ascii	"NDN_SIGNED_INTEREST_PARAMS_MAX_SIZE 680\000"
 .LASF379:
 	.ascii	"__GCC_ATOMIC_CHAR_LOCK_FREE 2\000"
+.LASF796:
+	.ascii	"__TC_CONSTANTS_H__ \000"
 .LASF278:
 	.ascii	"__LFRACT_EPSILON__ 0x1P-31LR\000"
-.LASF656:
+.LASF654:
 	.ascii	"PRIuLEAST64 \"llu\"\000"
-.LASF557:
+.LASF555:
 	.ascii	"UINTMAX_MAX 18446744073709551615ULL\000"
-.LASF827:
+.LASF821:
 	.ascii	"decimal_point\000"
 .LASF404:
 	.ascii	"__ARM_SIZEOF_MINIMAL_ENUM 1\000"
-.LASF813:
+.LASF806:
 	.ascii	"unsigned char\000"
-.LASF914:
-	.ascii	"uECC\000"
 .LASF407:
 	.ascii	"__arm__ 1\000"
-.LASF805:
-	.ascii	"uECC_SUPPORTS_secp224r1 1\000"
+.LASF41:
+	.ascii	"__INT8_TYPE__ signed char\000"
 .LASF194:
 	.ascii	"__FLT32_MIN_10_EXP__ (-37)\000"
-.LASF790:
-	.ascii	"__TC_SHA256_H__ \000"
 .LASF418:
 	.ascii	"__ARM_FP16_FORMAT_ALTERNATIVE\000"
-.LASF765:
+.LASF763:
 	.ascii	"__CTYPE_DIGIT 0x04\000"
-.LASF550:
+.LASF548:
 	.ascii	"INT32_MAX 2147483647L\000"
-.LASF494:
+.LASF490:
 	.ascii	"NDN_APPSUPPORT_AC_EDK_SIZE 16\000"
-.LASF888:
+.LASF882:
 	.ascii	"__RAL_data_utf8_plus\000"
 .LASF25:
 	.ascii	"__BIGGEST_ALIGNMENT__ 8\000"
 .LASF361:
 	.ascii	"__TA_IBIT__ 64\000"
-.LASF693:
+.LASF691:
 	.ascii	"SCNd64 \"lld\"\000"
-.LASF551:
-	.ascii	"INT32_MIN (-2147483647L-1)\000"
-.LASF764:
-	.ascii	"__CTYPE_LOWER 0x02\000"
 .LASF398:
 	.ascii	"__ARM_FEATURE_QRDMX\000"
-.LASF727:
+.LASF725:
 	.ascii	"SCNoLEAST64 \"llo\"\000"
 .LASF413:
 	.ascii	"__ARM_ARCH_ISA_THUMB 2\000"
 .LASF74:
 	.ascii	"__LONG_LONG_MAX__ 0x7fffffffffffffffLL\000"
-.LASF479:
+.LASF475:
 	.ascii	"NDN_DEFAULT_INTEREST_LIFETIME 4000\000"
-.LASF723:
+.LASF721:
 	.ascii	"SCNoFAST64 \"llo\"\000"
 .LASF270:
 	.ascii	"__UFRACT_IBIT__ 0\000"
 .LASF399:
 	.ascii	"__ARM_32BIT_STATE 1\000"
+.LASF641:
+	.ascii	"PRIoLEAST64 \"llo\"\000"
 .LASF107:
 	.ascii	"__INT8_C(c) c\000"
 .LASF275:
 	.ascii	"__LFRACT_IBIT__ 0\000"
 .LASF444:
 	.ascii	"FLOAT_ABI_HARD 1\000"
-.LASF652:
+.LASF650:
 	.ascii	"PRIuFAST64 \"llu\"\000"
 .LASF164:
 	.ascii	"__DBL_MIN_EXP__ (-1021)\000"
-.LASF705:
+.LASF703:
 	.ascii	"SCNi32 __RAL_SCN_32_PREFIX \"i\"\000"
-.LASF607:
+.LASF605:
 	.ascii	"PRId16 \"d\"\000"
-.LASF567:
-	.ascii	"UINT_LEAST16_MAX UINT16_MAX\000"
-.LASF654:
-	.ascii	"PRIuLEAST16 \"u\"\000"
-.LASF667:
+.LASF665:
 	.ascii	"PRIxLEAST16 \"x\"\000"
-.LASF638:
+.LASF636:
 	.ascii	"PRIoFAST32 __RAL_PRI_32_PREFIX \"o\"\000"
 .LASF192:
 	.ascii	"__FLT32_DIG__ 6\000"
-.LASF572:
+.LASF570:
 	.ascii	"INT_FAST32_MIN INT32_MIN\000"
-.LASF672:
+.LASF670:
 	.ascii	"PRIX16 \"X\"\000"
-.LASF581:
+.LASF579:
 	.ascii	"UINT_FAST64_MAX UINT64_MAX\000"
-.LASF486:
+.LASF482:
 	.ascii	"NDN_FACE_DEFUALT_COST 1\000"
-.LASF660:
+.LASF658:
 	.ascii	"PRIx32 __RAL_PRI_32_PREFIX \"x\"\000"
 .LASF188:
 	.ascii	"__LDBL_HAS_DENORM__ 1\000"
-.LASF546:
+.LASF544:
 	.ascii	"UINT16_MAX 65535\000"
 .LASF306:
 	.ascii	"__ACCUM_MIN__ (-0X1P15K-0X1P15K)\000"
-.LASF468:
+.LASF464:
 	.ascii	"NDN_ENCODING_DECODER_H \000"
-.LASF461:
-	.ascii	"NDN_LITE_SEC_BACKEND_AES_DEFAULT \000"
 .LASF396:
 	.ascii	"__ARM_FEATURE_CRYPTO\000"
 .LASF51:
 	.ascii	"__INT_LEAST32_TYPE__ long int\000"
 .LASF124:
 	.ascii	"__UINT_LEAST64_MAX__ 0xffffffffffffffffULL\000"
-.LASF926:
-	.ascii	"input_hmac\000"
 .LASF265:
 	.ascii	"__FRACT_IBIT__ 0\000"
-.LASF717:
-	.ascii	"SCNo16 __RAL_SCN_16_PREFIX \"o\"\000"
-.LASF745:
+.LASF11:
+	.ascii	"__ATOMIC_ACQUIRE 2\000"
+.LASF743:
 	.ascii	"SCNx64 \"llx\"\000"
-.LASF785:
-	.ascii	"__stddef_H \000"
+.LASF790:
+	.ascii	"NUM_ECC_WORDS 8\000"
 .LASF26:
 	.ascii	"__ORDER_LITTLE_ENDIAN__ 1234\000"
-.LASF860:
+.LASF854:
 	.ascii	"__isctype\000"
 .LASF240:
 	.ascii	"__DEC64_MANT_DIG__ 16\000"
-.LASF822:
+.LASF816:
 	.ascii	"long long unsigned int\000"
 .LASF150:
 	.ascii	"__FLT_MIN_10_EXP__ (-37)\000"
-.LASF562:
+.LASF560:
 	.ascii	"INT_LEAST8_MAX INT8_MAX\000"
 .LASF320:
 	.ascii	"__ULACCUM_IBIT__ 32\000"
-.LASF564:
+.LASF562:
 	.ascii	"INT_LEAST32_MAX INT32_MAX\000"
-.LASF588:
-	.ascii	"INT8_C(x) (x)\000"
+.LASF71:
+	.ascii	"__SHRT_MAX__ 0x7fff\000"
 .LASF333:
 	.ascii	"__ULLACCUM_EPSILON__ 0x1P-32ULLK\000"
-.LASF847:
+.LASF841:
 	.ascii	"int_p_sep_by_space\000"
 .LASF409:
 	.ascii	"__APCS_32__ 1\000"
 .LASF340:
 	.ascii	"__DQ_FBIT__ 63\000"
-.LASF679:
+.LASF677:
 	.ascii	"PRIXLEAST8 \"X\"\000"
-.LASF702:
+.LASF700:
 	.ascii	"SCNdMAX \"lld\"\000"
-.LASF640:
+.LASF638:
 	.ascii	"PRIoLEAST8 \"o\"\000"
-.LASF769:
+.LASF767:
 	.ascii	"__CTYPE_BLANK 0x40\000"
 .LASF347:
 	.ascii	"__UHQ_IBIT__ 0\000"
 .LASF443:
 	.ascii	"CONFIG_GPIO_AS_PINRESET 1\000"
-.LASF464:
-	.ascii	"NDN_SECURITY_SIGN_VERIFY_H_ \000"
-.LASF775:
+.LASF773:
 	.ascii	"__RAL_WCHAR_T unsigned\000"
 .LASF377:
 	.ascii	"__GCC_HAVE_SYNC_COMPARE_AND_SWAP_4 1\000"
 .LASF58:
 	.ascii	"__INT_FAST16_TYPE__ int\000"
-.LASF625:
+.LASF623:
 	.ascii	"PRIiFAST32 __RAL_PRI_32_PREFIX \"i\"\000"
 .LASF296:
 	.ascii	"__SACCUM_MIN__ (-0X1P7HK-0X1P7HK)\000"
-.LASF282:
-	.ascii	"__ULFRACT_MAX__ 0XFFFFFFFFP-32ULR\000"
+.LASF496:
+	.ascii	"NDN_APPSUPPORT_SERVICE_ID_SIZE 20\000"
 .LASF54:
 	.ascii	"__UINT_LEAST16_TYPE__ short unsigned int\000"
 .LASF156:
@@ -7267,54 +5660,45 @@ ndn_verifier_hmac_verify:
 	.ascii	"__LACCUM_MAX__ 0X7FFFFFFFFFFFFFFFP-31LK\000"
 .LASF38:
 	.ascii	"__CHAR16_TYPE__ short unsigned int\000"
-.LASF571:
+.LASF569:
 	.ascii	"INT_FAST16_MIN INT32_MIN\000"
 .LASF220:
 	.ascii	"__FLT32X_DIG__ 15\000"
+.LASF910:
+	.ascii	"x_side\000"
 .LASF155:
 	.ascii	"__FLT_MIN__ 1.1\000"
-.LASF328:
-	.ascii	"__LLACCUM_EPSILON__ 0x1P-31LLK\000"
-.LASF840:
-	.ascii	"p_sep_by_space\000"
+.LASF15:
+	.ascii	"__FINITE_MATH_ONLY__ 0\000"
 .LASF128:
 	.ascii	"__INT_FAST16_MAX__ 0x7fffffff\000"
-.LASF946:
-	.ascii	"hash_result\000"
-.LASF537:
+.LASF535:
 	.ascii	"NDN_FWD_APP_FACE_CB_TABLE_FULL -50\000"
 .LASF322:
 	.ascii	"__ULACCUM_MAX__ 0XFFFFFFFFFFFFFFFFP-32ULK\000"
-.LASF922:
-	.ascii	"ndn_verifier_ecdsa_verify\000"
 .LASF281:
 	.ascii	"__ULFRACT_MIN__ 0.0ULR\000"
 .LASF446:
 	.ascii	"NO_VTOR_CONFIG 1\000"
 .LASF341:
 	.ascii	"__DQ_IBIT__ 0\000"
-.LASF544:
+.LASF542:
 	.ascii	"INT8_MAX 127\000"
 .LASF43:
 	.ascii	"__INT32_TYPE__ long int\000"
-.LASF513:
+.LASF511:
 	.ascii	"NDN_SUCCESS 0\000"
-.LASF730:
+.LASF728:
 	.ascii	"SCNu16 __RAL_SCN_16_PREFIX \"u\"\000"
-.LASF475:
+.LASF471:
 	.ascii	"NDN_FWD_INVALID_NAME_SIZE ((uint32_t)(-1))\000"
 .LASF441:
 	.ascii	"DEBUG_NRF 1\000"
-.LASF954:
-	.ascii	"C:\\Users\\Rena Li\\Desktop\\adding_nrf_crypto_back"
-	.ascii	"end_to_ndn_lite\\Application\\ndn_standalone\\secur"
-	.ascii	"ity\\ndn-lite-default-back\\ndn-lite-default-back-s"
-	.ascii	"ign-verify.c\000"
-.LASF708:
+.LASF706:
 	.ascii	"SCNiFAST16 __RAL_SCN_16_PREFIX \"i\"\000"
-.LASF495:
-	.ascii	"NDN_APPSUPPORT_AC_SALT_SIZE 16\000"
-.LASF756:
+.LASF567:
+	.ascii	"UINT_LEAST64_MAX UINT64_MAX\000"
+.LASF754:
 	.ascii	"__crossworks_H \000"
 .LASF353:
 	.ascii	"__UTQ_IBIT__ 0\000"
@@ -7322,49 +5706,45 @@ ndn_verifier_hmac_verify:
 	.ascii	"__SA_FBIT__ 15\000"
 .LASF288:
 	.ascii	"__LLFRACT_EPSILON__ 0x1P-63LLR\000"
-.LASF779:
-	.ascii	"__stdbool_h \000"
-.LASF829:
+.LASF913:
+	.ascii	"ecc_prv\000"
+.LASF823:
 	.ascii	"grouping\000"
-.LASF728:
+.LASF726:
 	.ascii	"SCNoMAX \"llo\"\000"
-.LASF540:
+.LASF538:
 	.ascii	"NDN_ENUMS_H \000"
 .LASF429:
 	.ascii	"__ARM_EABI__ 1\000"
-.LASF563:
+.LASF561:
 	.ascii	"INT_LEAST16_MAX INT16_MAX\000"
 .LASF435:
 	.ascii	"__ELF__ 1\000"
 .LASF412:
 	.ascii	"__THUMBEL__ 1\000"
-.LASF812:
+.LASF805:
 	.ascii	"NDN_ECDSA_CURVE_SECP256K1\000"
 .LASF393:
 	.ascii	"__ARM_FEATURE_DSP 1\000"
 .LASF335:
 	.ascii	"__QQ_IBIT__ 0\000"
-.LASF465:
+.LASF461:
 	.ascii	"NDN_ENCODING_NAME_H \000"
-.LASF641:
+.LASF639:
 	.ascii	"PRIoLEAST16 \"o\"\000"
 .LASF324:
 	.ascii	"__LLACCUM_FBIT__ 31\000"
-.LASF542:
+.LASF540:
 	.ascii	"__stdint_H \000"
-.LASF915:
-	.ascii	"input_value\000"
 .LASF349:
 	.ascii	"__USQ_IBIT__ 0\000"
 .LASF6:
 	.ascii	"__GNUC_MINOR__ 3\000"
-.LASF852:
+.LASF846:
 	.ascii	"abbrev_day_names\000"
-.LASF768:
+.LASF766:
 	.ascii	"__CTYPE_CNTRL 0x20\000"
-.LASF952:
-	.ascii	"message_size\000"
-.LASF528:
+.LASF526:
 	.ascii	"NDN_FRAG_OUT_OF_ORDER -31\000"
 .LASF36:
 	.ascii	"__INTMAX_TYPE__ long long int\000"
@@ -7372,40 +5752,34 @@ ndn_verifier_hmac_verify:
 	.ascii	"__SES_VERSION 41200\000"
 .LASF384:
 	.ascii	"__GCC_ATOMIC_INT_LOCK_FREE 2\000"
-.LASF449:
-	.ascii	"S140 1\000"
 .LASF445:
 	.ascii	"INITIALIZE_USER_SECTIONS 1\000"
-.LASF940:
-	.ascii	"ndn_signer_sha256_sign\000"
-.LASF880:
+.LASF874:
 	.ascii	"__RAL_ascii_ctype_map\000"
 .LASF92:
 	.ascii	"__UINTMAX_MAX__ 0xffffffffffffffffULL\000"
 .LASF420:
 	.ascii	"__ARM_FEATURE_FP16_SCALAR_ARITHMETIC\000"
-.LASF666:
+.LASF664:
 	.ascii	"PRIxLEAST8 \"x\"\000"
 .LASF303:
 	.ascii	"__USACCUM_EPSILON__ 0x1P-8UHK\000"
 .LASF175:
 	.ascii	"__DBL_HAS_QUIET_NAN__ 1\000"
-.LASF721:
+.LASF719:
 	.ascii	"SCNoFAST16 __RAL_SCN_16_PREFIX \"o\"\000"
 .LASF287:
 	.ascii	"__LLFRACT_MAX__ 0X7FFFFFFFFFFFFFFFP-63LLR\000"
 .LASF202:
 	.ascii	"__FLT32_HAS_DENORM__ 1\000"
-.LASF397:
-	.ascii	"__ARM_FEATURE_UNALIGNED 1\000"
 .LASF297:
 	.ascii	"__SACCUM_MAX__ 0X7FFFP-7HK\000"
 .LASF65:
 	.ascii	"__INTPTR_TYPE__ int\000"
-.LASF861:
+.LASF855:
 	.ascii	"__toupper\000"
-.LASF66:
-	.ascii	"__UINTPTR_TYPE__ unsigned int\000"
+.LASF902:
+	.ascii	"bitcount_t\000"
 .LASF370:
 	.ascii	"__REGISTER_PREFIX__ \000"
 .LASF253:
@@ -7417,49 +5791,52 @@ ndn_verifier_hmac_verify:
 	.ascii	"__ULFRACT_EPSILON__ 0x1P-32ULR\000"
 .LASF23:
 	.ascii	"__SIZEOF_SIZE_T__ 4\000"
-.LASF869:
+.LASF863:
 	.ascii	"name\000"
+.LASF48:
+	.ascii	"__UINT64_TYPE__ long long unsigned int\000"
 .LASF250:
 	.ascii	"__DEC128_MIN__ 1E-6143DL\000"
 .LASF116:
 	.ascii	"__INT64_C(c) c ## LL\000"
-.LASF699:
+.LASF8:
+	.ascii	"__VERSION__ \"7.3.1 20180622 (release) [ARM/embedde"
+	.ascii	"d-7-branch revision 261907]\"\000"
+.LASF697:
 	.ascii	"SCNdLEAST16 __RAL_SCN_LEAST16_PREFIX \"d\"\000"
-.LASF73:
-	.ascii	"__LONG_MAX__ 0x7fffffffL\000"
 .LASF305:
 	.ascii	"__ACCUM_IBIT__ 16\000"
-.LASF838:
+.LASF832:
 	.ascii	"frac_digits\000"
-.LASF605:
+.LASF603:
 	.ascii	"__RAL_SCN_LEAST16_PREFIX \"h\"\000"
-.LASF831:
+.LASF825:
 	.ascii	"currency_symbol\000"
-.LASF647:
+.LASF901:
+	.ascii	"wordcount_t\000"
+.LASF645:
 	.ascii	"PRIu32 __RAL_PRI_32_PREFIX \"u\"\000"
-.LASF573:
-	.ascii	"INT_FAST64_MIN INT64_MIN\000"
-.LASF815:
+.LASF466:
+	.ascii	"NDN_CONSTANTS_H \000"
+.LASF897:
+	.ascii	"curve_type\000"
+.LASF811:
 	.ascii	"short int\000"
-.LASF882:
-	.ascii	"__RAL_c_locale_abbrev_day_names\000"
-.LASF712:
+.LASF710:
 	.ascii	"SCNiLEAST16 __RAL_SCN_LEAST16_PREFIX \"i\"\000"
 .LASF121:
 	.ascii	"__UINT16_C(c) c\000"
-.LASF821:
-	.ascii	"uint64_t\000"
 .LASF367:
 	.ascii	"__UDA_IBIT__ 32\000"
 .LASF373:
 	.ascii	"__NO_INLINE__ 1\000"
-.LASF502:
+.LASF498:
 	.ascii	"NDN_APPSUPPORT_SERVICE_UNDEFINED ((uint8_t)(-1))\000"
 .LASF9:
 	.ascii	"__ATOMIC_RELAXED 0\000"
-.LASF823:
+.LASF817:
 	.ascii	"__state\000"
-.LASF726:
+.LASF724:
 	.ascii	"SCNoLEAST32 __RAL_SCN_32_PREFIX \"o\"\000"
 .LASF174:
 	.ascii	"__DBL_HAS_INFINITY__ 1\000"
@@ -7467,81 +5844,87 @@ ndn_verifier_hmac_verify:
 	.ascii	"__SIG_ATOMIC_MAX__ 0x7fffffff\000"
 .LASF205:
 	.ascii	"__FLT64_MANT_DIG__ 53\000"
-.LASF602:
+.LASF600:
 	.ascii	"__RAL_PRI_32_PREFIX \"\"\000"
-.LASF619:
+.LASF617:
 	.ascii	"PRIi8 \"i\"\000"
-.LASF556:
+.LASF554:
 	.ascii	"INTMAX_MAX 9223372036854775807LL\000"
 .LASF430:
 	.ascii	"__ARM_ARCH_EXT_IDIV__ 1\000"
 .LASF243:
 	.ascii	"__DEC64_MIN__ 1E-383DD\000"
-.LASF834:
-	.ascii	"mon_grouping\000"
-.LASF168:
-	.ascii	"__DBL_DECIMAL_DIG__ 17\000"
-.LASF648:
+.LASF508:
+	.ascii	"NDN_SEC_ECC_SECP256R1_PUBLIC_KEY_SIZE 64\000"
+.LASF860:
+	.ascii	"__wctomb\000"
+.LASF912:
+	.ascii	"ecc_pub\000"
+.LASF646:
 	.ascii	"PRIu64 \"llu\"\000"
-.LASF584:
+.LASF582:
 	.ascii	"SIZE_MAX INT32_MAX\000"
-.LASF682:
+.LASF680:
 	.ascii	"PRIXLEAST64 \"llX\"\000"
-.LASF718:
+.LASF716:
 	.ascii	"SCNo32 __RAL_SCN_32_PREFIX \"o\"\000"
-.LASF565:
+.LASF563:
 	.ascii	"INT_LEAST64_MAX INT64_MAX\000"
-.LASF460:
-	.ascii	"NDN_LITE_SEC_BACKEND_SIGN_VERIFY_DEFAULT \000"
-.LASF944:
-	.ascii	"sha256\000"
-.LASF600:
-	.ascii	"WINT_MIN (-2147483647L-1)\000"
+.LASF313:
+	.ascii	"__UACCUM_EPSILON__ 0x1P-16UK\000"
+.LASF622:
+	.ascii	"PRIiFAST16 \"i\"\000"
+.LASF903:
+	.ascii	"tc_uECC_word_t\000"
 .LASF99:
 	.ascii	"__INT16_MAX__ 0x7fff\000"
-.LASF908:
-	.ascii	"init_hash\000"
+.LASF922:
+	.ascii	"ndn_lite_ecc_key_shared_secret_tinycrypt\000"
+.LASF858:
+	.ascii	"__towupper\000"
 .LASF83:
 	.ascii	"__INT_WIDTH__ 32\000"
 .LASF403:
 	.ascii	"__ARM_FEATURE_SIMD32 1\000"
 .LASF198:
 	.ascii	"__FLT32_MAX__ 1.1\000"
-.LASF912:
-	.ascii	"result_size\000"
-.LASF766:
+.LASF610:
+	.ascii	"PRIdFAST32 __RAL_PRI_32_PREFIX \"d\"\000"
+.LASF764:
 	.ascii	"__CTYPE_SPACE 0x08\000"
 .LASF334:
 	.ascii	"__QQ_FBIT__ 7\000"
-.LASF684:
+.LASF682:
 	.ascii	"PRIdPTR \"d\"\000"
 .LASF97:
 	.ascii	"__SIG_ATOMIC_WIDTH__ 32\000"
-.LASF846:
+.LASF840:
 	.ascii	"int_n_cs_precedes\000"
-.LASF889:
+.LASF883:
 	.ascii	"__RAL_data_utf8_minus\000"
+.LASF900:
+	.ascii	"ndn_ecc_prv_t\000"
 .LASF369:
 	.ascii	"__UTA_IBIT__ 64\000"
-.LASF236:
-	.ascii	"__DEC32_MIN__ 1E-95DF\000"
-.LASF849:
+.LASF843:
 	.ascii	"int_p_sign_posn\000"
 .LASF293:
 	.ascii	"__ULLFRACT_EPSILON__ 0x1P-64ULLR\000"
-.LASF671:
+.LASF669:
 	.ascii	"PRIX8 \"X\"\000"
 .LASF391:
 	.ascii	"__SIZEOF_WINT_T__ 4\000"
-.LASF674:
+.LASF672:
 	.ascii	"PRIX64 \"llX\"\000"
-.LASF481:
-	.ascii	"NDN_SIGNATURE_BUFFER_SIZE 128\000"
+.LASF397:
+	.ascii	"__ARM_FEATURE_UNALIGNED 1\000"
 .LASF434:
 	.ascii	"__GXX_TYPEINFO_EQUALITY_INLINE 0\000"
-.LASF931:
-	.ascii	"output_value\000"
-.LASF857:
+.LASF183:
+	.ascii	"__LDBL_DECIMAL_DIG__ 17\000"
+.LASF915:
+	.ascii	"output_size\000"
+.LASF851:
 	.ascii	"time_format\000"
 .LASF316:
 	.ascii	"__LACCUM_MIN__ (-0X1P31LK-0X1P31LK)\000"
@@ -7549,11 +5932,9 @@ ndn_verifier_hmac_verify:
 	.ascii	"__INT_FAST8_MAX__ 0x7fffffff\000"
 .LASF191:
 	.ascii	"__FLT32_MANT_DIG__ 24\000"
-.LASF804:
-	.ascii	"uECC_SUPPORTS_secp192r1 1\000"
 .LASF234:
 	.ascii	"__DEC32_MIN_EXP__ (-94)\000"
-.LASF536:
+.LASF534:
 	.ascii	"NDN_FWD_NO_MATCHED_CALLBACK -45\000"
 .LASF331:
 	.ascii	"__ULLACCUM_MIN__ 0.0ULLK\000"
@@ -7561,119 +5942,107 @@ ndn_verifier_hmac_verify:
 	.ascii	"__INT_FAST32_WIDTH__ 32\000"
 .LASF27:
 	.ascii	"__ORDER_BIG_ENDIAN__ 4321\000"
-.LASF770:
+.LASF768:
 	.ascii	"__CTYPE_XDIGIT 0x80\000"
-.LASF906:
-	.ascii	"uECC_Curve_t\000"
-.LASF488:
+.LASF484:
 	.ascii	"NDN_FRAG_HDR_LEN 3\000"
+.LASF64:
+	.ascii	"__UINT_FAST64_TYPE__ long long unsigned int\000"
 .LASF432:
 	.ascii	"__ARM_ASM_SYNTAX_UNIFIED__ 1\000"
-.LASF881:
+.LASF875:
 	.ascii	"__RAL_c_locale_day_names\000"
 .LASF47:
 	.ascii	"__UINT32_TYPE__ long unsigned int\000"
-.LASF493:
+.LASF489:
 	.ascii	"NDN_FRAG_BUFFER_MAX 512\000"
 .LASF411:
 	.ascii	"__thumb2__ 1\000"
-.LASF786:
-	.ascii	"__RAL_WCHAR_T_DEFINED \000"
-.LASF633:
+.LASF631:
 	.ascii	"PRIo16 \"o\"\000"
-.LASF578:
+.LASF576:
 	.ascii	"UINT_FAST8_MAX UINT8_MAX\000"
 .LASF428:
 	.ascii	"__ARM_PCS_VFP 1\000"
-.LASF807:
-	.ascii	"uECC_SUPPORTS_secp256k1 1\000"
-.LASF668:
+.LASF666:
 	.ascii	"PRIxLEAST32 __RAL_PRI_32_PREFIX \"x\"\000"
-.LASF949:
-	.ascii	"_finish_sha256\000"
-.LASF517:
+.LASF515:
 	.ascii	"NDN_OVERSIZE_VAR -13\000"
 .LASF291:
 	.ascii	"__ULLFRACT_MIN__ 0.0ULLR\000"
-.LASF907:
-	.ascii	"uECC_HashContext\000"
 .LASF419:
 	.ascii	"__ARM_FP16_ARGS\000"
 .LASF16:
 	.ascii	"__SIZEOF_INT__ 4\000"
 .LASF285:
 	.ascii	"__LLFRACT_IBIT__ 0\000"
-.LASF758:
+.LASF756:
 	.ascii	"__RAL_SIZE_T\000"
-.LASF818:
+.LASF813:
 	.ascii	"uint32_t\000"
-.LASF553:
+.LASF551:
 	.ascii	"INT64_MAX 9223372036854775807LL\000"
-.LASF850:
+.LASF844:
 	.ascii	"int_n_sign_posn\000"
-.LASF94:
-	.ascii	"__INTMAX_WIDTH__ 64\000"
-.LASF593:
+.LASF591:
 	.ascii	"UINT32_C(x) (x ##UL)\000"
 .LASF298:
 	.ascii	"__SACCUM_EPSILON__ 0x1P-7HK\000"
-.LASF935:
-	.ascii	"ndn_signer_ecdsa_sign\000"
-.LASF694:
+.LASF692:
 	.ascii	"SCNdFAST8 \"hhd\"\000"
-.LASF707:
+.LASF705:
 	.ascii	"SCNiFAST8 \"hhi\"\000"
-.LASF897:
+.LASF891:
 	.ascii	"__RAL_error_decoder_t\000"
-.LASF711:
+.LASF709:
 	.ascii	"SCNiLEAST8 \"hhi\"\000"
 .LASF416:
 	.ascii	"__ARM_FP 4\000"
-.LASF746:
+.LASF744:
 	.ascii	"SCNxFAST8 \"hhx\"\000"
 .LASF62:
 	.ascii	"__UINT_FAST16_TYPE__ unsigned int\000"
-.LASF700:
+.LASF698:
 	.ascii	"SCNdLEAST32 __RAL_SCN_32_PREFIX \"d\"\000"
 .LASF363:
 	.ascii	"__UHA_IBIT__ 8\000"
-.LASF890:
+.LASF908:
+	.ascii	"num_n_bits\000"
+.LASF884:
 	.ascii	"__RAL_data_empty_string\000"
-.LASF923:
-	.ascii	"pub_key_value\000"
+.LASF308:
+	.ascii	"__ACCUM_EPSILON__ 0x1P-15K\000"
 .LASF323:
 	.ascii	"__ULACCUM_EPSILON__ 0x1P-32ULK\000"
 .LASF177:
 	.ascii	"__LDBL_DIG__ 15\000"
-.LASF900:
-	.ascii	"tc_sha256_state_struct\000"
-.LASF663:
+.LASF661:
 	.ascii	"PRIxFAST16 \"x\"\000"
 .LASF89:
 	.ascii	"__SIZE_WIDTH__ 32\000"
-.LASF612:
-	.ascii	"PRIdFAST32 __RAL_PRI_32_PREFIX \"d\"\000"
 .LASF78:
 	.ascii	"__WINT_MIN__ 0U\000"
-.LASF732:
+.LASF787:
+	.ascii	"tc_uECC_WORD_BITS 32\000"
+.LASF730:
 	.ascii	"SCNu64 \"llu\"\000"
 .LASF206:
 	.ascii	"__FLT64_DIG__ 15\000"
 .LASF245:
 	.ascii	"__DEC64_EPSILON__ 1E-15DD\000"
-.LASF762:
-	.ascii	"__CODE \000"
-.LASF590:
+.LASF911:
+	.ascii	"mmod_fast\000"
+.LASF588:
 	.ascii	"INT16_C(x) (x)\000"
 .LASF108:
 	.ascii	"__INT_LEAST8_WIDTH__ 8\000"
 .LASF50:
 	.ascii	"__INT_LEAST16_TYPE__ short int\000"
-.LASF839:
+.LASF833:
 	.ascii	"p_cs_precedes\000"
 .LASF184:
 	.ascii	"__LDBL_MAX__ 1.1\000"
-.LASF816:
+.LASF812:
 	.ascii	"short unsigned int\000"
 .LASF284:
 	.ascii	"__LLFRACT_FBIT__ 63\000"
@@ -7681,112 +6050,102 @@ ndn_verifier_hmac_verify:
 	.ascii	"__FLT32_HAS_INFINITY__ 1\000"
 .LASF410:
 	.ascii	"__thumb__ 1\000"
-.LASF181:
-	.ascii	"__LDBL_MAX_10_EXP__ 308\000"
-.LASF538:
+.LASF536:
 	.ascii	"NDN_SD_NO_MATCH_SERVCE -51\000"
-.LASF773:
+.LASF771:
 	.ascii	"__CTYPE_GRAPH (__CTYPE_PUNCT | __CTYPE_UPPER | __CT"
 	.ascii	"YPE_LOWER | __CTYPE_DIGIT)\000"
 .LASF414:
 	.ascii	"__ARMEL__ 1\000"
-.LASF737:
+.LASF735:
 	.ascii	"SCNuLEAST8 \"hhu\"\000"
-.LASF947:
-	.ascii	"base\000"
-.LASF951:
-	.ascii	"message\000"
-.LASF500:
-	.ascii	"NDN_APPSUPPORT_SERVICE_ID_SIZE 20\000"
+.LASF662:
+	.ascii	"PRIxFAST32 __RAL_PRI_32_PREFIX \"x\"\000"
+.LASF795:
+	.ascii	"BITS_TO_BYTES(num_bits) ((num_bits + 7) / 8)\000"
+.LASF647:
+	.ascii	"PRIuFAST8 \"u\"\000"
 .LASF336:
 	.ascii	"__HQ_FBIT__ 15\000"
-.LASF783:
+.LASF781:
 	.ascii	"__bool_true_false_are_defined 1\000"
-.LASF492:
+.LASF488:
 	.ascii	"NDN_FRAG_MAX_SEQ_NUM 30\000"
 .LASF80:
 	.ascii	"__SIZE_MAX__ 0xffffffffU\000"
-.LASF606:
+.LASF604:
 	.ascii	"PRId8 \"d\"\000"
-.LASF622:
-	.ascii	"PRIi64 \"lli\"\000"
-.LASF787:
-	.ascii	"offsetof(s,m) ((size_t)&(((s *)0)->m))\000"
-.LASF255:
-	.ascii	"__SFRACT_IBIT__ 0\000"
-.LASF626:
+.LASF627:
+	.ascii	"PRIiLEAST32 __RAL_PRI_32_PREFIX \"i\"\000"
+.LASF73:
+	.ascii	"__LONG_MAX__ 0x7fffffffL\000"
+.LASF786:
+	.ascii	"HIGH_BIT_SET 0x80000000\000"
+.LASF624:
 	.ascii	"PRIiFAST64 \"lli\"\000"
-.LASF516:
+.LASF514:
 	.ascii	"NDN_WRONG_TLV_TYPE -12\000"
 .LASF400:
 	.ascii	"__ARM_FEATURE_LDREX 7\000"
-.LASF659:
+.LASF657:
 	.ascii	"PRIx16 \"x\"\000"
 .LASF348:
 	.ascii	"__USQ_FBIT__ 32\000"
-.LASF715:
+.LASF713:
 	.ascii	"SCNiMAX \"lli\"\000"
 .LASF257:
 	.ascii	"__SFRACT_MAX__ 0X7FP-7HR\000"
 .LASF219:
 	.ascii	"__FLT32X_MANT_DIG__ 53\000"
-.LASF487:
+.LASF483:
 	.ascii	"NDN_AES_BLOCK_SIZE 16\000"
 .LASF86:
 	.ascii	"__WCHAR_WIDTH__ 32\000"
-.LASF714:
+.LASF712:
 	.ascii	"SCNiLEAST64 \"lli\"\000"
-.LASF466:
+.LASF462:
 	.ascii	"NDN_ENCODING_NAME_COMPONENT_H \000"
 .LASF110:
 	.ascii	"__INT16_C(c) c\000"
-.LASF886:
+.LASF880:
 	.ascii	"__RAL_data_utf8_comma\000"
-.LASF902:
-	.ascii	"leftover\000"
 .LASF359:
 	.ascii	"__DA_IBIT__ 32\000"
-.LASF828:
-	.ascii	"thousands_sep\000"
-.LASF862:
+.LASF249:
+	.ascii	"__DEC128_MAX_EXP__ 6145\000"
+.LASF856:
 	.ascii	"__tolower\000"
 .LASF212:
 	.ascii	"__FLT64_MAX__ 1.1\000"
-.LASF771:
+.LASF769:
 	.ascii	"__CTYPE_ALPHA (__CTYPE_UPPER | __CTYPE_LOWER)\000"
 .LASF337:
 	.ascii	"__HQ_IBIT__ 0\000"
-.LASF937:
-	.ascii	"prv_key_size\000"
-.LASF896:
+.LASF745:
+	.ascii	"SCNxFAST16 __RAL_SCN_16_PREFIX \"x\"\000"
+.LASF890:
 	.ascii	"next\000"
-.LASF644:
-	.ascii	"PRIoMAX \"llo\"\000"
-.LASF870:
+.LASF864:
 	.ascii	"data\000"
-.LASF289:
-	.ascii	"__ULLFRACT_FBIT__ 64\000"
-.LASF532:
+.LASF530:
 	.ascii	"NDN_FWD_PIT_FULL -41\000"
-.LASF925:
-	.ascii	"ecdsa_type\000"
+.LASF834:
+	.ascii	"p_sep_by_space\000"
+.LASF777:
+	.ascii	"__stdbool_h \000"
 .LASF214:
 	.ascii	"__FLT64_EPSILON__ 1.1\000"
-.LASF689:
+.LASF687:
 	.ascii	"PRIXPTR \"X\"\000"
-.LASF811:
+.LASF804:
 	.ascii	"NDN_ECDSA_CURVE_SECP256R1\000"
-.LASF761:
+.LASF759:
 	.ascii	"__RAL_PTRDIFF_T int\000"
 .LASF162:
 	.ascii	"__DBL_MANT_DIG__ 53\000"
 .LASF280:
 	.ascii	"__ULFRACT_IBIT__ 0\000"
-.LASF916:
-	.ascii	"input_size\000"
-.LASF697:
-	.ascii	"SCNdFAST64 \"lld\"\000"
-.LASF560:
+.LASF558:
 	.ascii	"INT_LEAST32_MIN INT32_MIN\000"
 .LASF72:
 	.ascii	"__INT_MAX__ 0x7fffffff\000"
@@ -7794,16 +6153,16 @@ ndn_verifier_hmac_verify:
 	.ascii	"__INT_LEAST64_TYPE__ long long int\000"
 .LASF103:
 	.ascii	"__UINT16_MAX__ 0xffff\000"
-.LASF587:
+.LASF585:
 	.ascii	"UINTPTR_MAX UINT32_MAX\000"
-.LASF541:
+.LASF539:
 	.ascii	"__inttypes_H \000"
 .LASF294:
 	.ascii	"__SACCUM_FBIT__ 7\000"
-.LASF917:
-	.ascii	"sig_value\000"
-.LASF520:
+.LASF876:
+	.ascii	"__RAL_c_locale_abbrev_day_names\000"
+.LASF518:
 	.ascii	"NDN_SEC_NOT_ENABLED_FEATURE -24\000"
-.LASF566:
+.LASF564:
 	.ascii	"UINT_LEAST8_MAX UINT8_MAX\000"
 	.ident	"GCC: (GNU) 7.3.1 20180622 (release) [ARM/embedded-7-branch revision 261907]"

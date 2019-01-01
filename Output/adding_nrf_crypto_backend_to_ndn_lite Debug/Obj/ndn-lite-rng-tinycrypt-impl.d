@@ -5,16 +5,26 @@ Output/adding_nrf_crypto_backend_to_ndn_lite\ Debug/Obj/ndn-lite-rng-tinycrypt-i
  c:\users\rena\ li\desktop\adding_nrf_crypto_backend_to_ndn_lite\application\ndn_standalone\security\detail\detail-hmac\ndn-lite-hmac-tinycrypt-impl.h \
  C:/Program\ Files/SEGGER/SEGGER\ Embedded\ Studio\ for\ ARM\ 4.12/include/stddef.h \
  C:/Program\ Files/SEGGER/SEGGER\ Embedded\ Studio\ for\ ARM\ 4.12/include/__crossworks.h \
+ c:\users\rena\ li\desktop\adding_nrf_crypto_backend_to_ndn_lite\application\ndn_standalone\security\ndn-lite-crypto-key.h \
+ c:\users\rena\ li\desktop\adding_nrf_crypto_backend_to_ndn_lite\application\ndn_standalone\encode\name.h \
+ c:\users\rena\ li\desktop\adding_nrf_crypto_backend_to_ndn_lite\application\ndn_standalone\encode\name-component.h \
+ c:\users\rena\ li\desktop\adding_nrf_crypto_backend_to_ndn_lite\application\ndn_standalone\encode\tlv.h \
+ c:\users\rena\ li\desktop\adding_nrf_crypto_backend_to_ndn_lite\application\ndn_standalone\encode\decoder.h \
+ c:\users\rena\ li\desktop\adding_nrf_crypto_backend_to_ndn_lite\application\ndn_standalone\encode\encoder.h \
+ c:\users\rena\ li\desktop\adding_nrf_crypto_backend_to_ndn_lite\application\ndn_standalone\ndn-constants.h \
+ c:\users\rena\ li\desktop\adding_nrf_crypto_backend_to_ndn_lite\application\ndn_standalone\ndn-error-code.h \
+ c:\users\rena\ li\desktop\adding_nrf_crypto_backend_to_ndn_lite\application\ndn_standalone\ndn-enums.h \
+ C:/Program\ Files/SEGGER/SEGGER\ Embedded\ Studio\ for\ ARM\ 4.12/include/inttypes.h \
+ C:/Program\ Files/SEGGER/SEGGER\ Embedded\ Studio\ for\ ARM\ 4.12/include/string.h \
+ C:/Program\ Files/SEGGER/SEGGER\ Embedded\ Studio\ for\ ARM\ 4.12/include/stdbool.h \
  c:\users\rena\ li\desktop\adding_nrf_crypto_backend_to_ndn_lite\application\ndn_standalone\security\detail\sec-lib\tinycrypt\tc_hmac_prng.h \
  c:\users\rena\ li\desktop\adding_nrf_crypto_backend_to_ndn_lite\application\ndn_standalone\security\detail\sec-lib\tinycrypt\tc_sha256.h \
  c:\users\rena\ li\desktop\adding_nrf_crypto_backend_to_ndn_lite\application\ndn_standalone\security\detail\sec-lib\tinycrypt\tc_hmac.h \
  c:\users\rena\ li\desktop\adding_nrf_crypto_backend_to_ndn_lite\application\ndn_standalone\security\detail\sec-lib\tinycrypt\tc_constants.h \
- C:/Program\ Files/SEGGER/SEGGER\ Embedded\ Studio\ for\ ARM\ 4.12/include/stdbool.h \
  c:\users\rena\ li\desktop\adding_nrf_crypto_backend_to_ndn_lite\application\ndn_standalone\adaptation\ndn-nrf-ble-adaptation\logger.h \
  C:/Program\ Files/SEGGER/SEGGER\ Embedded\ Studio\ for\ ARM\ 4.12/include/stdio.h \
  C:/Users/Rena\ Li/Desktop/nRF5_SDK_15.2.0_9412b96/components/libraries/log/nrf_log.h \
  C:/Users/Rena\ Li/Desktop/nRF5_SDK_15.2.0_9412b96/components/libraries/util/sdk_common.h \
- C:/Program\ Files/SEGGER/SEGGER\ Embedded\ Studio\ for\ ARM\ 4.12/include/string.h \
  Application/sdk_config.h \
  C:/Users/Rena\ Li/Desktop/nRF5_SDK_15.2.0_9412b96/components/libraries/util/nordic_common.h \
  C:/Users/Rena\ Li/Desktop/nRF5_SDK_15.2.0_9412b96/modules/nrfx/mdk/compiler_abstraction.h \

@@ -135,9 +135,16 @@ Output/adding_nrf_crypto_backend_to_ndn_lite\ Debug/Obj/main.o: \
  c:\users\rena\ li\desktop\adding_nrf_crypto_backend_to_ndn_lite\application\ndn_standalone\adaptation\ndn-nrf-ble-adaptation\nrf-sdk-ble-ndn-lite-ble-unicast-transport\nrf-sdk-ble-ndn-lite-ble-unicast-transport.h \
  c:\users\rena\ li\desktop\adding_nrf_crypto_backend_to_ndn_lite\application\ndn_standalone\adaptation\ndn-nrf-ble-adaptation\nrf-sdk-ble-advertising\nrf-sdk-ble-adv-defs.h \
  C:\Users\Rena\ Li\Desktop\adding_nrf_crypto_backend_to_ndn_lite\Application\ndn_standalone/forwarder/forwarder.h \
+ C:\Users\Rena\ Li\Desktop\adding_nrf_crypto_backend_to_ndn_lite\Application\ndn_standalone/security/ndn-lite-crypto-key.h \
+ C:\Users\Rena\ Li\Desktop\adding_nrf_crypto_backend_to_ndn_lite\Application\ndn_standalone/security/detail/sec-lib/micro-ecc/uECC.h \
  C:\Users\Rena\ Li\Desktop\adding_nrf_crypto_backend_to_ndn_lite\Application\ndn_standalone/security/detail/detail-aes/ndn-lite-aes-tinycrypt-impl.h \
  C:\Users\Rena\ Li\Desktop\adding_nrf_crypto_backend_to_ndn_lite\Application\ndn_standalone/security/detail/detail-sha256/ndn-lite-sha256-tinycrypt-impl.h \
  C:\Users\Rena\ Li\Desktop\adding_nrf_crypto_backend_to_ndn_lite\Application\ndn_standalone/security/detail/detail-hmac/ndn-lite-hmac-tinycrypt-impl.h \
+ c:\users\rena\ li\desktop\adding_nrf_crypto_backend_to_ndn_lite\application\ndn_standalone\security\ndn-lite-crypto-key.h \
  C:\Users\Rena\ Li\Desktop\adding_nrf_crypto_backend_to_ndn_lite\Application\ndn_standalone/security/detail/detail-rng/ndn-lite-rng-tinycrypt-impl.h \
+ C:\Users\Rena\ Li\Desktop\adding_nrf_crypto_backend_to_ndn_lite\Application\ndn_standalone/security/detail/detail-ecc/ndn-lite-ecc-microecc-impl.h \
+ C:\Users\Rena\ Li\Desktop\adding_nrf_crypto_backend_to_ndn_lite\Application\ndn_standalone/security/detail/detail-rng/ndn-lite-rng-nrf-crypto-impl.h \
+ C:\Users\Rena\ Li\Desktop\adding_nrf_crypto_backend_to_ndn_lite\Application\ndn_standalone/security/detail/detail-ecc/ndn-lite-ecc-tinycrypt-impl.h \
+ c:\users\rena\ li\desktop\adding_nrf_crypto_backend_to_ndn_lite\application\ndn_standalone\security\ndn-lite-crypto-key.h \
  C:\Users\Rena\ Li\Desktop\adding_nrf_crypto_backend_to_ndn_lite\Application\ndn_standalone/ndn-enums.h \
  C:\Users\Rena\ Li\Desktop\adding_nrf_crypto_backend_to_ndn_lite\Application\ndn_standalone/ndn-error-code.h

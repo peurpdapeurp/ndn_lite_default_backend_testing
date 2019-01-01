@@ -21,10 +21,15 @@
 #include "ndn_standalone/adaptation/ndn-nrf-ble-adaptation/logger.h"
 
 // includes for ndn standalone library
+#include "ndn_standalone/security/ndn-lite-crypto-key.h"
+#include "ndn_standalone/security/detail/sec-lib/micro-ecc/uECC.h"
 #include "ndn_standalone/security/detail/detail-aes/ndn-lite-aes-tinycrypt-impl.h"
 #include "ndn_standalone/security/detail/detail-sha256/ndn-lite-sha256-tinycrypt-impl.h"
 #include "ndn_standalone/security/detail/detail-hmac/ndn-lite-hmac-tinycrypt-impl.h"
 #include "ndn_standalone/security/detail/detail-rng/ndn-lite-rng-tinycrypt-impl.h"
+#include "ndn_standalone/security/detail/detail-ecc/ndn-lite-ecc-microecc-impl.h"
+#include "ndn_standalone/security/detail/detail-rng/ndn-lite-rng-nrf-crypto-impl.h"
+#include "ndn_standalone/security/detail/detail-ecc/ndn-lite-ecc-tinycrypt-impl.h"
 #include "ndn_standalone/ndn-enums.h"
 #include "ndn_standalone/ndn-error-code.h"
 
@@ -35,25 +40,31 @@ bool m_sha256_test_success = false;
 bool m_hmac_test_success = false;
 bool m_rng_hkdf_test_success = false;
 bool m_rng_hmacprng_test_success = false;
+bool m_ecc_microecc_test_success = false;
+bool m_ecc_tinycrypt_test_success = false;
 
-static const uint8_t m_raw_ecc_private_key[] =
+static uint8_t m_raw_ecc_private_key_1[] =
 {
-  0xD8, 0x9A, 0x9E, 0xD9, 0xD4, 0x5A, 0xFD, 0xA1, 0xE5, 0xA4, 
-  0x29, 0x73, 0x2B, 0x18, 0xE5, 0x51, 0xC4, 0xB0, 0x77, 0xEF, 
-  0xA3, 0x5E, 0xB3, 0x55, 0x63, 0x73, 0xBC, 0x13, 0xBE, 0xE2, 
-  0x5C, 0x2C,
+    0x4E, 0x34, 0x08, 0xA6, 0xB1, 0x7C, 0xA2, 0x1A, 0x70, 0xE7, 
+    0x6B, 0xE0, 0x91, 0xA9, 0x83, 0xEA, 0xF9, 0xE7, 0xCE, 0x56, 
+    0xB4, 0xDC, 0x05, 0xFA, 0xFB, 0x67, 0xD7, 0x57, 0xFC, 0xFB, 
+    0xB3, 0xB5
 };
 
-static const uint8_t m_raw_ecc_public_key[] =
+static uint8_t m_raw_ecc_public_key_1[] =
 {
-  0x41, 0xA0, 0x02, 0x0C, 0x65, 0xCA, 0x1B, 0xD0, 0xB4, 0x4B, 
-  0x0B, 0xC9, 0xD3, 0x92, 0xE2, 0x14, 0xDB, 0x7A, 0x97, 0xC3, 
-  0x22, 0xEA, 0xC7, 0xD7, 0xEA, 0x05, 0x77, 0xFB, 0x74, 0x4C, 
-  0xC0, 0x86, 0x8F, 0xA6, 0xF9, 0x21, 0x72, 0x38, 0x92, 0xF3, 
-  0x69, 0xA9, 0xAA, 0x82, 0xE0, 0xEC, 0x69, 0x77, 0x59, 0xA8, 
-  0x6C, 0x5E, 0x7D, 0x74, 0x96, 0x1D, 0xB9, 0xCD, 0x9A, 0x3D, 
-  0xC0, 0x2F, 0x86, 0x4A,
+    0x01, 0x98, 0x69, 0x63, 0xD0, 0x01, 0x00, 0xB5, 0xAE, 0xBF, 
+    0x23, 0x6E, 0xC4, 0xEA, 0xBB, 0x10, 0xC5, 0xCF, 0x2C, 0xB3, 
+    0xBB, 0xEB, 0xB1, 0x0E, 0x04, 0x1C, 0x33, 0x92, 0x73, 0x6B, 
+    0x45, 0x1A, 0x1F, 0xFE, 0xBF, 0xD3, 0xFB, 0xBD, 0x36, 0xB0, 
+    0x27, 0x47, 0xA0, 0x3B, 0x8A, 0x7A, 0x50, 0x20, 0xFC, 0xEA, 
+    0xBD, 0x4D, 0x28, 0x0F, 0x2E, 0x00, 0x78, 0xCE, 0xFC, 0x74, 
+    0x9B, 0xF5, 0x86, 0x73
 };
+
+static uint8_t m_raw_ecc_private_key_2[32];
+
+static uint8_t m_raw_ecc_public_key_2[64];
 
 static const uint8_t m_raw_sym_key[] =
 {
@@ -95,6 +106,10 @@ static uint8_t m_rng_additional_val_2[] = {
 };
 static uint8_t m_rng_result_1[RNG_TEST_BUFFER_SIZE];
 static uint8_t m_rng_result_2[RNG_TEST_BUFFER_SIZE];
+
+#define ECC_SHARED_SECRET_BUFFER_SIZE 32
+static uint8_t m_gen_shared_secret_1[ECC_SHARED_SECRET_BUFFER_SIZE];
+static uint8_t m_gen_shared_secret_2[ECC_SHARED_SECRET_BUFFER_SIZE];
 
 /**@brief Function for application main entry.
  */
@@ -163,16 +178,46 @@ int main(void) {
   // Hmac test
   ///////////////////////////////////////////////////////////////////////////////////
 
+  bool ndn_lite_hmac_sha256_tinycrypt_call_success = false;
+  bool ndn_lite_hmac_make_key_tinycrypt_call_success = false;
+
   ret_val = ndn_lite_hmac_sha256_tinycrypt(m_raw_sym_key, sizeof(m_raw_sym_key),
                                            m_message, sizeof(m_message), 
                                            m_hmac_result);
   if (ret_val == NDN_SUCCESS) {
-    m_hmac_test_success = true;
+    ndn_lite_hmac_sha256_tinycrypt_call_success = true;
     APP_LOG("Call to ndn_lite_hmac_sign_tinycrypt succeeded.\n");
     APP_LOG_HEX("Hmac signature of message:", m_hmac_result, NDN_SEC_SHA256_HASH_SIZE);
   }
   else {
     APP_LOG("Call to ndn_lite_hmac_sign_tinycrypt failed, error code: %d\n", ret_val);
+  }
+
+  ndn_hmac_key_t ndn_hmac_key_1;
+  uint32_t random_key_id_1 = 5;
+
+  // I just passed random buffers / values in for most of these arguments
+  ret_val = ndn_lite_hmac_make_key_tinycrypt(&ndn_hmac_key_1, random_key_id_1,
+                                             m_message, sizeof(m_message),
+                                             m_rng_seed_1, sizeof(m_rng_seed_1),
+                                             m_rng_seed_2, sizeof(m_rng_seed_2),
+                                             m_raw_sym_key, sizeof(m_raw_sym_key),
+                                             4);
+  if (ret_val == NDN_SUCCESS) {
+    ndn_lite_hmac_make_key_tinycrypt_call_success = true;
+    APP_LOG("Call to ndn_lite_hmac_make_key_tinycrypt succeeded.\n");
+    APP_LOG_HEX("Bytes of generated hmac key:", ndn_hmac_key_1.key_value, ndn_hmac_key_1.key_size);
+  }
+  else {
+    APP_LOG("Call to ndn_lite_hmac_make_key_tinycrypt failed, error code: %d\n", ret_val);
+  }
+
+  if (ndn_lite_hmac_sha256_tinycrypt_call_success &&
+      ndn_lite_hmac_make_key_tinycrypt_call_success) {
+    APP_LOG("Both ndn_lite_hmac_sha256_tinycrypt_call_success "
+            "and ndn_lite_hmac_make_key_tinycrypt_call_success were "
+            "true, considering this a success.\n");
+    m_hmac_test_success = true;
   }
 
   ///////////////////////////////////////////////////////////////////////////////////
@@ -261,6 +306,116 @@ int main(void) {
 
   ///////////////////////////////////////////////////////////////////////////////////
 
+  // Ecc test (tinycrypt backend)
+  ///////////////////////////////////////////////////////////////////////////////////
+
+  ndn_ecc_pub_t ndn_pub_key_1;
+  ndn_ecc_prv_t ndn_prv_key_1;
+  ndn_ecc_pub_t ndn_pub_key_2;
+  ndn_ecc_prv_t ndn_prv_key_2;
+  uint32_t random_key_id = 1;
+  ret_val = ndn_lite_ecc_key_make_key_tinycrypt(&ndn_pub_key_1, &ndn_prv_key_1,
+                                                NDN_ECDSA_CURVE_SECP256R1,
+                                                random_key_id);
+  if (ret_val == NDN_SUCCESS) {
+    APP_LOG("First call to ndn_lite_ecc_key_make_key_tinycrypt succeeded.\n");
+    APP_LOG_HEX("Value of generated public key:", ndn_pub_key_1.key_value, ndn_pub_key_1.key_size);
+    APP_LOG_HEX("Value of generated private key:", ndn_prv_key_1.key_value, ndn_prv_key_1.key_size);
+  }
+  else {
+    APP_LOG("First call to ndn_lite_ecc_key_make_key_tinycrypt failed, error code: %d\n", ret_val);
+  }
+
+  ret_val = ndn_lite_ecc_key_make_key_tinycrypt(&ndn_pub_key_2, &ndn_prv_key_2,
+                                                NDN_ECDSA_CURVE_SECP256R1,
+                                                random_key_id);
+  if (ret_val == NDN_SUCCESS) {
+    APP_LOG("Second call to ndn_lite_ecc_key_make_key_tinycrypt succeeded.\n");
+    APP_LOG_HEX("Value of generated public key:", ndn_pub_key_2.key_value, ndn_pub_key_2.key_size);
+    APP_LOG_HEX("Value of generated private key:", ndn_prv_key_2.key_value, ndn_prv_key_2.key_size);
+  }
+  else {
+    APP_LOG("Second call to ndn_lite_ecc_key_make_key_tinycrypt failed, error code: %d\n", ret_val);
+  }
+
+  ret_val = ndn_lite_ecc_key_shared_secret_tinycrypt(
+                                             &ndn_pub_key_1, &ndn_prv_key_2,
+                                             NDN_ECDSA_CURVE_SECP256R1, 
+                                             m_gen_shared_secret_1, 
+                                             sizeof(m_gen_shared_secret_1));
+  if (ret_val == NDN_SUCCESS) {
+    APP_LOG("First call to ndn_lite_ecc_key_shared_secret_tinycrypt succeeded.\n");
+    APP_LOG_HEX("First generated shared secret:", m_gen_shared_secret_1, 
+                 sizeof(m_gen_shared_secret_1));
+  }
+  else {
+    APP_LOG("First call to ndn_lite_ecc_key_shared_secret_tinycrypt "
+            "failed, error code: %d\n", ret_val);
+  }
+
+    ret_val = ndn_lite_ecc_key_shared_secret_tinycrypt(
+                                             &ndn_pub_key_2, &ndn_prv_key_1,
+                                             NDN_ECDSA_CURVE_SECP256R1, 
+                                             m_gen_shared_secret_2, 
+                                             sizeof(m_gen_shared_secret_2));
+  if (ret_val == NDN_SUCCESS) {
+    APP_LOG("Second call to ndn_lite_ecc_key_shared_secret_tinycrypt succeeded.\n");
+    APP_LOG_HEX("Second generated shared secret:", m_gen_shared_secret_2, 
+                 sizeof(m_gen_shared_secret_2));
+  }
+  else {
+    APP_LOG("Second call to ndn_lite_ecc_key_shared_secret_tinycrypt "
+            "failed, error code: %d\n", ret_val);
+  }
+
+  if (memcmp(m_gen_shared_secret_1, m_gen_shared_secret_2, ECC_SHARED_SECRET_BUFFER_SIZE) == 0) {
+    APP_LOG("Both generated shared secrets were equal; considering this a success.\n");
+    m_ecc_tinycrypt_test_success = true;
+  }                              
+
+  ///////////////////////////////////////////////////////////////////////////////////
+
+  // Ecc test (microecc backend)
+  ///////////////////////////////////////////////////////////////////////////////////
+
+  bool ndn_lite_ecdsa_sign_microecc_call_success = false;
+  bool ndn_lite_ecdsa_verify_microecc_call_success = false;
+
+  APP_LOG_HEX("Value of signature buffer before generating signature:", 
+              m_signature, sizeof(m_signature));
+  uint32_t ecdsa_sig_size;
+  ret_val = ndn_lite_ecdsa_sign_microecc(m_message, sizeof(m_message), 
+                                         m_signature, sizeof(m_signature),  
+                                         m_raw_ecc_private_key_1, sizeof(m_raw_ecc_private_key_1), 
+                                         NDN_ECDSA_CURVE_SECP256R1, &ecdsa_sig_size);
+  if (ret_val == NDN_SUCCESS) {
+    ndn_lite_ecdsa_sign_microecc_call_success = true;
+    APP_LOG("Call to ndn_lite_ecdsa_sign_microecc succeeded.\n");
+    APP_LOG("Size of signature generated: %d\n", ecdsa_sig_size);
+    APP_LOG_HEX("Value of signature generated:", m_signature, ecdsa_sig_size);
+  }
+  else {
+    APP_LOG("Call to ndn_lite_ecdsa_sign_microecc failed, error code: %d\n", ret_val);
+  }
+
+  ret_val = ndn_lite_ecdsa_verify_microecc(m_message, sizeof(m_message), 
+                                           m_signature, sizeof(m_signature), 
+                                           m_raw_ecc_public_key_1, sizeof(m_raw_ecc_public_key_1), 
+                                           NDN_ECDSA_CURVE_SECP256R1);
+  if (ret_val == NDN_SUCCESS) {
+    ndn_lite_ecdsa_verify_microecc_call_success = true;
+    APP_LOG("Call to ndn_lite_ecdsa_verify_microecc succeeded.\n");
+  }
+  else {
+    APP_LOG("Call to ndn_lite_ecdsa_verify_microecc failed, error code: %d\n", ret_val);
+  }
+
+  if (ndn_lite_ecdsa_sign_microecc_call_success && ndn_lite_ecdsa_verify_microecc_call_success) {
+    m_ecc_microecc_test_success = true;
+  }
+
+  ///////////////////////////////////////////////////////////////////////////////////
+
   // Check that all tests succeeded
   ///////////////////////////////////////////////////////////////////////////////////
   APP_LOG("Results of all security tests:\n");
@@ -269,12 +424,16 @@ int main(void) {
   APP_LOG("Hmac test result: %d\n", m_hmac_test_success);
   APP_LOG("Rng hkdf test result: %d\n", m_rng_hkdf_test_success);
   APP_LOG("Rng hmacprng test result: %d\n", m_rng_hmacprng_test_success);
+  APP_LOG("Ecc test (microecc backend) result: %d\n", m_ecc_microecc_test_success);
+  APP_LOG("Ecc test (tinycrypt backend) result: %d\n", m_ecc_tinycrypt_test_success);
 
   if (m_aes_test_success && 
       m_sha256_test_success &&
       m_hmac_test_success &&
       m_rng_hkdf_test_success &&
-      m_rng_hmacprng_test_success) {
+      m_rng_hmacprng_test_success &&
+      m_ecc_microecc_test_success &&
+      m_ecc_tinycrypt_test_success) {
     APP_LOG("ALL TESTS SUCCEEDED.\n");
   }
   else {
